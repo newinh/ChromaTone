@@ -105,10 +105,10 @@
             </objects>
             <point key="canvasLocation" x="-1207" y="66"/>
         </scene>
-        <!--View Controller-->
+        <!--Color View Controller-->
         <scene sceneID="Ccs-mi-44k">
             <objects>
-                <viewController id="682-5y-E1L" sceneMemberID="viewController">
+                <viewController id="682-5y-E1L" customClass="ColorViewController" customModule="ChromaTone" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="us5-MV-cjF"/>
                         <viewControllerLayoutGuide type="bottom" id="4RV-u5-oTy"/>
@@ -124,6 +124,9 @@
                                     <segment title="Palette"/>
                                     <segment title="Camera"/>
                                 </segments>
+                                <connections>
+                                    <action selector="modeChanged:" destination="682-5y-E1L" eventType="valueChanged" id="YRH-FK-7mr"/>
+                                </connections>
                             </segmentedControl>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7PL-dA-f3H">
                                 <rect key="frame" x="26" y="533" width="50" height="50"/>
@@ -134,10 +137,6 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.40000000600000002" green="0.40000000600000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="demo_color_wheel" translatesAutoresizingMaskIntoConstraints="NO" id="fQp-60-uAL">
-                                <rect key="frame" x="26" y="133" width="313" height="331"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3IF-9D-W73">
                                 <rect key="frame" x="299" y="533" width="50" height="50"/>
                                 <color key="backgroundColor" red="0.40000000600000002" green="0.40000000600000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -159,6 +158,11 @@
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="icon_palette" id="Crp-49-kOu"/>
+                    <connections>
+                        <outlet property="colorView" destination="E1m-Ul-yv3" id="OPu-zc-PGe"/>
+                        <outlet property="modeChanger" destination="xRL-Er-NNd" id="ACP-Yt-lMH"/>
+                        <outlet property="preview" destination="3IF-9D-W73" id="sOg-ko-mJf"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hxp-qh-nz7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -217,7 +221,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="demo_color_wheel" width="730" height="730"/>
         <image name="demo_colorful_picture" width="400" height="267"/>
         <image name="demo_spectrum" width="500" height="281"/>
         <image name="demo_visual_equalizer" width="702" height="392"/>

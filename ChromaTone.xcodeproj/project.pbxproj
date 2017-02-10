@@ -8,20 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		78684B2D1E49BDD800E626AF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78684B2C1E49BDD800E626AF /* AppDelegate.swift */; };
-		78684B2F1E49BDD800E626AF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78684B2E1E49BDD800E626AF /* ViewController.swift */; };
+		78684B2F1E49BDD800E626AF /* ColorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78684B2E1E49BDD800E626AF /* ColorViewController.swift */; };
 		78684B321E49BDD800E626AF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78684B301E49BDD800E626AF /* Main.storyboard */; };
 		78684B341E49BDD800E626AF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 78684B331E49BDD800E626AF /* Assets.xcassets */; };
 		78684B371E49BDD800E626AF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78684B351E49BDD800E626AF /* LaunchScreen.storyboard */; };
+		78BA40D51E4DE8F200B76BB0 /* Calculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BA40D41E4DE8F200B76BB0 /* Calculator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		78684B291E49BDD800E626AF /* ChromaTone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChromaTone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78684B2C1E49BDD800E626AF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		78684B2E1E49BDD800E626AF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		78684B2E1E49BDD800E626AF /* ColorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorViewController.swift; sourceTree = "<group>"; };
 		78684B311E49BDD800E626AF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		78684B331E49BDD800E626AF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		78684B361E49BDD800E626AF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		78684B381E49BDD800E626AF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		78BA40D41E4DE8F200B76BB0 /* Calculator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Calculator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,7 +57,8 @@
 			isa = PBXGroup;
 			children = (
 				78684B2C1E49BDD800E626AF /* AppDelegate.swift */,
-				78684B2E1E49BDD800E626AF /* ViewController.swift */,
+				78684B2E1E49BDD800E626AF /* ColorViewController.swift */,
+				78BA40D41E4DE8F200B76BB0 /* Calculator.swift */,
 				78684B301E49BDD800E626AF /* Main.storyboard */,
 				78684B331E49BDD800E626AF /* Assets.xcassets */,
 				78684B351E49BDD800E626AF /* LaunchScreen.storyboard */,
@@ -96,6 +99,7 @@
 				TargetAttributes = {
 					78684B281E49BDD800E626AF = {
 						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = F3Q5Y6R7ZH;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -136,7 +140,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				78684B2F1E49BDD800E626AF /* ViewController.swift in Sources */,
+				78684B2F1E49BDD800E626AF /* ColorViewController.swift in Sources */,
+				78BA40D51E4DE8F200B76BB0 /* Calculator.swift in Sources */,
 				78684B2D1E49BDD800E626AF /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -260,6 +265,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = F3Q5Y6R7ZH;
 				INFOPLIST_FILE = ChromaTone/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.boostcamp.ChromaTone;
@@ -272,6 +278,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = F3Q5Y6R7ZH;
 				INFOPLIST_FILE = ChromaTone/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.boostcamp.ChromaTone;
@@ -299,6 +306,7 @@
 				78684B3D1E49BDD800E626AF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
