@@ -2,4 +2,6 @@
 
 ## latte 신승훈
 
-test
+## 일정표
+
+![schedule](./schedule.png)
