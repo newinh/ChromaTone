@@ -25,19 +25,33 @@ open class Calculator {
     // bright : 기본값 (1)
     // alpha : 기본값 (1)
     static func HSBcolor(center: CGPoint, touched: CGPoint, radius: CGFloat) -> UIColor {
+        
+        print("centerX : \(center.x)   touchedX : \(touched.x)")
+        print("centerY : \(center.y)   touchedY : \(touched.y)")
+        
         let x = Double (touched.x - center.x)
         let y = Double (center.y - touched.y)
         let radius = Double(radius)
         
+        print("x : \(x)")
+        print("y : \(y)")
+        
         var distance = sqrt( pow(x, 2)  + pow(y, 2)  )
+        print("distance : \(distance)")
+        print("radius : \(radius)")
+        
         distance /=  radius
+        print("distance /= radius : \(distance)")
         
         let radian = atan2(y, x)
         var degree = (radian/M_PI) * 180
         if degree < 0 {
             degree += 360
         }
+        print ("degree : \(degree)")
         degree /= 360
+        print("degree /= 360 : \(degree)")
+        
         
         return UIColor(hue: CGFloat(degree), saturation: CGFloat(distance), brightness: 1, alpha: 1)
     }

@@ -16,25 +16,6 @@ class ColorViewController: UIViewController {
     @IBOutlet weak var preview: UIView!
     @IBOutlet weak var modeChanger : UISegmentedControl!
     
-    // MARK: IBAction
-    @IBAction func modeChanged(_ sender: UISegmentedControl) {
-        
-        switch sender.selectedSegmentIndex {
-            
-        case 0:
-            colorPickerImageView.removeFromSuperview()
-            colorView.addSubview(PictureImageView)
-            print("0")
-            
-        case 1:
-            colorView.addSubview(colorPickerImageView)
-            PictureImageView.removeFromSuperview()
-            print("1")
-        default :
-            print("2")
-        }
-    }
-    
     
     
     // MARK: Local Variable
@@ -60,44 +41,61 @@ class ColorViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
+        updateCenterPoint()
+        
+        initColorPicker()
+        
+        modeChanger.selectedSegmentIndex = 1
+        initPaletteView()
+        
+    }
+    
+    private func updateCenterPoint() {
         let viewWidth = view.frame.size.width
         let viewHeight = view.frame.size.height
         
         radius = (min(viewWidth, viewHeight) - 5) / 2
         centerPoint = CGPoint(x: viewWidth/2, y: viewHeight/2)
-        
-//        self.colorView.frame = CGRect(x: centerPoint.x - radius, y: centerPoint.y - radius
-//            , width: 2*radius, height: 2*radius)
-//        
-//        self.colorView.layer.cornerRadius = radius
-        self.colorView.addSubview(colorPickerImageView)
-        self.colorView.layer.masksToBounds = true
-        self.colorView.clipsToBounds = true
-        self.colorView.addSubview(colorPickerImageView)
-        
-        
-        colorPickerImageView.frame = CGRect(x: 0, y: 0, width: 2*radius, height: 2*radius)
-        colorPickerImageView.layer.cornerRadius = radius
-        colorPickerImageView.layer.masksToBounds = true
-        colorPickerImageView.clipsToBounds = true
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(self.touchedColorPicker(_:)))
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.touchedColorPicker(_:)))
-        colorPickerImageView.isUserInteractionEnabled = true
-        colorPickerImageView.addGestureRecognizer(panGesture)
-        colorPickerImageView.addGestureRecognizer(tapGesture)
-        
-        
-        modeChanger.selectedSegmentIndex = 1
-        
     }
     
+    private func initColorPicker() {
+        
+        self.colorPickerImageView.frame = CGRect(x: 0, y: 0, width: 2*radius, height: 2*radius)
+        self.colorPickerImageView.layer.cornerRadius = radius
+        self.colorPickerImageView.layer.masksToBounds = true
+        self.colorPickerImageView.clipsToBounds = true
+        
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(self.touchedColorPicker(_:)))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.touchedColorPicker(_:)))
+        
+        self.colorPickerImageView.isUserInteractionEnabled = true
+        self.colorPickerImageView.addGestureRecognizer(panGesture)
+        self.colorPickerImageView.addGestureRecognizer(tapGesture)
+    }
 
     private func initPaletteView() {
+        
+        updateCenterPoint()
+        
+        self.colorView.frame = CGRect(x: centerPoint.x - radius, y: centerPoint.y - radius
+            , width: 2*radius, height: 2*radius)
+        
+        self.colorView.layer.cornerRadius = radius
+        self.colorView.clipsToBounds = true
+        self.colorView.addSubview(self.colorPickerImageView)
     
     }
     
     private func initPictureView() {
-    
+        
+        updateCenterPoint()
+        
+        self.colorView.frame = CGRect(x: centerPoint.x - radius, y: centerPoint.y - radius
+            , width: 2*radius, height: 2*radius)
+        
+        self.colorView.layer.cornerRadius = 0
+        self.colorView.clipsToBounds = true
+        self.colorView.addSubview(self.PictureImageView)
     }
     
     @objc private func touchedColorPicker (_ sender: UIGestureRecognizer){
@@ -108,8 +106,22 @@ class ColorViewController: UIViewController {
         preview.backgroundColor = touchedColor
     }
     
-    private func updateCurrnetColor() {
+    
+    // MARK: IBAction
+    @IBAction func modeChanged(_ sender: UISegmentedControl) {
         
+        switch sender.selectedSegmentIndex {
+            
+        case 0:
+            colorPickerImageView.removeFromSuperview()
+            initPictureView()
+            
+        case 1:
+            PictureImageView.removeFromSuperview()
+            initPaletteView()
+        default :
+            print("2")
+        }
     }
 
 }
