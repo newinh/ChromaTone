@@ -13,7 +13,7 @@ class ColorPickerImageView : UIImageView {
     
 //    var pickedColor: UIColor = UIColor.white
     
-    var closure :  ( (UIColor) -> () )?
+    var pickC :  ( (UIColor) -> () )?
         
     
     
