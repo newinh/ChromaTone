@@ -28,6 +28,7 @@ class ColorViewController: UIViewController {
     var brightness: CGFloat = 1
     
     let colorPickerImageView = UIImageView(image: UIImage(named: "demo_color_wheel2"))
+    
     let PictureImageView = UIImageView(image: UIImage(named: "demo_colorful_picture"))
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -41,12 +42,18 @@ class ColorViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        updateCenterPoint()
+        let colorPickerImageView = ColorPickerImageView()
+        colorPickerImageView.closure = { (color) in
+            self.preview.backgroundColor = color
+        }
+        self.colorView.addSubview(colorPickerImageView)
         
-        initColorPicker()
+//        updateCenterPoint()
+        
+//        initColorPicker()
         
         modeChanger.selectedSegmentIndex = 1
-        initPaletteView()
+//        initPaletteView()
         
     }
     
@@ -65,12 +72,12 @@ class ColorViewController: UIViewController {
         self.colorPickerImageView.layer.masksToBounds = true
         self.colorPickerImageView.clipsToBounds = true
         
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(self.touchedColorPicker(_:)))
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.touchedColorPicker(_:)))
+//        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(self.touchedColorPicker(_:)))
+//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.touchedColorPicker(_:)))
         
         self.colorPickerImageView.isUserInteractionEnabled = true
-        self.colorPickerImageView.addGestureRecognizer(panGesture)
-        self.colorPickerImageView.addGestureRecognizer(tapGesture)
+//        self.colorPickerImageView.addGestureRecognizer(panGesture)
+//        self.colorPickerImageView.addGestureRecognizer(tapGesture)
     }
 
     private func initPaletteView() {
@@ -106,6 +113,12 @@ class ColorViewController: UIViewController {
         preview.backgroundColor = touchedColor
     }
     
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        let firstTouch = touches.first
+//        let point = firstTouch?.location(in: self.colorPickerImageView)
+//        print("fistTouch : \(point)")
+//    }
+    
     
     // MARK: IBAction
     @IBAction func modeChanged(_ sender: UISegmentedControl) {
@@ -123,5 +136,4 @@ class ColorViewController: UIViewController {
             print("2")
         }
     }
-
 }

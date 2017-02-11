@@ -30,7 +30,7 @@ open class Calculator {
         print("centerY : \(center.y)   touchedY : \(touched.y)")
         
         let x = Double (touched.x - center.x)
-        let y = Double (center.y - touched.y)
+        let y = Double (center.y - touched.y)   // 헷갈리는 부분. ios y좌표는 반대다.
         let radius = Double(radius)
         
         print("x : \(x)")
