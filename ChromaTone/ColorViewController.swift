@@ -15,109 +15,51 @@ class ColorViewController: UIViewController {
     @IBOutlet weak var colorView: UIView!
     @IBOutlet weak var preview: UIView!
     @IBOutlet weak var modeChanger : UISegmentedControl!
+    @IBOutlet weak var cTest: UIImageView!
+    
+    var colorPickerImageView : ColorPickerImageView!
+    let pictureImageView = UIImageView(image: UIImage(named: "demo_colorful_picture"))
     
     
     
-    // MARK: Local Variable
-    var centerPoint: CGPoint = CGPoint(x: 0, y: 0)
-    var radius  : CGFloat = 0
-    
-    // 0 ... 1
-    var hue: CGFloat = 1
-    var saturation: CGFloat = 1
-    var brightness: CGFloat = 1
-    
-    let colorPickerImageView = UIImageView(image: UIImage(named: "demo_color_wheel2"))
-    
-    let PictureImageView = UIImageView(image: UIImage(named: "demo_colorful_picture"))
-    
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        
-        self.colorView.frame = CGRect(x: size.width/2 - radius, y: size.height/2 - radius
-            , width: 2*radius, height: 2*radius)
-        
-    }
+    var c3 : NSLayoutConstraint!
+    var c4 : NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        let colorPickerImageView = ColorPickerImageView()
-        colorPickerImageView.closure = { (color) in
+        self.colorPickerImageView = ColorPickerImageView()
+        self.colorPickerImageView.pickedColor = { (color) in
             self.preview.backgroundColor = color
         }
-        self.colorView.addSubview(colorPickerImageView)
-        
-//        updateCenterPoint()
-        
-//        initColorPicker()
+        self.cTest.image = UIImage(named: "demo_colorful_picture")
+        self.colorView.addSubview(self.colorPickerImageView)
+//        self.colorView.addSubview(self.pictureImageView)
+        self.pictureImageView.isHidden = true
         
         modeChanger.selectedSegmentIndex = 1
-//        initPaletteView()
         
-    }
-    
-    private func updateCenterPoint() {
-        let viewWidth = view.frame.size.width
-        let viewHeight = view.frame.size.height
+        let c1 = NSLayoutConstraint(item: self.colorPickerImageView, attribute: .centerX, relatedBy: .equal, toItem: self.colorView, attribute: .centerX, multiplier: 1, constant: 0)
+        let c2 = NSLayoutConstraint(item: self.colorPickerImageView, attribute: .centerY, relatedBy: .equal, toItem: self.colorView, attribute: .centerY, multiplier: 1, constant: 0)
+        c3 = NSLayoutConstraint(item: self.colorPickerImageView, attribute: .height, relatedBy: .equal, toItem: self.colorPickerImageView, attribute: .width, multiplier: 1, constant: 0)
         
-        radius = (min(viewWidth, viewHeight) - 5) / 2
-        centerPoint = CGPoint(x: viewWidth/2, y: viewHeight/2)
-    }
-    
-    private func initColorPicker() {
+        c4 = NSLayoutConstraint(item: self.colorPickerImageView, attribute: .width, relatedBy: .equal, toItem: self.colorView, attribute: .width, multiplier: 1, constant: 0)
         
-        self.colorPickerImageView.frame = CGRect(x: 0, y: 0, width: 2*radius, height: 2*radius)
-        self.colorPickerImageView.layer.cornerRadius = radius
-        self.colorPickerImageView.layer.masksToBounds = true
-        self.colorPickerImageView.clipsToBounds = true
+        c4.priority = 990
         
-//        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(self.touchedColorPicker(_:)))
-//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.touchedColorPicker(_:)))
+        self.colorPickerImageView.translatesAutoresizingMaskIntoConstraints = false
         
-        self.colorPickerImageView.isUserInteractionEnabled = true
-//        self.colorPickerImageView.addGestureRecognizer(panGesture)
-//        self.colorPickerImageView.addGestureRecognizer(tapGesture)
-    }
+        
+        let c5 = NSLayoutConstraint(item: self.colorPickerImageView, attribute: .top, relatedBy: .greaterThanOrEqual, toItem: self.modeChanger, attribute: .bottom, multiplier: 1, constant: 0)
+        
+        self.view.addConstraint(c5)
+        self.view.addConstraint(c1)
+        self.view.addConstraint(c2)
+        self.view.addConstraint(c3)
+        self.view.addConstraint(c4)
 
-    private func initPaletteView() {
-        
-        updateCenterPoint()
-        
-        self.colorView.frame = CGRect(x: centerPoint.x - radius, y: centerPoint.y - radius
-            , width: 2*radius, height: 2*radius)
-        
-        self.colorView.layer.cornerRadius = radius
-        self.colorView.clipsToBounds = true
-        self.colorView.addSubview(self.colorPickerImageView)
-    
     }
-    
-    private func initPictureView() {
-        
-        updateCenterPoint()
-        
-        self.colorView.frame = CGRect(x: centerPoint.x - radius, y: centerPoint.y - radius
-            , width: 2*radius, height: 2*radius)
-        
-        self.colorView.layer.cornerRadius = 0
-        self.colorView.clipsToBounds = true
-        self.colorView.addSubview(self.PictureImageView)
-    }
-    
-    @objc private func touchedColorPicker (_ sender: UIGestureRecognizer){
-        
-        let touchedPoint = sender.location(in: self.view)
-        let touchedColor = Calculator.HSBcolor(center: self.centerPoint, touched: touchedPoint, radius: self.radius)
-        
-        preview.backgroundColor = touchedColor
-    }
-    
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        let firstTouch = touches.first
-//        let point = firstTouch?.location(in: self.colorPickerImageView)
-//        print("fistTouch : \(point)")
-//    }
     
     
     // MARK: IBAction
@@ -126,12 +68,14 @@ class ColorViewController: UIViewController {
         switch sender.selectedSegmentIndex {
             
         case 0:
-            colorPickerImageView.removeFromSuperview()
-            initPictureView()
+            colorPickerImageView.isHidden = true
+            cTest.isHidden = false
+            pictureImageView.isHidden = false
             
         case 1:
-            PictureImageView.removeFromSuperview()
-            initPaletteView()
+            colorPickerImageView.isHidden = false
+            pictureImageView.isHidden = true
+            cTest.isHidden = true
         default :
             print("2")
         }

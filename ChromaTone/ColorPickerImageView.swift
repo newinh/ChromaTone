@@ -13,7 +13,7 @@ class ColorPickerImageView : UIImageView {
     
 //    var pickedColor: UIColor = UIColor.white
     
-    var pickC :  ( (UIColor) -> () )?
+    var pickedColor :  ( (UIColor) -> () )?
         
     
     
@@ -40,9 +40,8 @@ class ColorPickerImageView : UIImageView {
         
         let newColor = Calculator.HSBcolor(center: centerPoint, touched: touchedPoint, radius: self.frame.height/2)
         
-        if let closure = closure {
-            closure(newColor)
+        if let pickedColor = pickedColor {
+            pickedColor(newColor)
         }
-        
     }
 }
