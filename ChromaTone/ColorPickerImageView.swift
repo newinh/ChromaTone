@@ -15,19 +15,6 @@ class ColorPickerImageView : UIImageView {
     
     var pickedColor :  ( (UIColor) -> () )?
         
-    
-    
-    init() {
-        let img = UIImage(named: Constants.colorPickerImage)
-        super.init(image: img)
-        self.isUserInteractionEnabled = true
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let firstTouch = touches.first
         

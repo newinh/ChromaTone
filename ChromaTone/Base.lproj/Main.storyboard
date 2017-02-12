@@ -117,10 +117,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="xRL-Er-NNd">
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="1" translatesAutoresizingMaskIntoConstraints="NO" id="xRL-Er-NNd">
                                 <rect key="frame" x="0.0" y="20" width="414" height="29"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="28" id="KgI-l2-8tb"/>
+                                    <constraint firstAttribute="height" constant="28" id="iwh-WK-dQQ"/>
                                 </constraints>
                                 <segments>
                                     <segment title="Picture"/>
@@ -143,37 +143,28 @@
                                     <constraint firstAttribute="height" constant="50" id="NGj-t8-Gez"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E1m-Ul-yv3">
-                                <rect key="frame" x="20" y="53" width="374" height="519"/>
-                                <color key="backgroundColor" red="0.40000000600000002" green="0.40000000600000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FTg-UI-D9o">
-                                <rect key="frame" x="0.0" y="48" width="414" height="544"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KTv-KE-s4U" customClass="ColorPickerImageView" customModule="ChromaTone" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="58" width="414" height="534"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="xRL-Er-NNd" firstAttribute="width" secondItem="D8s-Fy-OgR" secondAttribute="width" id="8i2-Bb-icx"/>
                             <constraint firstItem="7PL-dA-f3H" firstAttribute="leading" secondItem="D8s-Fy-OgR" secondAttribute="leadingMargin" constant="10" id="CaS-nI-CsR"/>
-                            <constraint firstItem="3IF-9D-W73" firstAttribute="top" secondItem="FTg-UI-D9o" secondAttribute="bottom" constant="10" id="Et8-Fw-E1z"/>
                             <constraint firstItem="xRL-Er-NNd" firstAttribute="centerX" secondItem="D8s-Fy-OgR" secondAttribute="centerX" id="Fq0-fS-6dg"/>
-                            <constraint firstItem="E1m-Ul-yv3" firstAttribute="centerX" secondItem="D8s-Fy-OgR" secondAttribute="centerX" id="MGJ-mw-aXa"/>
-                            <constraint firstItem="FTg-UI-D9o" firstAttribute="top" secondItem="xRL-Er-NNd" secondAttribute="bottom" id="Nx4-ge-9cu"/>
-                            <constraint firstItem="E1m-Ul-yv3" firstAttribute="top" secondItem="xRL-Er-NNd" secondAttribute="bottom" constant="5" id="Re6-Ve-2eF"/>
                             <constraint firstItem="4RV-u5-oTy" firstAttribute="top" secondItem="7PL-dA-f3H" secondAttribute="bottom" constant="35" id="SSc-Fb-Rx3"/>
-                            <constraint firstItem="E1m-Ul-yv3" firstAttribute="leading" secondItem="D8s-Fy-OgR" secondAttribute="leadingMargin" id="URM-4z-33Q"/>
-                            <constraint firstItem="3IF-9D-W73" firstAttribute="top" secondItem="E1m-Ul-yv3" secondAttribute="bottom" constant="30" id="Zef-rW-Lip"/>
+                            <constraint firstItem="KTv-KE-s4U" firstAttribute="centerX" secondItem="xRL-Er-NNd" secondAttribute="centerX" id="ckV-Qe-Sql"/>
                             <constraint firstItem="4RV-u5-oTy" firstAttribute="top" secondItem="3IF-9D-W73" secondAttribute="bottom" constant="35" id="eOL-8M-mTW"/>
-                            <constraint firstItem="FTg-UI-D9o" firstAttribute="centerX" secondItem="D8s-Fy-OgR" secondAttribute="centerX" id="lhP-VS-qig"/>
+                            <constraint firstItem="KTv-KE-s4U" firstAttribute="width" secondItem="D8s-Fy-OgR" secondAttribute="width" id="f7U-w1-ZLj"/>
+                            <constraint firstItem="3IF-9D-W73" firstAttribute="top" secondItem="KTv-KE-s4U" secondAttribute="bottom" constant="10" id="hnB-sD-UIl"/>
+                            <constraint firstItem="KTv-KE-s4U" firstAttribute="top" secondItem="xRL-Er-NNd" secondAttribute="bottom" constant="10" id="kB2-Or-Tcz"/>
                             <constraint firstItem="xRL-Er-NNd" firstAttribute="top" secondItem="us5-MV-cjF" secondAttribute="bottom" id="o9a-TX-acd"/>
                             <constraint firstAttribute="trailingMargin" secondItem="3IF-9D-W73" secondAttribute="trailing" constant="10" id="tgr-Hq-o34"/>
-                            <constraint firstItem="FTg-UI-D9o" firstAttribute="width" secondItem="D8s-Fy-OgR" secondAttribute="width" id="vkz-cZ-RZb"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="icon_palette" id="Crp-49-kOu"/>
                     <connections>
-                        <outlet property="cTest" destination="FTg-UI-D9o" id="4ck-Rl-nDc"/>
-                        <outlet property="colorView" destination="E1m-Ul-yv3" id="OPu-zc-PGe"/>
+                        <outlet property="colorPickerImageView" destination="KTv-KE-s4U" id="eVx-up-qaf"/>
                         <outlet property="modeChanger" destination="xRL-Er-NNd" id="ACP-Yt-lMH"/>
                         <outlet property="preview" destination="3IF-9D-W73" id="sOg-ko-mJf"/>
                     </connections>
