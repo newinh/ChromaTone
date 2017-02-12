@@ -13,22 +13,54 @@ class ColorPickerImageView : UIImageView {
 
     // Completion Handler
     var pickedColor :  ( (UIColor) -> () )?
-        
+    var endedTouch : ( (Void) -> (Void) )?
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let firstTouch = touches.first
+        if let firstTouch = touches.first {
+            pickingColor(touch: firstTouch)
+        }
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let firstTouch = touches.first {
+            pickingColor(touch: firstTouch)
+        }
+    }
+
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        guard let touchedPoint = firstTouch?.location(in: self) else {
-            print("ColorPicerImageView touchPoint error")
+        // Completion Handler
+        if let endedTouch = endedTouch {
+            endedTouch()
+        }
+    }
+    
+    
+    func pickingColor(touch: UITouch) {
+        
+        let touchedPoint = touch.location(in: self)
+        let centerPoint = CGPoint(x: self.frame.width/2, y: self.frame.height/2)
+        
+        let radius: CGFloat
+        if self.frame.width < self.frame.height {
+            radius = (self.frame.width) / 2
+        }else {
+            radius = (self.frame.height) / 2
+        }
+        
+        let newColor = Calculator.HSBcolor(center: centerPoint, touched: touchedPoint, radius: radius)
+        
+        guard let color = newColor else {
+            if let endedTouch = endedTouch {
+                endedTouch()
+            }
             return
         }
         
-        let centerPoint = CGPoint(x: self.frame.width/2, y: self.frame.height/2)
-        
-        let newColor = Calculator.HSBcolor(center: centerPoint, touched: touchedPoint, radius: self.frame.height/2)
-        
         // Completion Handler
         if let pickedColor = pickedColor {
-            pickedColor(newColor)
+            pickedColor(color)
         }
     }
+    
 }
