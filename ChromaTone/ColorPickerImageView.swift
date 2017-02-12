@@ -10,9 +10,8 @@ import Foundation
 import UIKit
 
 class ColorPickerImageView : UIImageView {
-    
-//    var pickedColor: UIColor = UIColor.white
-    
+
+    // Completion Handler
     var pickedColor :  ( (UIColor) -> () )?
         
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -27,6 +26,7 @@ class ColorPickerImageView : UIImageView {
         
         let newColor = Calculator.HSBcolor(center: centerPoint, touched: touchedPoint, radius: self.frame.height/2)
         
+        // Completion Handler
         if let pickedColor = pickedColor {
             pickedColor(newColor)
         }

@@ -20,7 +20,10 @@ class ColorViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
+        // Color Picker 이미지 선택
         colorPickerImageView.image = UIImage(named: Constants.colorPickerImage)
+        
+        // Color Picked Completion Handler
         colorPickerImageView.pickedColor = { (makedColor) in
             self.preview.backgroundColor = makedColor
         }
