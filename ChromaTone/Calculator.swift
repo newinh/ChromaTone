@@ -24,10 +24,13 @@ open class Calculator {
             let hue = Double(hue)
             let saturation = Double(saturation)
             let frequency = 110 * pow(2,saturation*2) * pow(2, hue)
-            print("frequency : \(frequency)Hz")
+
+            let formattedFrequency = String(format: "%.2f", frequency)
+            print("frequency : \(formattedFrequency)Hz")
             return frequency
             
         }
+        // 기본음 A (라)
         return 440
     }
 
@@ -40,10 +43,12 @@ open class Calculator {
         if result {
             let hue = Double(hue)
             let frequency = 220 *  pow(2, hue*2)
-            print("frequency : \(frequency)Hz")
+            let formattedFrequency = String(format: "%.2f", frequency)
+            print("frequency : \(formattedFrequency)Hz")
             return frequency
             
         }
+        // 기본음 A (라)
         return 440
     }
     
@@ -58,22 +63,19 @@ open class Calculator {
     // alpha : 기본값 (1)
     static func HSBcolor(center: CGPoint, touched: CGPoint, radius: CGFloat) -> UIColor? {
         
-        print("centerX : \(center.x)   touchedX : \(touched.x)")
-        print("centerY : \(center.y)   touchedY : \(touched.y)")
+        print(String(format: "centerX : %.2f   touchedX : %.2f", center.x, touched.x))
+        print(String(format: "centerY : %.2f   touchedY : %.2f", center.y, touched.y))
         
         let x = Double (touched.x - center.x)
         let y = Double (center.y - touched.y)   // 헷갈리는 부분. ios y좌표는 반대다.
         let radius = Double(radius)
         
-        print("x : \(x)")
-        print("y : \(y)")
+        print("x : \(x)     y : \(y)")
         
         var distance = sqrt( pow(x, 2)  + pow(y, 2)  )
-        print("distance : \(distance)")
-        print("radius : \(radius)")
-        
+        print("distance : \(distance)   radius : \(radius)")
         distance /=  radius
-        print("distance /= radius : \(distance)")
+//        print("distance /= radius : \(distance)")
         
         if distance > 1.1 {
             return nil
@@ -86,12 +88,9 @@ open class Calculator {
         }
         print ("degree : \(degree)")
         degree /= 360
-//        print("degree /= 360 : \(degree)")
         
         return UIColor(hue: CGFloat(degree), saturation: CGFloat(distance), brightness: 1, alpha: 1)
     }
-    
-    
     
     static func imageFrame(origin: UIImage?, inImageViewAspectFit imageView : UIImageView) -> CGRect {
         
@@ -119,6 +118,18 @@ open class Calculator {
             return CGRect(x: CGFloat(0), y: topLeftY, width: imageView.frame.size.width, height: height)
         }
         
+    }
+    
+    // touch Point 보정
+    static func revisedPoint(from touchPoint: CGPoint, to frame: CGRect, scale: CGFloat) -> CGPoint {
+        
+        let revisedX = touchPoint.x - frame.minX
+        let revisedY = touchPoint.y - frame.minY
+        
+        let scaledX = revisedX * scale
+        let scaledY = revisedY * scale
+        
+        return CGPoint(x: scaledX, y: scaledY)
     }
     
 }
