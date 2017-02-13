@@ -30,6 +30,22 @@ open class Calculator {
         }
         return 440
     }
+
+    // frequency = 220 *  pow(2, hue*2)
+    static func color2soundSimple(color: UIColor) -> Double {
+        var hue: CGFloat = 0
+        
+        let result = color.getHue(&hue, saturation: nil, brightness: nil, alpha: nil)
+        
+        if result {
+            let hue = Double(hue)
+            let frequency = 220 *  pow(2, hue*2)
+            print("frequency : \(frequency)Hz")
+            return frequency
+            
+        }
+        return 440
+    }
     
     static func sound2color() {
         
@@ -75,5 +91,34 @@ open class Calculator {
         return UIColor(hue: CGFloat(degree), saturation: CGFloat(distance), brightness: 1, alpha: 1)
     }
     
+    
+    
+    static func imageFrame(origin: UIImage?, inImageViewAspectFit imageView : UIImageView) -> CGRect {
+        
+        guard let image = origin else {
+            print("imageFrame : No Image")
+            return CGRect(x: 0, y: 0, width: 0, height: 0)
+        }
+        
+        let imageRatio : CGFloat = image.size.width / image.size.height
+        let viewRatio: CGFloat = imageView.frame.size.width / imageView.frame.size.height
+        
+        // imageView의 heigt에 꽉 차게 맞춰짐
+        if imageRatio < viewRatio {
+            
+            let scale: CGFloat = imageView.frame.size.height / image.size.height
+            let width = scale * image.size.width
+            let topLeftX = (imageView.frame.size.width - width) / 2
+            return CGRect(x: topLeftX, y: CGFloat(0), width: width, height: imageView.frame.size.height)
+        }
+        // imageView의 width에 꽉 차게 맞춰짐
+        else {
+            let scale: CGFloat = imageView.frame.size.width / image.size.width
+            let height = scale * image.size.height
+            let topLeftY = (imageView.frame.size.height - height) / 2
+            return CGRect(x: CGFloat(0), y: topLeftY, width: imageView.frame.size.width, height: height)
+        }
+        
+    }
     
 }

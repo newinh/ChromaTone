@@ -47,7 +47,8 @@ class ColorPickerImageView : UIImageView {
         }else {
             radius = (self.frame.height) / 2
         }
-        
+
+        // 거리가 1보다 커지면 nil 반환
         let newColor = Calculator.HSBcolor(center: centerPoint, touched: touchedPoint, radius: radius)
         
         guard let color = newColor else {

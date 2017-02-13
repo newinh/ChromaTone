@@ -38,7 +38,7 @@ class ColorViewController: UIViewController {
             // 색 미리보기
             self.preview.backgroundColor = makedColor
             // 주파수 변환
-            self.tonePlayer.frequency = Calculator.color2sound(color: makedColor)
+            self.tonePlayer.frequency = Calculator.color2soundSimple(color: makedColor)
             
             if self.tonePlayerAvailable {
                 
@@ -78,7 +78,7 @@ class ColorViewController: UIViewController {
         switch sender.selectedSegmentIndex {
             
         case 0:
-            colorPickerImageView.image = UIImage(named: "demo_colorful_picture")
+            colorPickerImageView.image = UIImage(named: Constants.colorPickerImage)
             colorPickerImageView.isUserInteractionEnabled = false
         case 1:
             colorPickerImageView.image = UIImage(named: Constants.colorPickerImage)
@@ -86,5 +86,40 @@ class ColorViewController: UIViewController {
         default :
             print("2")
         }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let firstTouch = touches.first else {
+            print("touch error")
+            return
+        }
+        
+        let touchPoint = firstTouch.location(in: self.colorPickerImageView)
+        
+        let newFrame = Calculator.imageFrame(origin: self.colorPickerImageView.image, inImageViewAspectFit: self.colorPickerImageView)
+        
+        print(  "newFrame : \(newFrame.debugDescription)")
+        print(self.colorPickerImageView.intrinsicContentSize.debugDescription)
+        
+        let scaledWidth = self.colorPickerImageView.intrinsicContentSize.width / newFrame.size.width
+        let scaledHeight = self.self.colorPickerImageView.intrinsicContentSize.height / newFrame.size.height
+        
+        let scaledX = touchPoint.x * scaledWidth
+        let scaledY = touchPoint.y * scaledHeight
+        
+        let caliX = scaledX - newFrame.minX
+        let caliY = scaledY - newFrame.minY
+        
+        let newPoint = CGPoint(x: caliX, y: caliY)
+        
+        print(  "newPoint : \(newPoint.debugDescription)")
+        
+//        let newPoint = CGPoint(x: touchPoint.x + newFrame.minX , y: touchPoint.)
+        
+        
+        let newColor = colorPickerImageView.image?.getPixelColor(pos: newPoint)
+        
+        self.preview.backgroundColor = newColor
+        
     }
 }
