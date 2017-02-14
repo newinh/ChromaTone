@@ -112,11 +112,23 @@ class ColorViewController: UIViewController {
             
             self.performSegue(withIdentifier: "CameraView", sender: nil)
             
-            sender.selectedSegmentIndex = 1
             
-            colorPickerImageView.image = UIImage(named: Constants.colorPickerImage)
-            colorPickerImageView.mode = .makeHSBColor
+            sender.selectedSegmentIndex = 0
             
+//            colorPickerImageView.image = UIImage(named: Constants.colorPickerImage)
+            colorPickerImageView.mode = .getColorByPixel
+            
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "CameraView" {
+            
+            let destination = segue.destination as! CameraViewController
+            destination.ddd = { (image) in
+                self.colorPickerImageView.image = image
+            }
         }
     }
     

@@ -12,6 +12,8 @@ import AVFoundation
 
 class CameraViewController : UIViewController {
     
+    var ddd :( ( UIImage) -> Void )?
+    
     @IBOutlet weak var colorPreview: UIView!
     @IBOutlet weak var cameraPreviewView: CameraPreviewView!
     
@@ -20,28 +22,34 @@ class CameraViewController : UIViewController {
         case notAuthorized
         case configurationFailed
     }
+    
     private let session = AVCaptureSession()
     private var setupResult: SessionSetupResult = .success
     
     var videoDeviceInput: AVCaptureDeviceInput!
-    
+    var videoDataOutput: AVCaptureVideoDataOutput!
     
     private var isSessionRunning = false
     
     private let sessionQueue = DispatchQueue(label: "session queue", attributes: [], target: nil) // Communicate with the session and other session objects on this queue.
+    private let videoDataOutputQueue = DispatchQueue(label: "video data ouput queue")
+    
     
     // MARK: View Controller Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        var sampleTimeing = CMSampleTimingInfo.init()
+        sampleTimeing.duration = CMTime(seconds: 1, preferredTimescale: 10)
+        
         // Set up the video preview view.
         cameraPreviewView.session = session
         
         // 화면 꽉차게!
-        cameraPreviewView.videoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
-//        cameraPreviewView.videoPreviewLayer.connection.provideImageData
+//        cameraPreviewView.videoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+        cameraPreviewView.videoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspect
         
-        
+
         switch AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo) {
         case .authorized:
             // The user has previously granted access to the camera.
@@ -94,6 +102,7 @@ class CameraViewController : UIViewController {
                 // Only setup observers and start the session running if setup succeeded.
 //                self.addObservers()
                 self.session.startRunning()
+
                 self.isSessionRunning = self.session.isRunning
                 
             case .notAuthorized:
@@ -145,7 +154,8 @@ class CameraViewController : UIViewController {
          We do not create an AVCaptureMovieFileOutput when setting up the session because the
          AVCaptureMovieFileOutput does not support movie recording with AVCaptureSessionPresetPhoto.
          */
-//        session.sessionPreset = AVCaptureSessionPresetPhoto
+        session.sessionPreset = AVCaptureSessionPresetPhoto
+//        session.sessionPreset = AVCaptureSessionPresetInputPriority
         
         // Add video input.
         do {
@@ -208,49 +218,36 @@ class CameraViewController : UIViewController {
         }
         
         // Add video output.
+        let videoDataOutput = AVCaptureVideoDataOutput()
         
         
-        sessionQueue.async { [unowned self] in
+        if self.session.canAddOutput(videoDataOutput){
             
-            let videoData = AVCaptureVideoDataOutput()
+            self.session.beginConfiguration()
+            self.session.addOutput(videoDataOutput)
             
-            if self.session.canAddOutput(videoData){
-                print("I can do that")
-                self.session.beginConfiguration()
-                self.session.addOutput(videoData)
-                self.session.sessionPreset = AVCaptureSessionPresetHigh
+            self.videoDataOutput = videoDataOutput
+            self.videoDataOutput.setSampleBufferDelegate(self, queue: self.videoDataOutputQueue)
+            
+            print(self.videoDataOutput.alwaysDiscardsLateVideoFrames)
+            self.videoDataOutput.videoSettings[(kCVPixelBufferPixelFormatTypeKey as NSString)] = NSNumber(value: kCVPixelFormatType_32BGRA as UInt32)
+            
+            
+            
+            print(self.videoDataOutput.videoSettings)
+            
+            if let connection = videoDataOutput.connection(withMediaType: AVMediaTypeVideo) {
+                connection.preferredVideoStabilizationMode = .auto
+                
+                self.session.commitConfiguration()
+                
             }
             
             
-//            if self.session.canAddOutput(movieFileOutput) {
-//                self.session.beginConfiguration()
-//                self.session.addOutput(movieFileOutput)
-//                self.session.sessionPreset = AVCaptureSessionPresetHigh
-//                if let connection = movieFileOutput.connection(withMediaType: AVMediaTypeVideo) {
-//                    if connection.isVideoStabilizationSupported {
-//                        connection.preferredVideoStabilizationMode = .auto
-//                    }
-//                }
-//                self.session.commitConfiguration()
-//                
-//                self.movieFileOutput = movieFileOutput
-//                
-//                DispatchQueue.main.async { [unowned self] in
-//                    self.recordButton.isEnabled = true
-//                }
-//            }
-            
         }
-        
         
         session.commitConfiguration()
     }
-    
-    
-    
-    
-    
-    
     
     
     
@@ -277,10 +274,74 @@ class CameraViewController : UIViewController {
     }
     
     
-    
-    
 }
 
+
+extension CameraViewController : AVCaptureVideoDataOutputSampleBufferDelegate {
+    
+    
+    
+    func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, from connection: AVCaptureConnection!) {
+
+        // Get a CMSampleBuffer's Core Video image buffer for the media data
+        let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
+
+        // Lock the base address of the pixel buffer
+        CVPixelBufferLockBaseAddress(imageBuffer!, CVPixelBufferLockFlags(rawValue: 0))
+        
+        // Get baseAddress
+        let baseAddress = CVPixelBufferGetBaseAddress(imageBuffer!)
+
+         // Get the number of bytes per row for the pixel buffer
+        let bytesPerRow = CVPixelBufferGetBytesPerRow(imageBuffer!)
+
+        // Get the pixel buffer width and height
+        let width = CVPixelBufferGetWidth(imageBuffer!)
+        let height = CVPixelBufferGetHeight(imageBuffer!)
+        
+        print("width : \(width)     height : \(height)")
+        
+
+        // Create a device-dependent RGB color space
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        
+//        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.noneSkipFirst.rawValue | CGBitmapInfo.byteOrder32Little.rawValue)
+        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedFirst.rawValue | CGBitmapInfo.byteOrder32Little.rawValue)
+
+        // Create a bitmap graphics context with the sample buffer data
+        guard let context = CGContext(data: baseAddress, width: width, height: height, bitsPerComponent: 8, bytesPerRow: bytesPerRow, space: colorSpace, bitmapInfo: bitmapInfo.rawValue) else {
+
+            print("context error!!!")
+            return
+        }
+
+        // Create a Quartz image from the pixel data in the bitmap graphics context
+        let quartzImage = context.makeImage()
+
+        CVPixelBufferUnlockBaseAddress(imageBuffer!, CVPixelBufferLockFlags(rawValue: 0))
+        
+        // Create an image object from the Quartz image
+        let image = UIImage(cgImage: quartzImage!)
+        
+        let centerPoint = CGPoint(x: image.size.width/2, y: image.size.height/2)
+        let color = image.getColorByPixel(point: centerPoint)
+        
+        
+        DispatchQueue.main.async {
+//            self.colorPreview.addSubview(UIImageView(image: image))
+            self.colorPreview.backgroundColor = color
+            
+            if let ddd = self.ddd {
+                ddd(image)
+            }
+        }
+    }
+    
+    func captureOutput(_ captureOutput: AVCaptureOutput!, didDrop sampleBuffer: CMSampleBuffer!, from connection: AVCaptureConnection!) {
+        print("ddd")
+    }
+
+}
 
 extension UIDeviceOrientation {
     var videoOrientation: AVCaptureVideoOrientation? {

@@ -134,11 +134,36 @@ class ColorPickerImageView : UIImageView {
         let a = CGFloat(data[pixelInfo+3]) / CGFloat(255.0)
         
         let newColor = UIColor(red: r, green: g, blue: b, alpha: a)
-        
+        print(newColor)
         // Completion Handler
         if let pickedColor = pickedColor {
             pickedColor(newColor)
         }
     }
-    
+}
+
+extension UIImage {
+    func getColorByPixel(point : CGPoint) -> UIColor {
+        
+        let pixelInfo: Int = ((Int(self.size.width) * Int(point.y)) + Int(point.x)) * 4
+        let pixelData = self.cgImage!.dataProvider!.data
+        let data: UnsafePointer<UInt8> = CFDataGetBytePtr(pixelData)
+        
+        let maximumPixelInfo: Int = Int( self.size.width * self.size.height  ) * 4
+        
+        if pixelInfo < 0 || pixelInfo > maximumPixelInfo {
+            
+            return UIColor.cyan
+        }
+        
+        let r = CGFloat(data[pixelInfo]) / CGFloat(255.0)
+        let g = CGFloat(data[pixelInfo+1]) / CGFloat(255.0)
+        let b = CGFloat(data[pixelInfo+2]) / CGFloat(255.0)
+        let a = CGFloat(data[pixelInfo+3]) / CGFloat(255.0)
+        
+        let newColor = UIColor(red: r, green: g, blue: b, alpha: a)
+        
+        
+        return newColor
+    }
 }
