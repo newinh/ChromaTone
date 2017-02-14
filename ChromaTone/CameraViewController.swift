@@ -24,6 +24,8 @@ class CameraViewController : UIViewController {
     private var setupResult: SessionSetupResult = .success
     
     var videoDeviceInput: AVCaptureDeviceInput!
+    
+    
     private var isSessionRunning = false
     
     private let sessionQueue = DispatchQueue(label: "session queue", attributes: [], target: nil) // Communicate with the session and other session objects on this queue.
@@ -34,7 +36,10 @@ class CameraViewController : UIViewController {
         
         // Set up the video preview view.
         cameraPreviewView.session = session
-//        cameraPreviewView.videoPreviewLayer.connection.provideImageData(<#T##data: UnsafeMutableRawPointer##UnsafeMutableRawPointer#>, bytesPerRow: <#T##Int#>, origin: <#T##Int#>, <#T##y: Int##Int#>, size: <#T##Int#>, <#T##height: Int##Int#>, userInfo: <#T##Any?#>)
+        
+        // 화면 꽉차게!
+        cameraPreviewView.videoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+//        cameraPreviewView.videoPreviewLayer.connection.provideImageData
         
         
         switch AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo) {
@@ -140,7 +145,7 @@ class CameraViewController : UIViewController {
          We do not create an AVCaptureMovieFileOutput when setting up the session because the
          AVCaptureMovieFileOutput does not support movie recording with AVCaptureSessionPresetPhoto.
          */
-        session.sessionPreset = AVCaptureSessionPresetPhoto
+//        session.sessionPreset = AVCaptureSessionPresetPhoto
         
         // Add video input.
         do {
@@ -164,6 +169,7 @@ class CameraViewController : UIViewController {
             if session.canAddInput(videoDeviceInput) {
                 session.addInput(videoDeviceInput)
                 self.videoDeviceInput = videoDeviceInput
+                
                 
                 DispatchQueue.main.async {
                     /*
@@ -199,6 +205,41 @@ class CameraViewController : UIViewController {
             setupResult = .configurationFailed
             session.commitConfiguration()
             return
+        }
+        
+        // Add video output.
+        
+        
+        sessionQueue.async { [unowned self] in
+            
+            let videoData = AVCaptureVideoDataOutput()
+            
+            if self.session.canAddOutput(videoData){
+                print("I can do that")
+                self.session.beginConfiguration()
+                self.session.addOutput(videoData)
+                self.session.sessionPreset = AVCaptureSessionPresetHigh
+            }
+            
+            
+//            if self.session.canAddOutput(movieFileOutput) {
+//                self.session.beginConfiguration()
+//                self.session.addOutput(movieFileOutput)
+//                self.session.sessionPreset = AVCaptureSessionPresetHigh
+//                if let connection = movieFileOutput.connection(withMediaType: AVMediaTypeVideo) {
+//                    if connection.isVideoStabilizationSupported {
+//                        connection.preferredVideoStabilizationMode = .auto
+//                    }
+//                }
+//                self.session.commitConfiguration()
+//                
+//                self.movieFileOutput = movieFileOutput
+//                
+//                DispatchQueue.main.async { [unowned self] in
+//                    self.recordButton.isEnabled = true
+//                }
+//            }
+            
         }
         
         
