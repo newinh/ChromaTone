@@ -16,6 +16,9 @@
 		78BA40D81E4EF20A00B76BB0 /* ColorPickerImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BA40D71E4EF20A00B76BB0 /* ColorPickerImageView.swift */; };
 		78BA40DA1E4EF2AD00B76BB0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BA40D91E4EF2AD00B76BB0 /* Constants.swift */; };
 		78E8716C1E50DA3B00F8540A /* AVTonePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E8716B1E50DA3B00F8540A /* AVTonePlayer.swift */; };
+		78FF99861E53060C00D93738 /* ImagePickerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FF99851E53060C00D93738 /* ImagePickerDelegate.swift */; };
+		78FF99881E530CE100D93738 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FF99871E530CE100D93738 /* CameraViewController.swift */; };
+		78FF998A1E530D4200D93738 /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FF99891E530D4200D93738 /* CameraPreviewView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +33,9 @@
 		78BA40D71E4EF20A00B76BB0 /* ColorPickerImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPickerImageView.swift; sourceTree = "<group>"; };
 		78BA40D91E4EF2AD00B76BB0 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		78E8716B1E50DA3B00F8540A /* AVTonePlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVTonePlayer.swift; sourceTree = "<group>"; };
+		78FF99851E53060C00D93738 /* ImagePickerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePickerDelegate.swift; sourceTree = "<group>"; };
+		78FF99871E530CE100D93738 /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
+		78FF99891E530D4200D93738 /* CameraPreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraPreviewView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +78,9 @@
 				78BA40D71E4EF20A00B76BB0 /* ColorPickerImageView.swift */,
 				78BA40D91E4EF2AD00B76BB0 /* Constants.swift */,
 				78BA40D41E4DE8F200B76BB0 /* Calculator.swift */,
+				78FF99851E53060C00D93738 /* ImagePickerDelegate.swift */,
+				78FF99871E530CE100D93738 /* CameraViewController.swift */,
+				78FF99891E530D4200D93738 /* CameraPreviewView.swift */,
 			);
 			path = ChromaTone;
 			sourceTree = "<group>";
@@ -149,10 +158,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				78FF99861E53060C00D93738 /* ImagePickerDelegate.swift in Sources */,
 				78BA40DA1E4EF2AD00B76BB0 /* Constants.swift in Sources */,
+				78FF998A1E530D4200D93738 /* CameraPreviewView.swift in Sources */,
 				78E8716C1E50DA3B00F8540A /* AVTonePlayer.swift in Sources */,
 				78BA40D81E4EF20A00B76BB0 /* ColorPickerImageView.swift in Sources */,
 				78684B2F1E49BDD800E626AF /* ColorViewController.swift in Sources */,
+				78FF99881E530CE100D93738 /* CameraViewController.swift in Sources */,
 				78BA40D51E4DE8F200B76BB0 /* Calculator.swift in Sources */,
 				78684B2D1E49BDD800E626AF /* AppDelegate.swift in Sources */,
 			);

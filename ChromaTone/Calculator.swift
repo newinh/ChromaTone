@@ -11,7 +11,6 @@ import UIKit
 
 open class Calculator {
     
-    
     // frequency = 110 * pow(2, (saturation*2)) * pow(2, hue)
     static func color2sound(color: UIColor) -> Double{
         

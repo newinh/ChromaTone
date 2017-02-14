@@ -10,4 +10,6 @@ import Foundation
 
 struct Constants {
     static let colorPickerImage : String = "demo_color_wheel2"
+    static let playIcon : String = "icon_play"
+    static let pauseIcon : String = "icon_pause"
 }

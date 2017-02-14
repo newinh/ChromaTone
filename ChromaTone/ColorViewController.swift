@@ -21,6 +21,9 @@ class ColorViewController: UIViewController {
     var engine: AVAudioEngine!
     var tonePlayer: AVTonePlayer!
     var tonePlayerAvailable: Bool = true
+    var imagePickerDelegate : ImagePickerDelegate!
+    
+    // MARK: View Controller Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,9 +34,13 @@ class ColorViewController: UIViewController {
         colorPickerImageView.isUserInteractionEnabled = true
         
         initAudio()
+        imagePickerDelegate = ImagePickerDelegate()
+        imagePickerDelegate.pickedImage = { [unowned self] (pickedImage) in
+            self.colorPickerImageView.image = pickedImage
+        }
         
         // Color Picked Completion Handler
-        colorPickerImageView.pickedColor = { (makedColor) in
+        colorPickerImageView.pickedColor = { [unowned self] (makedColor) in
             
             // 색 미리보기
             self.preview.backgroundColor = makedColor
@@ -54,7 +61,7 @@ class ColorViewController: UIViewController {
                 self.tonePlayerAvailable = false
             }
         }
-        colorPickerImageView.endedTouch = {
+        colorPickerImageView.endedTouch = { [unowned self] in
             self.tonePlayer.stop()
             self.tonePlayerAvailable = true
             
@@ -80,14 +87,36 @@ class ColorViewController: UIViewController {
         switch sender.selectedSegmentIndex {
             
         case 0:
+            // default
             colorPickerImageView.image = UIImage(named: "demo_colorful_city")
             colorPickerImageView.mode = .getColorByPixel
+            
+            let imagePickerController = UIImagePickerController()
+            
+            guard let delegate = self.imagePickerDelegate as (UIImagePickerControllerDelegate & UINavigationControllerDelegate)? else {
+                print("ColorViewController : delegate error")
+                return
+            }
+            
+            imagePickerController.delegate = delegate
+            imagePickerController.sourceType = .savedPhotosAlbum
+            self.present(imagePickerController, animated: true, completion: nil)
+            
+            sender.selectedSegmentIndex = 1
+            
         case 1:
             colorPickerImageView.image = UIImage(named: Constants.colorPickerImage)
             colorPickerImageView.mode = .makeHSBColor
         default :
-            print("2")
             colorPickerImageView.mode = .none
+            
+            self.performSegue(withIdentifier: "CameraView", sender: nil)
+            
+            sender.selectedSegmentIndex = 1
+            
+            colorPickerImageView.image = UIImage(named: Constants.colorPickerImage)
+            colorPickerImageView.mode = .makeHSBColor
+            
         }
     }
     

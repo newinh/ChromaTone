@@ -27,7 +27,6 @@ class ColorPickerImageView : UIImageView {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         guard let firstTouch = touches.first else{
-            
             print("colorPickerImageView : touch error")
             return
         }
@@ -45,8 +44,8 @@ class ColorPickerImageView : UIImageView {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
         guard let firstTouch = touches.first else{
-            
             print("colorPickerImageView : touch error")
             return
         }
@@ -128,7 +127,6 @@ class ColorPickerImageView : UIImageView {
             }
             return
         }
-        
         // get color
         let r = CGFloat(data[pixelInfo]) / CGFloat(255.0)
         let g = CGFloat(data[pixelInfo+1]) / CGFloat(255.0)

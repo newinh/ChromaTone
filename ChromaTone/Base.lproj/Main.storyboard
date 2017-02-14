@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="lqb-Lb-CJQ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="lqb-Lb-CJQ">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -167,11 +167,80 @@
                         <outlet property="colorPickerImageView" destination="KTv-KE-s4U" id="eVx-up-qaf"/>
                         <outlet property="modeChanger" destination="xRL-Er-NNd" id="ACP-Yt-lMH"/>
                         <outlet property="preview" destination="3IF-9D-W73" id="sOg-ko-mJf"/>
+                        <segue destination="u0k-FD-rD5" kind="show" identifier="CameraView" id="aYz-V2-BuH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hxp-qh-nz7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2127.1999999999998" y="-260.41979010494754"/>
+        </scene>
+        <!--Camera View Controller-->
+        <scene sceneID="sJy-Iw-ZAD">
+            <objects>
+                <viewController id="u0k-FD-rD5" customClass="CameraViewController" customModule="ChromaTone" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="yYS-TK-98L"/>
+                        <viewControllerLayoutGuide type="bottom" id="aiT-VQ-u7z"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Mw8-B7-rHd">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="006-ls-Skb" customClass="CameraPreviewView" customModule="ChromaTone" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dys-hE-FRm">
+                                <rect key="frame" x="40" y="40" width="30" height="30"/>
+                                <state key="normal" image="icon_cancel"/>
+                                <connections>
+                                    <action selector="canceld:" destination="u0k-FD-rD5" eventType="touchUpInside" id="5Hh-oY-5XC"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="itP-PD-QSi">
+                                <rect key="frame" x="40" y="607" width="50" height="50"/>
+                                <state key="normal" backgroundImage="icon_play"/>
+                                <connections>
+                                    <action selector="togglePlayButton:" destination="u0k-FD-rD5" eventType="touchUpInside" id="x7Q-7F-XiA"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_aim" translatesAutoresizingMaskIntoConstraints="NO" id="Jqd-op-D40">
+                                <rect key="frame" x="192" y="353" width="30" height="30"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9BF-Ff-fDw">
+                                <rect key="frame" x="324" y="607" width="50" height="50"/>
+                                <color key="backgroundColor" red="0.40000000600000002" green="0.40000000600000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="fMj-1r-3e6"/>
+                                    <constraint firstAttribute="width" constant="50" id="uiF-bJ-rWi"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="aiT-VQ-u7z" firstAttribute="top" secondItem="9BF-Ff-fDw" secondAttribute="bottom" constant="30" id="5BV-Kl-lng"/>
+                            <constraint firstItem="006-ls-Skb" firstAttribute="width" secondItem="Mw8-B7-rHd" secondAttribute="width" id="B4s-MG-K34"/>
+                            <constraint firstItem="itP-PD-QSi" firstAttribute="leading" secondItem="Mw8-B7-rHd" secondAttribute="leadingMargin" constant="20" id="BB8-qx-lnd"/>
+                            <constraint firstItem="Dys-hE-FRm" firstAttribute="leading" secondItem="Mw8-B7-rHd" secondAttribute="leadingMargin" constant="20" id="OYY-Kc-dFr"/>
+                            <constraint firstItem="006-ls-Skb" firstAttribute="centerY" secondItem="Mw8-B7-rHd" secondAttribute="centerY" id="P6X-Mo-5Be"/>
+                            <constraint firstItem="Jqd-op-D40" firstAttribute="centerX" secondItem="Mw8-B7-rHd" secondAttribute="centerX" id="UMv-Aq-vsr"/>
+                            <constraint firstItem="aiT-VQ-u7z" firstAttribute="top" secondItem="itP-PD-QSi" secondAttribute="bottom" constant="30" id="ZHX-IO-zPq"/>
+                            <constraint firstItem="006-ls-Skb" firstAttribute="centerX" secondItem="Mw8-B7-rHd" secondAttribute="centerX" id="bNF-cY-LwG"/>
+                            <constraint firstItem="006-ls-Skb" firstAttribute="height" secondItem="Mw8-B7-rHd" secondAttribute="height" id="ckC-lP-cSe"/>
+                            <constraint firstItem="Dys-hE-FRm" firstAttribute="top" secondItem="yYS-TK-98L" secondAttribute="bottom" constant="20" id="gRH-z5-8Ma"/>
+                            <constraint firstItem="Jqd-op-D40" firstAttribute="centerY" secondItem="Mw8-B7-rHd" secondAttribute="centerY" id="xYb-B3-WrF"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="9BF-Ff-fDw" secondAttribute="trailing" constant="20" id="zqK-h5-QzZ"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="cameraPreviewView" destination="006-ls-Skb" id="WOf-rz-rKu"/>
+                        <outlet property="colorPreview" destination="9BF-Ff-fDw" id="cCo-eX-TuR"/>
+                        <outlet property="playButton" destination="itP-PD-QSi" id="Ggp-cy-BNv"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sAD-GH-Dd9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2941" y="-261"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="ibK-Uz-QgZ">
@@ -229,6 +298,8 @@
         <image name="demo_colorful_picture" width="400" height="267"/>
         <image name="demo_spectrum" width="500" height="281"/>
         <image name="demo_visual_equalizer" width="702" height="392"/>
+        <image name="icon_aim" width="30" height="30"/>
+        <image name="icon_cancel" width="30" height="30"/>
         <image name="icon_palette" width="30" height="30"/>
         <image name="icon_play" width="50" height="50"/>
         <image name="icon_setting" width="30" height="30"/>
