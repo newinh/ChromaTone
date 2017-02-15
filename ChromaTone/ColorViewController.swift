@@ -19,7 +19,7 @@ class ColorViewController: UIViewController {
 
     
     var engine: AVAudioEngine!
-    var tonePlayer: AVTonePlayer!
+    var tonePlayer: TonePlayer!
     var tonePlayerAvailable: Bool = true
     
     // MARK: View Controller Life Cycle
@@ -35,12 +35,13 @@ class ColorViewController: UIViewController {
         initAudio()
         
         // Color Picked Completion Handler
-        colorPickerImageView.pickedColor = { [unowned self] (makedColor) in
+        colorPickerImageView.pickedColor = { [unowned self] (newColor) in
             
             // 색 미리보기
-            self.preview.backgroundColor = makedColor
+            self.preview.backgroundColor = newColor
+            
             // 음정 변환
-            self.tonePlayer.frequency = Calculator.color2soundSimple(color: makedColor)
+            self.tonePlayer.frequency = newColor.color2soundSimple()
             
             if self.tonePlayerAvailable {
                 
@@ -66,7 +67,7 @@ class ColorViewController: UIViewController {
     }
     
     func initAudio() {
-        self.tonePlayer = AVTonePlayer()
+        self.tonePlayer = TonePlayer()
         self.engine = AVAudioEngine()
         self.engine.attach(tonePlayer)
         let mixer = engine.mainMixerNode
@@ -99,22 +100,22 @@ class ColorViewController: UIViewController {
             
             self.performSegue(withIdentifier: "CameraView", sender: nil)
 
-            // 디버그용
-            colorPickerImageView.mode = .getColorByPixel
-//            colorPickerImageView.image = UIImage(named: Constants.colorPickerImage)
-            
+            // 카메라뷰 열고 ColorView는 Picker모드로
+            modeChanger.selectedSegmentIndex = 1
+            colorPickerImageView.image = UIImage(named: Constants.colorPickerImage)
+            colorPickerImageView.mode = .makeHSBColor
         }
     }
     
-    // 디버그용 : 카메라뷰에서 얻어온 이미지좀 봅시다.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
+    
+        // 카메라뷰로 넘어갈 때 오디오 instance 전달
         if segue.identifier == "CameraView" {
             
-            let destination = segue.destination as! CameraViewController
-            destination.ddd = { (image) in
-                self.colorPickerImageView.image = image
-            }
+            let destinaion = segue.destination as! CameraViewController
+            destinaion.engine = self.engine
+            destinaion.tonePlayer = self.tonePlayer
+            
         }
     }
     

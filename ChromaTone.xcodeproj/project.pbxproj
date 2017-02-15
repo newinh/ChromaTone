@@ -12,10 +12,11 @@
 		78684B321E49BDD800E626AF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78684B301E49BDD800E626AF /* Main.storyboard */; };
 		78684B341E49BDD800E626AF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 78684B331E49BDD800E626AF /* Assets.xcassets */; };
 		78684B371E49BDD800E626AF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78684B351E49BDD800E626AF /* LaunchScreen.storyboard */; };
+		787B58C91E54E5FC0065C145 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787B58C81E54E5FC0065C145 /* UIColor.swift */; };
 		78BA40D51E4DE8F200B76BB0 /* Calculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BA40D41E4DE8F200B76BB0 /* Calculator.swift */; };
 		78BA40D81E4EF20A00B76BB0 /* ColorPickerImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BA40D71E4EF20A00B76BB0 /* ColorPickerImageView.swift */; };
 		78BA40DA1E4EF2AD00B76BB0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BA40D91E4EF2AD00B76BB0 /* Constants.swift */; };
-		78E8716C1E50DA3B00F8540A /* AVTonePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E8716B1E50DA3B00F8540A /* AVTonePlayer.swift */; };
+		78E8716C1E50DA3B00F8540A /* TonePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E8716B1E50DA3B00F8540A /* TonePlayer.swift */; };
 		78FF99881E530CE100D93738 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FF99871E530CE100D93738 /* CameraViewController.swift */; };
 		78FF998A1E530D4200D93738 /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FF99891E530D4200D93738 /* CameraPreviewView.swift */; };
 /* End PBXBuildFile section */
@@ -28,10 +29,11 @@
 		78684B331E49BDD800E626AF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		78684B361E49BDD800E626AF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		78684B381E49BDD800E626AF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		787B58C81E54E5FC0065C145 /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		78BA40D41E4DE8F200B76BB0 /* Calculator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Calculator.swift; sourceTree = "<group>"; };
 		78BA40D71E4EF20A00B76BB0 /* ColorPickerImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPickerImageView.swift; sourceTree = "<group>"; };
 		78BA40D91E4EF2AD00B76BB0 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		78E8716B1E50DA3B00F8540A /* AVTonePlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVTonePlayer.swift; sourceTree = "<group>"; };
+		78E8716B1E50DA3B00F8540A /* TonePlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TonePlayer.swift; sourceTree = "<group>"; };
 		78FF99871E530CE100D93738 /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		78FF99891E530D4200D93738 /* CameraPreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraPreviewView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -74,10 +76,11 @@
 				78684B351E49BDD800E626AF /* LaunchScreen.storyboard */,
 				78684B381E49BDD800E626AF /* Info.plist */,
 				78684B2E1E49BDD800E626AF /* ColorViewController.swift */,
-				78E8716B1E50DA3B00F8540A /* AVTonePlayer.swift */,
+				78E8716B1E50DA3B00F8540A /* TonePlayer.swift */,
 				78BA40D71E4EF20A00B76BB0 /* ColorPickerImageView.swift */,
 				78FF99871E530CE100D93738 /* CameraViewController.swift */,
 				78FF99891E530D4200D93738 /* CameraPreviewView.swift */,
+				787B58C81E54E5FC0065C145 /* UIColor.swift */,
 			);
 			path = ChromaTone;
 			sourceTree = "<group>";
@@ -157,8 +160,9 @@
 			files = (
 				78BA40DA1E4EF2AD00B76BB0 /* Constants.swift in Sources */,
 				78FF998A1E530D4200D93738 /* CameraPreviewView.swift in Sources */,
-				78E8716C1E50DA3B00F8540A /* AVTonePlayer.swift in Sources */,
+				78E8716C1E50DA3B00F8540A /* TonePlayer.swift in Sources */,
 				78BA40D81E4EF20A00B76BB0 /* ColorPickerImageView.swift in Sources */,
+				787B58C91E54E5FC0065C145 /* UIColor.swift in Sources */,
 				78684B2F1E49BDD800E626AF /* ColorViewController.swift in Sources */,
 				78FF99881E530CE100D93738 /* CameraViewController.swift in Sources */,
 				78BA40D51E4DE8F200B76BB0 /* Calculator.swift in Sources */,

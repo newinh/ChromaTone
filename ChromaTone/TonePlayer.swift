@@ -8,7 +8,7 @@ import Foundation
 import AVFoundation
 
 // 이름
-class AVTonePlayer: AVAudioPlayerNode {
+class TonePlayer: AVAudioPlayerNode {
     
     let bufferCapacity: AVAudioFrameCount = 512
     let sampleRate: Double = 44_100.0

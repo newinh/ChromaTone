@@ -13,8 +13,6 @@ import CoreImage
 
 class CameraViewController : UIViewController {
     
-    var ddd :( ( UIImage) -> Void )?
-    
     @IBOutlet weak var colorPreview: UIView!
     @IBOutlet weak var cameraPreviewView: CameraPreviewView!
     
@@ -34,6 +32,12 @@ class CameraViewController : UIViewController {
     
     private let sessionQueue = DispatchQueue(label: "session queue", attributes: [], target: nil) // Communicate with the session and other session objects on this queue.
     private let videoDataOutputQueue = DispatchQueue(label: "video data ouput queue")
+    
+
+    // Audio
+    var engine: AVAudioEngine!
+    var tonePlayer: TonePlayer!
+    var tonePlayerAvailable: Bool = true
     
     
     // MARK: View Controller Life Cycle
@@ -133,6 +137,10 @@ class CameraViewController : UIViewController {
                 self.session.stopRunning()
                 self.isSessionRunning = self.session.isRunning
             }
+        }
+        
+        if isPlaying {
+            stopSound()
         }
         
         super.viewWillDisappear(animated)
@@ -266,18 +274,47 @@ class CameraViewController : UIViewController {
         self.session.commitConfiguration()
     }
     
+    func startSound() {
+        
+        if self.tonePlayerAvailable {
+            
+            do{
+                try self.engine.start()
+            }catch let error as NSError {
+                print(error)
+            }
+            self.engine.mainMixerNode.outputVolume = 1.0
+            
+            self.tonePlayer.preparePlaying()
+            self.tonePlayer.play()
+            self.tonePlayerAvailable = false
+        }
+    }
+    
+    func stopSound(){
+        self.tonePlayer.stop()
+        self.tonePlayerAvailable = true
+        
+        self.engine.stop()
+        
+    }
+    
+    
     @IBAction func canceld(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }
     
     @IBOutlet weak var playButton: UIButton!
     var isPlaying : Bool = false
+    
     @IBAction func togglePlayButton(_ sender: UIButton) {
         
         if isPlaying {
+            stopSound()
             self.isPlaying = false
             playButton.setBackgroundImage(UIImage(named: Constants.playIcon), for: UIControlState.normal)
         }else {
+            startSound()
             self.isPlaying = true
             playButton.setBackgroundImage(UIImage(named: Constants.pauseIcon), for: UIControlState.normal)
         }
@@ -320,6 +357,9 @@ extension CameraViewController : AVCaptureVideoDataOutputSampleBufferDelegate {
         
         let color = UIColor(red: r, green: g, blue: b, alpha: 1)
         
+        // 음정 변환
+//        self.tonePlayer.frequency = Calculator.color2soundSimple(color: color)
+        self.tonePlayer.frequency = color.color2sound()
         
         /* make Image
         
