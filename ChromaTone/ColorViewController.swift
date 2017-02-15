@@ -21,7 +21,6 @@ class ColorViewController: UIViewController {
     var engine: AVAudioEngine!
     var tonePlayer: AVTonePlayer!
     var tonePlayerAvailable: Bool = true
-    var imagePickerDelegate : ImagePickerDelegate!
     
     // MARK: View Controller Life Cycle
     
@@ -34,10 +33,6 @@ class ColorViewController: UIViewController {
         colorPickerImageView.isUserInteractionEnabled = true
         
         initAudio()
-        imagePickerDelegate = ImagePickerDelegate()
-        imagePickerDelegate.pickedImage = { [unowned self] (pickedImage) in
-            self.colorPickerImageView.image = pickedImage
-        }
         
         // Color Picked Completion Handler
         colorPickerImageView.pickedColor = { [unowned self] (makedColor) in
@@ -86,19 +81,14 @@ class ColorViewController: UIViewController {
         
         switch sender.selectedSegmentIndex {
             
-        case 0:
-            // default
+        case 0: // Picture
+            // default image
             colorPickerImageView.image = UIImage(named: "demo_colorful_city")
             colorPickerImageView.mode = .getColorByPixel
             
             let imagePickerController = UIImagePickerController()
             
-            guard let delegate = self.imagePickerDelegate as (UIImagePickerControllerDelegate & UINavigationControllerDelegate)? else {
-                print("ColorViewController : delegate error")
-                return
-            }
-            
-            imagePickerController.delegate = delegate
+            imagePickerController.delegate = self
             imagePickerController.sourceType = .savedPhotosAlbum
             self.present(imagePickerController, animated: true, completion: nil)
             
@@ -128,4 +118,19 @@ class ColorViewController: UIViewController {
         }
     }
     
+}
+
+extension ColorViewController : UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage{
+            self.colorPickerImageView.image = image
+        }
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
 }
