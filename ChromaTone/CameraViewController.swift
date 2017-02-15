@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import AVFoundation
+import CoreImage
 
 class CameraViewController : UIViewController {
     
@@ -46,9 +47,7 @@ class CameraViewController : UIViewController {
         cameraPreviewView.session = session
         
         // 화면 꽉차게!
-//        cameraPreviewView.videoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
-        cameraPreviewView.videoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspect
-        
+        cameraPreviewView.videoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
 
         switch AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo) {
         case .authorized:
@@ -97,12 +96,25 @@ class CameraViewController : UIViewController {
         super.viewWillAppear(animated)
         
         sessionQueue.async {
+
+            // orient 설정
+            if let connection = self.videoDataOutput.connection(withMediaType: AVMediaTypeVideo) {
+                let deviceOrientation = UIDevice.current.orientation
+                
+                if let newVideoOrientation = deviceOrientation.videoOrientation, deviceOrientation.isPortrait || deviceOrientation.isLandscape {
+                    
+                    print("set videoOrient")
+                    connection.videoOrientation = newVideoOrientation
+                }
+                
+            }
+            
             switch self.setupResult {
             case .success:
                 // Only setup observers and start the session running if setup succeeded.
 //                self.addObservers()
+                
                 self.session.startRunning()
-
                 self.isSessionRunning = self.session.isRunning
                 
             case .notAuthorized:
@@ -154,6 +166,7 @@ class CameraViewController : UIViewController {
          We do not create an AVCaptureMovieFileOutput when setting up the session because the
          AVCaptureMovieFileOutput does not support movie recording with AVCaptureSessionPresetPhoto.
          */
+//        session.sessionPreset = AVCaptureSessionPresetHigh
         session.sessionPreset = AVCaptureSessionPresetPhoto
 //        session.sessionPreset = AVCaptureSessionPresetInputPriority
         
@@ -201,6 +214,7 @@ class CameraViewController : UIViewController {
                     }
                     
                     self.cameraPreviewView.videoPreviewLayer.connection.videoOrientation = initialVideoOrientation
+                    
                 }
             }
             else {
@@ -232,15 +246,11 @@ class CameraViewController : UIViewController {
             print(self.videoDataOutput.alwaysDiscardsLateVideoFrames)
             self.videoDataOutput.videoSettings[(kCVPixelBufferPixelFormatTypeKey as NSString)] = NSNumber(value: kCVPixelFormatType_32BGRA as UInt32)
             
-            
-            
             print(self.videoDataOutput.videoSettings)
             
             if let connection = videoDataOutput.connection(withMediaType: AVMediaTypeVideo) {
                 connection.preferredVideoStabilizationMode = .auto
-                
                 self.session.commitConfiguration()
-                
             }
             
             
@@ -273,6 +283,27 @@ class CameraViewController : UIViewController {
         }
     }
     
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        if let videoPreviewLayerConnection = cameraPreviewView.videoPreviewLayer.connection,
+            let connection = videoDataOutput.connection(withMediaType: AVMediaTypeVideo)
+            {
+            let deviceOrientation = UIDevice.current.orientation
+            
+            guard let newVideoOrientation = deviceOrientation.videoOrientation, deviceOrientation.isPortrait || deviceOrientation.isLandscape else {
+                return
+            }
+
+            connection.videoOrientation = newVideoOrientation
+            videoPreviewLayerConnection.videoOrientation = newVideoOrientation
+        }
+    }
+ 
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .all
+    }
     
 }
 
@@ -282,7 +313,7 @@ extension CameraViewController : AVCaptureVideoDataOutputSampleBufferDelegate {
     
     
     func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, from connection: AVCaptureConnection!) {
-
+        
         // Get a CMSampleBuffer's Core Video image buffer for the media data
         let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
 
@@ -294,19 +325,23 @@ extension CameraViewController : AVCaptureVideoDataOutputSampleBufferDelegate {
 
          // Get the number of bytes per row for the pixel buffer
         let bytesPerRow = CVPixelBufferGetBytesPerRow(imageBuffer!)
-
+        
+//        print("bytesPerRow : \(bytesPerRow)")
+        
         // Get the pixel buffer width and height
         let width = CVPixelBufferGetWidth(imageBuffer!)
         let height = CVPixelBufferGetHeight(imageBuffer!)
         
-        print("width : \(width)     height : \(height)")
+//        print("width : \(width)     height : \(height)")
+        
+//        print(CVPixelBufferGetDataSize(imageBuffer!))
         
 
         // Create a device-dependent RGB color space
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         
-//        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.noneSkipFirst.rawValue | CGBitmapInfo.byteOrder32Little.rawValue)
-        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedFirst.rawValue | CGBitmapInfo.byteOrder32Little.rawValue)
+        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedFirst.rawValue).union(CGBitmapInfo.byteOrder32Little)
+//        print(bitmapInfo.rawValue)
 
         // Create a bitmap graphics context with the sample buffer data
         guard let context = CGContext(data: baseAddress, width: width, height: height, bitsPerComponent: 8, bytesPerRow: bytesPerRow, space: colorSpace, bitmapInfo: bitmapInfo.rawValue) else {
@@ -320,12 +355,17 @@ extension CameraViewController : AVCaptureVideoDataOutputSampleBufferDelegate {
 
         CVPixelBufferUnlockBaseAddress(imageBuffer!, CVPixelBufferLockFlags(rawValue: 0))
         
+        
+        // 디버그용
         // Create an image object from the Quartz image
         let image = UIImage(cgImage: quartzImage!)
         
+        // landeScape mode 일때 좀 이상하다.
         let centerPoint = CGPoint(x: image.size.width/2, y: image.size.height/2)
-        let color = image.getColorByPixel(point: centerPoint)
+//        let color = image.getColorByPixel(point: centerPoint)
+//        print(centerPoint.debugDescription)
         
+        let color = quartzImage?.getColorByPixel(point: centerPoint)
         
         DispatchQueue.main.async {
 //            self.colorPreview.addSubview(UIImageView(image: image))
@@ -336,11 +376,6 @@ extension CameraViewController : AVCaptureVideoDataOutputSampleBufferDelegate {
             }
         }
     }
-    
-    func captureOutput(_ captureOutput: AVCaptureOutput!, didDrop sampleBuffer: CMSampleBuffer!, from connection: AVCaptureConnection!) {
-        print("ddd")
-    }
-
 }
 
 extension UIDeviceOrientation {
@@ -364,6 +399,75 @@ extension UIInterfaceOrientation {
         case .landscapeRight: return .landscapeRight
         default: return nil
         }
+    }
+}
+
+extension CGImage {
+    
+    func getColorByPixel(point : CGPoint) -> UIColor {
+        
+//        print (self.alphaInfo.rawValue)
+//        print(self.bitmapInfo)
+        
+        guard let pixelData = self.dataProvider?.data else{
+            print("no pixelData")
+            return UIColor.cyan
+        }
+        
+        let data : UnsafePointer<UInt8> = CFDataGetBytePtr(pixelData)
+        
+        // bytePerRow를 살펴보니 width + 8 이다.. 그래서 2 더해줌
+        let pixelInfo : Int = ( (self.width + 2) * Int(point.y) + Int(point.x)) * 4
+        let maximumPixelInfo : Int = (self.width + 8) * self.height * 4
+        
+        if pixelInfo < 0 || pixelInfo > maximumPixelInfo {
+            
+            print("범위를 벗어난 이미지 좌표")
+            return UIColor.cyan
+        }
+        
+        // premultipliedFirst 모드라 알파값이 이미 각 값에 들어있다.
+//        let a = CGFloat(data[pixelInfo]) / CGFloat(255.0)
+        
+        // 그런데 왜 bgr 순서인가 인가?
+        let b = CGFloat(data[pixelInfo]) / CGFloat(255.0)
+        let g = CGFloat(data[pixelInfo+1]) / CGFloat(255.0)
+        let r = CGFloat(data[pixelInfo+2]) / CGFloat(255.0)
+        
+        
+        let color = UIColor(red: r, green: g, blue: b, alpha: 1)
+        
+        
+        
+        return color
+    }
+    
+}
+
+extension UIImage {
+    func getColorByPixel(point : CGPoint) -> UIColor {
+        
+        let pixelData = self.cgImage!.dataProvider!.data
+        
+        let data: UnsafePointer<UInt8> = CFDataGetBytePtr(pixelData)
+        
+        
+        let pixelInfo: Int = ((Int(self.size.width) * Int(point.y)) + Int(point.x)) * 4
+        let maximumPixelInfo: Int = Int( self.size.width * self.size.height  ) * 4
+        
+        if pixelInfo < 0 || pixelInfo > maximumPixelInfo {
+            print("범위를 벗어난 이미지 좌표")
+            return UIColor.cyan
+        }
+
+        let a = CGFloat(data[pixelInfo]) / CGFloat(255.0)
+        let r = CGFloat(data[pixelInfo+1]) / CGFloat(255.0)
+        let g = CGFloat(data[pixelInfo+2]) / CGFloat(255.0)
+        let b = CGFloat(data[pixelInfo+3]) / CGFloat(255.0)
+        
+        let color = UIColor(red: r, green: g, blue: b, alpha: a)
+        
+        return color
     }
 }
 

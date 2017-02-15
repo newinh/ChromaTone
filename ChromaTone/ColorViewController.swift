@@ -102,25 +102,21 @@ class ColorViewController: UIViewController {
             imagePickerController.sourceType = .savedPhotosAlbum
             self.present(imagePickerController, animated: true, completion: nil)
             
-            sender.selectedSegmentIndex = 1
-            
         case 1:
             colorPickerImageView.image = UIImage(named: Constants.colorPickerImage)
             colorPickerImageView.mode = .makeHSBColor
         default :
-            colorPickerImageView.mode = .none
             
             self.performSegue(withIdentifier: "CameraView", sender: nil)
-            
-            
-            sender.selectedSegmentIndex = 0
-            
-//            colorPickerImageView.image = UIImage(named: Constants.colorPickerImage)
+
+            // 디버그용
             colorPickerImageView.mode = .getColorByPixel
+//            colorPickerImageView.image = UIImage(named: Constants.colorPickerImage)
             
         }
     }
     
+    // 디버그용 : 카메라뷰에서 얻어온 이미지좀 봅시다.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "CameraView" {
