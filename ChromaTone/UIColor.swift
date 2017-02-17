@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import AudioKit
 
 extension UIColor {
     
@@ -36,18 +37,27 @@ extension UIColor {
     // frequency = 220 *  pow(2, hue*2)
     func color2soundSimple() -> Double {
         var hue: CGFloat = 0
-        
-        let result = self.getHue(&hue, saturation: nil, brightness: nil, alpha: nil)
+        var brightness : CGFloat = 0
+        let result = self.getHue(&hue, saturation: nil, brightness: &brightness, alpha: nil)
         
         if result {
             let hue = Double(hue)
             let frequency = 220 *  pow(2, hue*2)
             let formattedFrequency = String(format: "%.2f", frequency)
             print("frequency : \(formattedFrequency)Hz")
+            print("brightness : \(brightness)")
             return frequency
             
         }
         // 기본음 A (라)
         return 440
+    }
+    
+    
+    // midi = 69 + 12 * { log( freq / 440) / log(2) }
+    func color2midiNumberSimple() -> MIDINoteNumber {
+        
+        return MIDINoteNumber ( 69 + ( 12 * log2( self.color2soundSimple() / 440) ) )
+        
     }
 }

@@ -45,6 +45,11 @@ class ColorPickerImageView : UIImageView {
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         
+        // Completion Handler
+        if let endedTouch = endedTouch {
+            endedTouch()
+        }
+        
         guard let firstTouch = touches.first else{
             print("colorPickerImageView : touch error")
             return

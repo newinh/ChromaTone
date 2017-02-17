@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import AudioKit
 
 class ColorViewController: UIViewController {
     
@@ -17,11 +18,6 @@ class ColorViewController: UIViewController {
     @IBOutlet weak var modeChanger : UISegmentedControl!
     @IBOutlet weak var colorPickerImageView : ColorPickerImageView!
 
-    
-    var engine: AVAudioEngine!
-    var tonePlayer: TonePlayer!
-    var tonePlayerAvailable: Bool = true
-    
     // MARK: View Controller Life Cycle
     
     override func viewDidLoad() {
@@ -32,7 +28,15 @@ class ColorViewController: UIViewController {
         colorPickerImageView.image = UIImage(named: Constants.colorPickerImage)
         colorPickerImageView.isUserInteractionEnabled = true
         
-        initAudio()
+    
+//        var tone = AKOscillator(waveform: AKTable(.sine) )
+        let tone = AKOscillatorBank(waveform: AKTable(.sine),
+                                    attackDuration: 0.01,
+//                                    sustainLevel: 1.0,
+                                    releaseDuration: 0.01)
+//        AKOscillatorBank(waveform: <#T##AKTable#>, attackDuration: <#T##Double#>, decayDuration: <#T##Double#>, sustainLevel: <#T##Double#>, releaseDuration: <#T##Double#>, detuningOffset: <#T##Double#>, detuningMultiplier: <#T##Double#>)
+        
+        AudioKit.output = tone
         
         // Color Picked Completion Handler
         colorPickerImageView.pickedColor = { [unowned self] (newColor) in
@@ -40,40 +44,22 @@ class ColorViewController: UIViewController {
             // 색 미리보기
             self.preview.backgroundColor = newColor
             
-            // 음정 변환
-            self.tonePlayer.frequency = newColor.color2soundSimple()
+            tone.play(noteNumber: newColor.color2midiNumberSimple(), velocity: 80)
             
-            if self.tonePlayerAvailable {
-                
-                do{
-                    try self.engine.start()
-                }catch let error as NSError {
-                    print(error)
-                }
-                self.engine.mainMixerNode.outputVolume = 1.0
-                
-                self.tonePlayer.preparePlaying()
-                self.tonePlayer.play()
-                self.tonePlayerAvailable = false
-            }
         }
         colorPickerImageView.endedTouch = { [unowned self] in
-            self.tonePlayer.stop()
-            self.tonePlayerAvailable = true
-            
-            self.engine.stop()
+            tone.stop(noteNumber: self.preview.backgroundColor?.color2midiNumberSimple() ?? 57)
         }
         
     }
     
-    func initAudio() {
-        self.tonePlayer = TonePlayer()
-        self.engine = AVAudioEngine()
-        self.engine.attach(tonePlayer)
-        let mixer = engine.mainMixerNode
-        let format = AVAudioFormat(standardFormatWithSampleRate: tonePlayer.sampleRate, channels: 1)
-        
-        self.engine.connect(tonePlayer, to: mixer, format: format)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AudioKit.start()
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        AudioKit.stop()
     }
     
     
@@ -107,14 +93,15 @@ class ColorViewController: UIViewController {
         }
     }
     
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     
         // 카메라뷰로 넘어갈 때 오디오 instance 전달
         if segue.identifier == "CameraView" {
             
             let destinaion = segue.destination as! CameraViewController
-            destinaion.engine = self.engine
-            destinaion.tonePlayer = self.tonePlayer
+//            destinaion.engine = self.engine
+//            destinaion.tonePlayer = self.tonePlayer
             
         }
     }

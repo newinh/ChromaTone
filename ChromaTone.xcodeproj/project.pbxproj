@@ -16,12 +16,13 @@
 		78BA40D51E4DE8F200B76BB0 /* Calculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BA40D41E4DE8F200B76BB0 /* Calculator.swift */; };
 		78BA40D81E4EF20A00B76BB0 /* ColorPickerImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BA40D71E4EF20A00B76BB0 /* ColorPickerImageView.swift */; };
 		78BA40DA1E4EF2AD00B76BB0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BA40D91E4EF2AD00B76BB0 /* Constants.swift */; };
-		78E8716C1E50DA3B00F8540A /* TonePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E8716B1E50DA3B00F8540A /* TonePlayer.swift */; };
 		78FF99881E530CE100D93738 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FF99871E530CE100D93738 /* CameraViewController.swift */; };
 		78FF998A1E530D4200D93738 /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FF99891E530D4200D93738 /* CameraPreviewView.swift */; };
+		E60583ADA24671EE92F3C002 /* Pods_ChromaTone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F328018FC6C917F3CC030C1E /* Pods_ChromaTone.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1A4C64C190FEC4F6590A0FEB /* Pods-ChromaTone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChromaTone.release.xcconfig"; path = "Pods/Target Support Files/Pods-ChromaTone/Pods-ChromaTone.release.xcconfig"; sourceTree = "<group>"; };
 		78684B291E49BDD800E626AF /* ChromaTone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChromaTone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		78684B2C1E49BDD800E626AF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		78684B2E1E49BDD800E626AF /* ColorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorViewController.swift; sourceTree = "<group>"; };
@@ -33,9 +34,10 @@
 		78BA40D41E4DE8F200B76BB0 /* Calculator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Calculator.swift; sourceTree = "<group>"; };
 		78BA40D71E4EF20A00B76BB0 /* ColorPickerImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPickerImageView.swift; sourceTree = "<group>"; };
 		78BA40D91E4EF2AD00B76BB0 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		78E8716B1E50DA3B00F8540A /* TonePlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TonePlayer.swift; sourceTree = "<group>"; };
 		78FF99871E530CE100D93738 /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		78FF99891E530D4200D93738 /* CameraPreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraPreviewView.swift; sourceTree = "<group>"; };
+		CF578028574678AA4A8E109C /* Pods-ChromaTone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChromaTone.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ChromaTone/Pods-ChromaTone.debug.xcconfig"; sourceTree = "<group>"; };
+		F328018FC6C917F3CC030C1E /* Pods_ChromaTone.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ChromaTone.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,17 +45,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E60583ADA24671EE92F3C002 /* Pods_ChromaTone.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4A46BB4FE76B85A0120A4740 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F328018FC6C917F3CC030C1E /* Pods_ChromaTone.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		78684B201E49BDD800E626AF = {
 			isa = PBXGroup;
 			children = (
 				78684B2B1E49BDD800E626AF /* ChromaTone */,
 				78684B2A1E49BDD800E626AF /* Products */,
+				CB81691935CB5599FE86AD2C /* Pods */,
+				4A46BB4FE76B85A0120A4740 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -76,13 +89,21 @@
 				78684B351E49BDD800E626AF /* LaunchScreen.storyboard */,
 				78684B381E49BDD800E626AF /* Info.plist */,
 				78684B2E1E49BDD800E626AF /* ColorViewController.swift */,
-				78E8716B1E50DA3B00F8540A /* TonePlayer.swift */,
 				78BA40D71E4EF20A00B76BB0 /* ColorPickerImageView.swift */,
 				78FF99871E530CE100D93738 /* CameraViewController.swift */,
 				78FF99891E530D4200D93738 /* CameraPreviewView.swift */,
 				787B58C81E54E5FC0065C145 /* UIColor.swift */,
 			);
 			path = ChromaTone;
+			sourceTree = "<group>";
+		};
+		CB81691935CB5599FE86AD2C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				CF578028574678AA4A8E109C /* Pods-ChromaTone.debug.xcconfig */,
+				1A4C64C190FEC4F6590A0FEB /* Pods-ChromaTone.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -92,9 +113,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 78684B3B1E49BDD800E626AF /* Build configuration list for PBXNativeTarget "ChromaTone" */;
 			buildPhases = (
+				831D19A09AA2A677D65C6627 /* [CP] Check Pods Manifest.lock */,
 				78684B251E49BDD800E626AF /* Sources */,
 				78684B261E49BDD800E626AF /* Frameworks */,
 				78684B271E49BDD800E626AF /* Resources */,
+				60DE346F5485764BC3C95B1C /* [CP] Embed Pods Frameworks */,
+				827081797DD44546BF7353C1 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -153,6 +177,54 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		60DE346F5485764BC3C95B1C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ChromaTone/Pods-ChromaTone-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		827081797DD44546BF7353C1 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ChromaTone/Pods-ChromaTone-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		831D19A09AA2A677D65C6627 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		78684B251E49BDD800E626AF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -160,7 +232,6 @@
 			files = (
 				78BA40DA1E4EF2AD00B76BB0 /* Constants.swift in Sources */,
 				78FF998A1E530D4200D93738 /* CameraPreviewView.swift in Sources */,
-				78E8716C1E50DA3B00F8540A /* TonePlayer.swift in Sources */,
 				78BA40D81E4EF20A00B76BB0 /* ColorPickerImageView.swift in Sources */,
 				787B58C91E54E5FC0065C145 /* UIColor.swift in Sources */,
 				78684B2F1E49BDD800E626AF /* ColorViewController.swift in Sources */,
@@ -287,6 +358,7 @@
 		};
 		78684B3C1E49BDD800E626AF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CF578028574678AA4A8E109C /* Pods-ChromaTone.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = F3Q5Y6R7ZH;
@@ -300,6 +372,7 @@
 		};
 		78684B3D1E49BDD800E626AF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1A4C64C190FEC4F6590A0FEB /* Pods-ChromaTone.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = F3Q5Y6R7ZH;

@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import AVFoundation
 import CoreImage
+import AudioKit
 
 class CameraViewController : UIViewController {
     
@@ -33,15 +34,12 @@ class CameraViewController : UIViewController {
     private let sessionQueue = DispatchQueue(label: "session queue", attributes: [], target: nil) // Communicate with the session and other session objects on this queue.
     private let videoDataOutputQueue = DispatchQueue(label: "video data ouput queue")
     
+    let tone = AudioKit.output as! AKOscillatorBank
 
-    // Audio
-    var engine: AVAudioEngine!
-    var tonePlayer: TonePlayer!
-    var tonePlayerAvailable: Bool = true
-    
-    
     // MARK: View Controller Life Cycle
     override func viewDidLoad() {
+
+        RunLoop.current
         super.viewDidLoad()
         
         var sampleTimeing = CMSampleTimingInfo.init()
@@ -99,6 +97,7 @@ class CameraViewController : UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        // 동작 권한에 대한 대응
         sessionQueue.async {
 
             switch self.setupResult {
@@ -163,7 +162,6 @@ class CameraViewController : UIViewController {
             videoPreviewLayerConnection.videoOrientation = newVideoOrientation
         }
     }
-    
     
     // Call this on the session queue.
     private func configureSession() {
@@ -276,27 +274,12 @@ class CameraViewController : UIViewController {
     
     func startSound() {
         
-        if self.tonePlayerAvailable {
-            
-            do{
-                try self.engine.start()
-            }catch let error as NSError {
-                print(error)
-            }
-            self.engine.mainMixerNode.outputVolume = 1.0
-            
-            self.tonePlayer.preparePlaying()
-            self.tonePlayer.play()
-            self.tonePlayerAvailable = false
-        }
+        AudioKit.start()
+        
     }
     
     func stopSound(){
-        self.tonePlayer.stop()
-        self.tonePlayerAvailable = true
-        
-        self.engine.stop()
-        
+        AudioKit.stop()
     }
     
     
@@ -305,18 +288,27 @@ class CameraViewController : UIViewController {
     }
     
     @IBOutlet weak var playButton: UIButton!
-    var isPlaying : Bool = false
+    
+    var isPlaying : Bool = false {
+        didSet{
+            if oldValue {
+                self.playButton.setBackgroundImage(UIImage(named: Constants.playIcon), for: UIControlState.normal)
+            }else {
+                playButton.setBackgroundImage(UIImage(named: Constants.pauseIcon), for: UIControlState.normal)
+            }
+        }
+    }
     
     @IBAction func togglePlayButton(_ sender: UIButton) {
         
         if isPlaying {
             stopSound()
             self.isPlaying = false
-            playButton.setBackgroundImage(UIImage(named: Constants.playIcon), for: UIControlState.normal)
+            
         }else {
             startSound()
             self.isPlaying = true
-            playButton.setBackgroundImage(UIImage(named: Constants.pauseIcon), for: UIControlState.normal)
+            
         }
     }
     
@@ -357,9 +349,10 @@ extension CameraViewController : AVCaptureVideoDataOutputSampleBufferDelegate {
         
         let color = UIColor(red: r, green: g, blue: b, alpha: 1)
         
-        // 음정 변환
-//        self.tonePlayer.frequency = Calculator.color2soundSimple(color: color)
-        self.tonePlayer.frequency = color.color2sound()
+        
+        
+        
+//        tone.frequency = color.color2soundSimple()
         
         /* make Image
         
@@ -388,7 +381,15 @@ extension CameraViewController : AVCaptureVideoDataOutputSampleBufferDelegate {
         // UnLock the base address of the pixel buffer
         CVPixelBufferUnlockBaseAddress(imageBuffer!, CVPixelBufferLockFlags(rawValue: 0))
         
+        
+        // 얻은 색으로 할 일들 : 미리보기, 톤 재생
         DispatchQueue.main.async {
+            
+            if self.isPlaying {
+                print("playing")
+                self.tone.stop(noteNumber: self.colorPreview.backgroundColor?.color2midiNumberSimple() ?? 57)
+                self.tone.play(noteNumber: color.color2midiNumberSimple(), velocity: 80)
+            }
             self.colorPreview.backgroundColor = color
         }
     }
