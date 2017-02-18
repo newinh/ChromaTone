@@ -39,11 +39,7 @@ class CameraViewController : UIViewController {
     // MARK: View Controller Life Cycle
     override func viewDidLoad() {
 
-        RunLoop.current
         super.viewDidLoad()
-        
-        var sampleTimeing = CMSampleTimingInfo.init()
-        sampleTimeing.duration = CMTime(seconds: 1, preferredTimescale: 10)
         
         // Set up the video preview view.
         cameraPreviewView.session = session
@@ -175,20 +171,14 @@ class CameraViewController : UIViewController {
         
         // Add video input.
         do {
-            var defaultVideoDevice: AVCaptureDevice?
             
-            // Choose the back dual camera if available, otherwise default to a wide angle camera.
-            if let dualCameraDevice = AVCaptureDevice.defaultDevice(withDeviceType: .builtInDualCamera, mediaType: AVMediaTypeVideo, position: .back) {
-                defaultVideoDevice = dualCameraDevice
+            guard let defaultVideoDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo) else {
+                
+                print(" No Video Device ")
+                self.dismiss(animated: true, completion: nil)
+                return
             }
-            else if let backCameraDevice = AVCaptureDevice.defaultDevice(withDeviceType: .builtInWideAngleCamera, mediaType: AVMediaTypeVideo, position: .back) {
-                // If the back dual camera is not available, default to the back wide angle camera.
-                defaultVideoDevice = backCameraDevice
-            }
-            else if let frontCameraDevice = AVCaptureDevice.defaultDevice(withDeviceType: .builtInWideAngleCamera, mediaType: AVMediaTypeVideo, position: .front) {
-                // In some cases where users break their phones, the back wide angle camera is not available. In this case, we should default to the front wide angle camera.
-                defaultVideoDevice = frontCameraDevice
-            }
+            
             
             let videoDeviceInput = try AVCaptureDeviceInput(device: defaultVideoDevice)
             

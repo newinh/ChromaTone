@@ -17,6 +17,7 @@ class ColorViewController: UIViewController {
     @IBOutlet weak var preview: UIView!
     @IBOutlet weak var modeChanger : UISegmentedControl!
     @IBOutlet weak var colorPickerImageView : ColorPickerImageView!
+    @IBOutlet weak var playButton : UIButton!
 
     // MARK: View Controller Life Cycle
     
@@ -28,27 +29,20 @@ class ColorViewController: UIViewController {
         colorPickerImageView.image = UIImage(named: Constants.colorPickerImage)
         colorPickerImageView.isUserInteractionEnabled = true
         
-    
-//        var tone = AKOscillator(waveform: AKTable(.sine) )
-        let tone = AKOscillatorBank(waveform: AKTable(.sine),
-                                    attackDuration: 0.01,
-//                                    sustainLevel: 1.0,
-                                    releaseDuration: 0.01)
-//        AKOscillatorBank(waveform: <#T##AKTable#>, attackDuration: <#T##Double#>, decayDuration: <#T##Double#>, sustainLevel: <#T##Double#>, releaseDuration: <#T##Double#>, detuningOffset: <#T##Double#>, detuningMultiplier: <#T##Double#>)
         
-        AudioKit.output = tone
-        
+        /// Todo: userDefault 적용
+        Tone.shared.type = .none
+
         // Color Picked Completion Handler
         colorPickerImageView.pickedColor = { [unowned self] (newColor) in
             
             // 색 미리보기
             self.preview.backgroundColor = newColor
-            
-            tone.play(noteNumber: newColor.color2midiNumberSimple(), velocity: 80)
+            Tone.shared.play(color: newColor)
             
         }
         colorPickerImageView.endedTouch = { [unowned self] in
-            tone.stop(noteNumber: self.preview.backgroundColor?.color2midiNumberSimple() ?? 57)
+            Tone.shared.stop()
         }
         
     }
@@ -93,19 +87,83 @@ class ColorViewController: UIViewController {
         }
     }
     
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    
-        // 카메라뷰로 넘어갈 때 오디오 instance 전달
-        if segue.identifier == "CameraView" {
+    @IBAction func play(_ sender: UIButton) {
+        
+        let newFrame = self.colorPickerImageView.imageFrame()
+        
+        
+        let width = Int(newFrame.size.width)
+        let height = Int(newFrame.size.height)
+        
+        let size = width * height
+        var pixels : Set<Int> = []
+        
+        // 0 ~ 99
+        for location in 0 ..< 100 {
+            pixels.insert(location)
+        }
+        
+        
+        let queue = DispatchQueue(label: "painter")
+        
+        for i in 0 ..< 100 {
             
-            let destinaion = segue.destination as! CameraViewController
-//            destinaion.engine = self.engine
-//            destinaion.tonePlayer = self.tonePlayer
+            queue.async {
+                var pixelPointer = pixels.removeFirst()
+                
+                // 0 ~ 100
+                // 0 1 2 3 ... 9
+                // 10 11 12 ...19
+                
+                usleep(125000)
+                
+                let y = Int(newFrame.minY) + (pixelPointer / 10) * height/10
+                let x = Int(newFrame.minX) + (pixelPointer % 10) * width/10
             
+                print(Int(newFrame.minY))
+                print(pixelPointer)
+                print(height)
+                print(width)
+                
+                print(" (\(x), \(y))")
+            
+                
+                let rect = CGRect(x: x, y: y, width: width/10, height: height/10)
+                let view1 = testView(frame: rect)
+                
+                DispatchQueue.main.async {
+//                    self.colorPickerImageView.image = newImage
+                    self.colorPickerImageView.addSubview(view1)
+                    
+                    view1.setNeedsDisplay()
+                    print(i)
+//                    self.view.invalidateIntrinsicContentSize()
+                }
+            }
+           
+            
+        }
+        
+        queue.async {
+            DispatchQueue.main.async {
+                for subview in self.colorPickerImageView.subviews {
+                    subview.removeFromSuperview()
+                }
+            }
         }
     }
     
+}
+
+class testView : UIView {
+    override func draw(_ rect: CGRect) {
+        let context = UIGraphicsGetCurrentContext()
+//        context?.setFillColor(UIColor.black.cgColor)
+//        context?.fill(rect)
+//        context?.setLineWidth(5.0)
+//        context?.setStrokeColor(UIColor.cyan.cgColor)
+//        context?.stroke(CGRect(x: 0, y: 0, width: 10, height: 10) )
+    }
 }
 
 extension ColorViewController : UINavigationControllerDelegate, UIImagePickerControllerDelegate {
