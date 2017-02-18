@@ -34,8 +34,6 @@ class CameraViewController : UIViewController {
     private let sessionQueue = DispatchQueue(label: "session queue", attributes: [], target: nil) // Communicate with the session and other session objects on this queue.
     private let videoDataOutputQueue = DispatchQueue(label: "video data ouput queue")
     
-    let tone = AudioKit.output as! AKOscillatorBank
-
     // MARK: View Controller Life Cycle
     override func viewDidLoad() {
 
@@ -133,9 +131,8 @@ class CameraViewController : UIViewController {
                 self.isSessionRunning = self.session.isRunning
             }
         }
-        
         if isPlaying {
-            stopSound()
+            ToneController.sharedInstance().stopAll()
         }
         
         super.viewWillDisappear(animated)
@@ -262,16 +259,6 @@ class CameraViewController : UIViewController {
         self.session.commitConfiguration()
     }
     
-    func startSound() {
-        
-        AudioKit.start()
-        
-    }
-    
-    func stopSound(){
-        AudioKit.stop()
-    }
-    
     
     @IBAction func canceld(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
@@ -292,11 +279,9 @@ class CameraViewController : UIViewController {
     @IBAction func togglePlayButton(_ sender: UIButton) {
         
         if isPlaying {
-            stopSound()
             self.isPlaying = false
-            
+            ToneController.sharedInstance().stopAll()
         }else {
-            startSound()
             self.isPlaying = true
             
         }
@@ -308,6 +293,8 @@ class CameraViewController : UIViewController {
 extension CameraViewController : AVCaptureVideoDataOutputSampleBufferDelegate {
     
     func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputSampleBuffer sampleBuffer: CMSampleBuffer!, from connection: AVCaptureConnection!) {
+        
+        
         
         // Get a CMSampleBuffer's Core Video image buffer for the media data
         let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
@@ -338,47 +325,13 @@ extension CameraViewController : AVCaptureVideoDataOutputSampleBufferDelegate {
         let r = CGFloat ( baseAddress.load(fromByteOffset: offset + 2, as: UInt8.self) ) / 255
         
         let color = UIColor(red: r, green: g, blue: b, alpha: 1)
-        
-        
-        
-        
-//        tone.frequency = color.color2soundSimple()
-        
-        /* make Image
-        
-        // Create a device-dependent RGB color space
-        let colorSpace = CGColorSpaceCreateDeviceRGB()
-        
-        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedFirst.rawValue).union(CGBitmapInfo.byteOrder32Little)
-
-        // Create a bitmap graphics context with the sample buffer data
-        guard let context = CGContext(data: baseAddress, width: width, height: height, bitsPerComponent: 8, bytesPerRow: bytesPerRow, space: colorSpace, bitmapInfo: bitmapInfo.rawValue) else {
-
-            print("context error!!!")
-            return
-        }
-
-        // Create a Quartz image from the pixel data in the bitmap graphics context
-        let quartzImage = context.makeImage()
-
-        
-        
-        // 디버그용
-        // Create an image object from the Quartz image
-        let image = UIImage(cgImage: quartzImage!)
- 
-        */
-        // UnLock the base address of the pixel buffer
         CVPixelBufferUnlockBaseAddress(imageBuffer!, CVPixelBufferLockFlags(rawValue: 0))
-        
         
         // 얻은 색으로 할 일들 : 미리보기, 톤 재생
         DispatchQueue.main.async {
             
             if self.isPlaying {
-                print("playing")
-                self.tone.stop(noteNumber: self.colorPreview.backgroundColor?.color2midiNumberSimple() ?? 57)
-                self.tone.play(noteNumber: color.color2midiNumberSimple(), velocity: 80)
+                ToneController.sharedInstance().play(color: color)
             }
             self.colorPreview.backgroundColor = color
         }

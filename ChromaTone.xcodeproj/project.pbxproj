@@ -15,8 +15,7 @@
 		78BA40D81E4EF20A00B76BB0 /* ColorPickerImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BA40D71E4EF20A00B76BB0 /* ColorPickerImageView.swift */; };
 		78BA40DA1E4EF2AD00B76BB0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BA40D91E4EF2AD00B76BB0 /* Constants.swift */; };
 		78E63E481E582CB000A9B96F /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E63E471E582CB000A9B96F /* UIImage.swift */; };
-		78E63E6F1E58A0DA00A9B96F /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E63E6E1E58A0DA00A9B96F /* CGPoint.swift */; };
-		78E63E711E58B91100A9B96F /* Tone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E63E701E58B91100A9B96F /* Tone.swift */; };
+		78E63E711E58B91100A9B96F /* ToneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E63E701E58B91100A9B96F /* ToneController.swift */; };
 		78FF99881E530CE100D93738 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FF99871E530CE100D93738 /* CameraViewController.swift */; };
 		78FF998A1E530D4200D93738 /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FF99891E530D4200D93738 /* CameraPreviewView.swift */; };
 		E60583ADA24671EE92F3C002 /* Pods_ChromaTone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F328018FC6C917F3CC030C1E /* Pods_ChromaTone.framework */; };
@@ -34,8 +33,7 @@
 		78BA40D71E4EF20A00B76BB0 /* ColorPickerImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPickerImageView.swift; sourceTree = "<group>"; };
 		78BA40D91E4EF2AD00B76BB0 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		78E63E471E582CB000A9B96F /* UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
-		78E63E6E1E58A0DA00A9B96F /* CGPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
-		78E63E701E58B91100A9B96F /* Tone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tone.swift; sourceTree = "<group>"; };
+		78E63E701E58B91100A9B96F /* ToneController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToneController.swift; sourceTree = "<group>"; };
 		78FF99871E530CE100D93738 /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		78FF99891E530D4200D93738 /* CameraPreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraPreviewView.swift; sourceTree = "<group>"; };
 		CF578028574678AA4A8E109C /* Pods-ChromaTone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChromaTone.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ChromaTone/Pods-ChromaTone.debug.xcconfig"; sourceTree = "<group>"; };
@@ -97,8 +95,7 @@
 			children = (
 				78BA40D91E4EF2AD00B76BB0 /* Constants.swift */,
 				78E63E471E582CB000A9B96F /* UIImage.swift */,
-				78E63E6E1E58A0DA00A9B96F /* CGPoint.swift */,
-				78E63E701E58B91100A9B96F /* Tone.swift */,
+				78E63E701E58B91100A9B96F /* ToneController.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -284,11 +281,10 @@
 				78BA40DA1E4EF2AD00B76BB0 /* Constants.swift in Sources */,
 				78FF998A1E530D4200D93738 /* CameraPreviewView.swift in Sources */,
 				78BA40D81E4EF20A00B76BB0 /* ColorPickerImageView.swift in Sources */,
-				78E63E711E58B91100A9B96F /* Tone.swift in Sources */,
+				78E63E711E58B91100A9B96F /* ToneController.swift in Sources */,
 				78684B2F1E49BDD800E626AF /* ColorViewController.swift in Sources */,
 				78FF99881E530CE100D93738 /* CameraViewController.swift in Sources */,
 				78E63E481E582CB000A9B96F /* UIImage.swift in Sources */,
-				78E63E6F1E58A0DA00A9B96F /* CGPoint.swift in Sources */,
 				78684B2D1E49BDD800E626AF /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

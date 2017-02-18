@@ -31,31 +31,23 @@ class ColorViewController: UIViewController {
         
         
         /// Todo: userDefault 적용
-        Tone.shared.type = .none
-
+        /// 흠.. 요상한 코드가 되버림
+        
+        
+        
         // Color Picked Completion Handler
         colorPickerImageView.pickedColor = { [unowned self] (newColor) in
             
             // 색 미리보기
             self.preview.backgroundColor = newColor
-            Tone.shared.play(color: newColor)
+            ToneController.sharedInstance().play(color: newColor)
             
         }
         colorPickerImageView.endedTouch = { [unowned self] in
-            Tone.shared.stop()
+            ToneController.sharedInstance().stop()
         }
         
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        AudioKit.start()
-    }
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        AudioKit.stop()
-    }
-    
     
     // MARK: IBAction
     @IBAction func modeChanged(_ sender: UISegmentedControl) {
@@ -129,7 +121,8 @@ class ColorViewController: UIViewController {
             
                 
                 let rect = CGRect(x: x, y: y, width: width/10, height: height/10)
-                let view1 = testView(frame: rect)
+                let view1 = UIView(frame: rect)
+                view1.backgroundColor = UIColor.black
                 
                 DispatchQueue.main.async {
 //                    self.colorPickerImageView.image = newImage
@@ -153,17 +146,6 @@ class ColorViewController: UIViewController {
         }
     }
     
-}
-
-class testView : UIView {
-    override func draw(_ rect: CGRect) {
-        let context = UIGraphicsGetCurrentContext()
-//        context?.setFillColor(UIColor.black.cgColor)
-//        context?.fill(rect)
-//        context?.setLineWidth(5.0)
-//        context?.setStrokeColor(UIColor.cyan.cgColor)
-//        context?.stroke(CGRect(x: 0, y: 0, width: 10, height: 10) )
-    }
 }
 
 extension ColorViewController : UINavigationControllerDelegate, UIImagePickerControllerDelegate {

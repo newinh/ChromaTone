@@ -8,38 +8,73 @@
 
 import Foundation
 import AudioKit
+import UIKit
 
-public class Tone {
+public class ToneController {
     
-    public enum instument{
+    public enum Instrument{
         // 뭐 기타 등등등 추가해보자
-        case none
+        case oscillator
+        case oscillatorBank
         case drum
         case flute
     }
     
-    public static let shared = Tone()
+    private struct StaticInstance {
+        static var instance: ToneController?
+    }
     
-    
-    
-    public var type : instument {
+    public class func sharedInstance() -> ToneController {
+        if StaticInstance.instance == nil {
+            StaticInstance.instance = ToneController()
+        }
+        return StaticInstance.instance!
+    }
+    private init() {
         
-        willSet {
-            switch newValue {
-            case .none:
-                let tone = AKOscillatorBank(waveform: AKTable(.sine),
-                                            attackDuration: 0.02,
-                                            releaseDuration: 0.05)
+        print("ToneGenerator init")
+        self.type = .oscillatorBank
+        self.detailType = .square
+        
+    }
+    
+    public var detailType : AKTableType {
+        didSet{
+            let type = self.type
+            self.type = type // type의 willSet을 부르자!
+        }
+    }
+    
+    public var type : Instrument {
+        
+        didSet {
+            print("Type will Set")
+            switch type {
+                
+            case .oscillator:
+                let tone = AKOscillator(waveform: AKTable(self.detailType))
+                AudioKit.output = tone
+                tone.amplitude = 0
+                tone.play()
+                
+                // positiveRecerseSawe
+            case .oscillatorBank:
+                let tone = AKOscillatorBank(waveform: AKTable(self.detailType),
+                                            attackDuration: 0.01,
+                                            releaseDuration: 0.01)
                 AudioKit.output = tone
             default :
                 print("default")
             }
+            defer{
+                AudioKit.start()
+            }
         }
     }
     
-    private init() {
-        self.type = .none
-    }
+    var isPlaying: Bool = false
+    
+    
     
     // 기준 : A4.
     var memory : MIDINoteNumber = 0
@@ -47,15 +82,25 @@ public class Tone {
     public func play(color: UIColor) {
         
         switch self.type {
-        case .none:
+            
+        case .oscillator:
+            let tone = AudioKit.output as! AKOscillator
+            tone.frequency = color.color2soundSimple()
+            
+            if !isPlaying{
+                tone.amplitude = 1
+                tone.play()
+            }
+            
+        case .oscillatorBank:
             
             let midiNumber = color.color2midiNumberSimple()
             
-            if memory == midiNumber {
+            if memory == midiNumber && isPlaying{
                 return
             }else {
                 let tone = AudioKit.output as! AKOscillatorBank
-                tone.play(noteNumber: midiNumber, velocity: 80)
+                tone.play(noteNumber: midiNumber, velocity: 255)
                 tone.stop(noteNumber: memory)
                 memory = midiNumber
             }
@@ -63,13 +108,19 @@ public class Tone {
         default:
             print("play default")
         }
+        self.isPlaying = true
         
     }
     
     public func stop() {
         
+        print("tone stop")
         switch self.type {
-        case .none:
+        case .oscillator:
+            let tone = AudioKit.output as! AKOscillator
+            tone.amplitude = 0
+            
+        case .oscillatorBank:
             let tone = AudioKit.output as! AKOscillatorBank
             tone.stop(noteNumber: memory)
             memory = 0
@@ -77,7 +128,28 @@ public class Tone {
             print("stop default")
         }
         
+        self.isPlaying = false
         
+    }
+    
+    public func stopAll() {
+        switch self.type {
+            
+        case .oscillator:
+            let tone = AudioKit.output as! AKOscillator
+            tone.stop()
+            
+        case .oscillatorBank:
+            let tone = AudioKit.output as! AKOscillatorBank
+            
+            for midiNumber in 0...255 {
+                tone.stop(noteNumber: MIDINoteNumber(midiNumber))
+            }
+            
+        default:
+            print("stop default")
+        }
+        self.isPlaying = false
     }
 }
 
