@@ -31,8 +31,8 @@ class CameraViewController : UIViewController {
     
     private var isSessionRunning = false
     
-    private let sessionQueue = DispatchQueue(label: "session queue", attributes: [], target: nil) // Communicate with the session and other session objects on this queue.
-    private let videoDataOutputQueue = DispatchQueue(label: "video data ouput queue")
+    private let sessionQueue = DispatchQueue(label: "session queue", attributes: [], target: nil) // session 관련 작업
+    private let videoDataOutputQueue = DispatchQueue(label: "video data ouput queue") // capure frame 관련 작업
     
     // MARK: View Controller Life Cycle
     override func viewDidLoad() {
@@ -45,9 +45,9 @@ class CameraViewController : UIViewController {
         // 화면 꽉차게!
         cameraPreviewView.videoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
 
+        // Camera 설정 권한에 대한 대응
         switch AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo) {
         case .authorized:
-            // The user has previously granted access to the camera.
             break
             
         case .notDetermined:
@@ -60,10 +60,11 @@ class CameraViewController : UIViewController {
             })
             
         default:
-            // The user has previously denied access.
+            // denied
             setupResult = .notAuthorized
         }
         
+        // session 작업은 따로
         sessionQueue.async { [unowned self] in
             self.configureSession()
         }
@@ -72,7 +73,7 @@ class CameraViewController : UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // 동작 권한에 대한 대응
+        // Session Setup 결과에 대한 대응
         sessionQueue.async {
 
             switch self.setupResult {
@@ -142,7 +143,7 @@ class CameraViewController : UIViewController {
         }
     }
     
-    // Call this on the session queue.
+    // sessionQueue
     private func configureSession() {
         if setupResult != .success {
             return
@@ -151,10 +152,10 @@ class CameraViewController : UIViewController {
         session.beginConfiguration()
         // Quaility
         session.sessionPreset = AVCaptureSessionPresetPhoto
-        
+
+        // Session에 input 과 ouput 추가
         // Add video input.
         do {
-            
             guard let defaultVideoDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo) else {
                 
                 print(" No Video Device ")
@@ -162,33 +163,20 @@ class CameraViewController : UIViewController {
                 return
             }
             
-            
             let videoDeviceInput = try AVCaptureDeviceInput(device: defaultVideoDevice)
             
             if session.canAddInput(videoDeviceInput) {
                 session.addInput(videoDeviceInput)
                 self.videoDeviceInput = videoDeviceInput
                 
-                
+
+                // cameraPreviewView Orinet 체크
                 DispatchQueue.main.async {
-                    /*
-                     Why are we dispatching this to the main queue?
-                     Because AVCaptureVideoPreviewLayer is the backing layer for PreviewView and UIView
-                     can only be manipulated on the main thread.
-                     Note: As an exception to the above rule, it is not necessary to serialize video orientation changes
-                     on the AVCaptureVideoPreviewLayer’s connection with other session manipulation.
-                     
-                     Use the status bar orientation as the initial video orientation. Subsequent orientation changes are
-                     handled by CameraViewController.viewWillTransition(to:with:).
-                     */
-                    let statusBarOrientation = UIApplication.shared.statusBarOrientation
-                    var initialVideoOrientation: AVCaptureVideoOrientation = .portrait
-                    
-                    if let videoOrientation = statusBarOrientation.videoOrientation , statusBarOrientation != .unknown {
-                        initialVideoOrientation = videoOrientation
+                    let deviceOrientation = UIDevice.current.orientation
+                    guard let newVideoOrientation = deviceOrientation.videoOrientation, deviceOrientation.isPortrait || deviceOrientation.isLandscape else {
+                        return
                     }
-                    
-                    self.cameraPreviewView.videoPreviewLayer.connection.videoOrientation = initialVideoOrientation
+                    self.cameraPreviewView.videoPreviewLayer.connection.videoOrientation = newVideoOrientation
                     
                 }
             }
@@ -224,9 +212,9 @@ class CameraViewController : UIViewController {
             self.videoDataOutput.alwaysDiscardsLateVideoFrames = false
             
             // orient 설정
-            let statusBarOrientation = UIApplication.shared.statusBarOrientation
+            let deviceOrientation = UIDevice.current.orientation
             var initialVideoOrientation: AVCaptureVideoOrientation = .portrait
-            if let videoOrientation = statusBarOrientation.videoOrientation , statusBarOrientation != .unknown {
+            if let videoOrientation = deviceOrientation.videoOrientation {
                 initialVideoOrientation = videoOrientation
             }
             if let connection = self.videoDataOutput.connection(withMediaType: AVMediaTypeVideo) {
@@ -277,7 +265,6 @@ class CameraViewController : UIViewController {
     }
     
 }
-
 
 extension CameraViewController : AVCaptureVideoDataOutputSampleBufferDelegate {
     
@@ -335,18 +322,6 @@ extension UIDeviceOrientation {
         case .portraitUpsideDown: return .portraitUpsideDown
         case .landscapeLeft: return .landscapeRight
         case .landscapeRight: return .landscapeLeft
-        default: return nil
-        }
-    }
-}
-
-extension UIInterfaceOrientation {
-    var videoOrientation: AVCaptureVideoOrientation? {
-        switch self {
-        case .portrait: return .portrait
-        case .portraitUpsideDown: return .portraitUpsideDown
-        case .landscapeLeft: return .landscapeLeft
-        case .landscapeRight: return .landscapeRight
         default: return nil
         }
     }
