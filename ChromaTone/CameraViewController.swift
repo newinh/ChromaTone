@@ -51,14 +51,6 @@ class CameraViewController : UIViewController {
             break
             
         case .notDetermined:
-            /*
-             The user has not yet been presented with the option to grant
-             video access. We suspend the session queue to delay session
-             setup until the access request has completed.
-             
-             Note that audio access will be implicitly requested when we
-             create an AVCaptureDeviceInput for audio during session setup.
-             */
             sessionQueue.suspend()
             AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo, completionHandler: { [unowned self] granted in
                 if !granted {
@@ -72,17 +64,6 @@ class CameraViewController : UIViewController {
             setupResult = .notAuthorized
         }
         
-        
-        /*
-         Setup the capture session.
-         In general it is not safe to mutate an AVCaptureSession or any of its
-         inputs, outputs, or connections from multiple threads at the same time.
-         
-         Why not do all of this on the main queue?
-         Because AVCaptureSession.startRunning() is a blocking call which can
-         take a long time. We dispatch session setup to the sessionQueue so
-         that the main queue isn't blocked, which keeps the UI responsive.
-         */
         sessionQueue.async { [unowned self] in
             self.configureSession()
         }
@@ -131,10 +112,15 @@ class CameraViewController : UIViewController {
                 self.isSessionRunning = self.session.isRunning
             }
         }
-        if isPlaying {
-            ToneController.sharedInstance().stopAll()
-        }
         
+        if isPlaying {
+            self.isPlaying = false
+            self.videoDataOutputQueue.async {
+                print("CameraView Tone Stop in videoDataOutputQueue")
+                ToneController.sharedInstance().stop()
+            }
+            
+        }
         super.viewWillDisappear(animated)
     }
     
@@ -280,7 +266,10 @@ class CameraViewController : UIViewController {
         
         if isPlaying {
             self.isPlaying = false
-            ToneController.sharedInstance().stopAll()
+            self.videoDataOutputQueue.async {
+                ToneController.sharedInstance().stop()
+            }
+            
         }else {
             self.isPlaying = true
             

@@ -33,8 +33,6 @@ class ColorViewController: UIViewController {
         /// Todo: userDefault 적용
         /// 흠.. 요상한 코드가 되버림
         
-        
-        
         // Color Picked Completion Handler
         colorPickerImageView.pickedColor = { [unowned self] (newColor) in
             
@@ -43,7 +41,7 @@ class ColorViewController: UIViewController {
             ToneController.sharedInstance().play(color: newColor)
             
         }
-        colorPickerImageView.endedTouch = { [unowned self] in
+        colorPickerImageView.endedTouch = {
             ToneController.sharedInstance().stop()
         }
         

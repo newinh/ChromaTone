@@ -85,14 +85,14 @@ class ColorPickerImageView : UIImageView {
         let newColor = self.makeHSBcolor(center: centerPoint, touched: touchedPoint, radius: radius)
         
         guard let color = newColor else {
-            if let endedTouch = endedTouch {
+            if let endedTouch = self.endedTouch {
                 endedTouch()
             }
             return
         }
         
         // Completion Handler
-        if let pickedColor = pickedColor {
+        if let pickedColor = self.pickedColor {
             pickedColor(color)
         }
     }

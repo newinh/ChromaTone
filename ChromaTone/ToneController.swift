@@ -88,6 +88,7 @@ public class ToneController {
             tone.frequency = color.color2soundSimple()
             
             if !isPlaying{
+                print("Playing")
                 tone.amplitude = 1
                 tone.play()
             }
