@@ -83,6 +83,9 @@ class ColorViewController: UIViewController {
     
     @IBAction func play(_ sender: UIButton) {
         
+//        let player = ImagePlayer()
+//        let option = ImagePlayer.option()
+        
         let newFrame = self.colorPickerImageView.imageFrame()
         
         
@@ -109,6 +112,7 @@ class ColorViewController: UIViewController {
                 // 0 1 2 3 ... 9
                 // 10 11 12 ...19
                 
+                // 8hz
                 usleep(125000)
                 
                 let y = Int(newFrame.minY) + (pixelPointer / 10) * height/10
@@ -125,29 +129,24 @@ class ColorViewController: UIViewController {
                 let t = CATiledLayer()
                 
                 t.tileSize = CGSize(width: newFrame.size.width/10, height: newFrame.size.height/10)
-                
                 t.backgroundColor = UIColor.brown.cgColor
-//                let scale = UIScreen.main.scale
-//                t.contentsScale = scale
-                
                 let rect = CGRect(x: x, y: y, width: width/10, height: height/10)
-                
                 t.frame = rect
+                let ani = CABasicAnimation(keyPath: "opacity")
+                ani.fromValue = 0
+                ani.toValue = 1
+                ani.duration = 0.5
+                ani.repeatCount = 1
                 
-                let layer = CALayer()
-                layer.frame = rect
-                layer.backgroundColor = UIColor.black.cgColor
-//                let view1 = UIView(frame: rect)
-//                view1.backgroundColor = UIColor.black
+                t.opacity = 0
+                t.add(ani, forKey: "shot appear")
+                
+                
                 
                 DispatchQueue.main.async {
-//                    self.colorPickerImageView.image = newImage
-//                    self.colorPickerImageView.addSubview(view1)
                     self.colorPickerImageView.layer.addSublayer(t)
                     
-//                    view1.setNeedsDisplay()
                     print(i)
-//                    self.view.invalidateIntrinsicContentSize()
                 }
             }
            
@@ -156,9 +155,6 @@ class ColorViewController: UIViewController {
         
         queue.async {
             DispatchQueue.main.async {
-//                for subview in self.colorPickerImageView.subviews {
-//                    subview.removeFromSuperview()
-//                }
                 for sublayer in self.colorPickerImageView.layer.sublayers!{
                     sublayer.removeFromSuperlayer()
                 }
