@@ -5,3 +5,5 @@
 ## 일정표
 
 ![schedule](./schedule.png)
+
+AudioKit v3.5.3

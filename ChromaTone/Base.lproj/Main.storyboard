@@ -149,6 +149,10 @@
                                     <constraint firstAttribute="height" constant="50" id="NGj-t8-Gez"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jxX-Xh-5aZ">
+                                <rect key="frame" x="96" y="533" width="183" height="50"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -157,12 +161,16 @@
                             <constraint firstItem="7PL-dA-f3H" firstAttribute="leading" secondItem="D8s-Fy-OgR" secondAttribute="leadingMargin" constant="10" id="CaS-nI-CsR"/>
                             <constraint firstItem="4RV-u5-oTy" firstAttribute="top" secondItem="KTv-KE-s4U" secondAttribute="bottom" constant="10" id="Fcz-Ww-euC"/>
                             <constraint firstItem="xRL-Er-NNd" firstAttribute="centerX" secondItem="D8s-Fy-OgR" secondAttribute="centerX" id="Fq0-fS-6dg"/>
+                            <constraint firstItem="jxX-Xh-5aZ" firstAttribute="height" secondItem="3IF-9D-W73" secondAttribute="height" id="I4h-Dh-FmD"/>
+                            <constraint firstItem="jxX-Xh-5aZ" firstAttribute="bottom" secondItem="3IF-9D-W73" secondAttribute="bottom" id="O74-2q-bGZ"/>
                             <constraint firstItem="4RV-u5-oTy" firstAttribute="top" secondItem="7PL-dA-f3H" secondAttribute="bottom" constant="35" id="SSc-Fb-Rx3"/>
                             <constraint firstItem="KTv-KE-s4U" firstAttribute="centerX" secondItem="xRL-Er-NNd" secondAttribute="centerX" id="ckV-Qe-Sql"/>
                             <constraint firstItem="4RV-u5-oTy" firstAttribute="top" secondItem="3IF-9D-W73" secondAttribute="bottom" constant="35" id="eOL-8M-mTW"/>
                             <constraint firstItem="KTv-KE-s4U" firstAttribute="width" secondItem="D8s-Fy-OgR" secondAttribute="width" id="f7U-w1-ZLj"/>
                             <constraint firstItem="KTv-KE-s4U" firstAttribute="top" secondItem="xRL-Er-NNd" secondAttribute="bottom" constant="10" id="kB2-Or-Tcz"/>
+                            <constraint firstItem="3IF-9D-W73" firstAttribute="leading" secondItem="jxX-Xh-5aZ" secondAttribute="trailing" constant="20" id="mNT-dK-qca"/>
                             <constraint firstItem="xRL-Er-NNd" firstAttribute="top" secondItem="us5-MV-cjF" secondAttribute="bottom" id="o9a-TX-acd"/>
+                            <constraint firstItem="jxX-Xh-5aZ" firstAttribute="leading" secondItem="7PL-dA-f3H" secondAttribute="trailing" constant="20" id="rFJ-Zy-eSJ"/>
                             <constraint firstAttribute="trailingMargin" secondItem="3IF-9D-W73" secondAttribute="trailing" constant="10" id="tgr-Hq-o34"/>
                         </constraints>
                         <variation key="default">
@@ -196,6 +204,8 @@
                     <connections>
                         <outlet property="colorPickerImageView" destination="KTv-KE-s4U" id="eVx-up-qaf"/>
                         <outlet property="modeChanger" destination="xRL-Er-NNd" id="ACP-Yt-lMH"/>
+                        <outlet property="playToggleButton" destination="7PL-dA-f3H" id="OQI-wN-Zmm"/>
+                        <outlet property="plot" destination="jxX-Xh-5aZ" id="jqe-Rb-091"/>
                         <outlet property="preview" destination="3IF-9D-W73" id="sOg-ko-mJf"/>
                         <segue destination="u0k-FD-rD5" kind="show" identifier="CameraView" id="aYz-V2-BuH"/>
                     </connections>
@@ -245,19 +255,27 @@
                                     <constraint firstAttribute="width" constant="50" id="uiF-bJ-rWi"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JBc-7v-RDy">
+                                <rect key="frame" x="106" y="538" width="163" height="50"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="aiT-VQ-u7z" firstAttribute="top" secondItem="9BF-Ff-fDw" secondAttribute="bottom" constant="30" id="5BV-Kl-lng"/>
                             <constraint firstItem="006-ls-Skb" firstAttribute="width" secondItem="Mw8-B7-rHd" secondAttribute="width" id="B4s-MG-K34"/>
                             <constraint firstItem="itP-PD-QSi" firstAttribute="leading" secondItem="Mw8-B7-rHd" secondAttribute="leadingMargin" constant="20" id="BB8-qx-lnd"/>
+                            <constraint firstItem="9BF-Ff-fDw" firstAttribute="leading" secondItem="JBc-7v-RDy" secondAttribute="trailing" constant="20" id="Hgz-6z-aGy"/>
                             <constraint firstItem="Dys-hE-FRm" firstAttribute="leading" secondItem="Mw8-B7-rHd" secondAttribute="leadingMargin" constant="20" id="OYY-Kc-dFr"/>
                             <constraint firstItem="006-ls-Skb" firstAttribute="centerY" secondItem="Mw8-B7-rHd" secondAttribute="centerY" id="P6X-Mo-5Be"/>
                             <constraint firstItem="Jqd-op-D40" firstAttribute="centerX" secondItem="Mw8-B7-rHd" secondAttribute="centerX" id="UMv-Aq-vsr"/>
                             <constraint firstItem="aiT-VQ-u7z" firstAttribute="top" secondItem="itP-PD-QSi" secondAttribute="bottom" constant="30" id="ZHX-IO-zPq"/>
                             <constraint firstItem="006-ls-Skb" firstAttribute="centerX" secondItem="Mw8-B7-rHd" secondAttribute="centerX" id="bNF-cY-LwG"/>
                             <constraint firstItem="006-ls-Skb" firstAttribute="height" secondItem="Mw8-B7-rHd" secondAttribute="height" id="ckC-lP-cSe"/>
+                            <constraint firstItem="JBc-7v-RDy" firstAttribute="leading" secondItem="itP-PD-QSi" secondAttribute="trailing" constant="20" id="eWV-mH-e47"/>
                             <constraint firstItem="Dys-hE-FRm" firstAttribute="top" secondItem="yYS-TK-98L" secondAttribute="bottom" constant="20" id="gRH-z5-8Ma"/>
+                            <constraint firstItem="JBc-7v-RDy" firstAttribute="bottom" secondItem="9BF-Ff-fDw" secondAttribute="bottom" id="po2-wA-36S"/>
+                            <constraint firstItem="JBc-7v-RDy" firstAttribute="height" secondItem="9BF-Ff-fDw" secondAttribute="height" id="sCE-19-1wj"/>
                             <constraint firstItem="Jqd-op-D40" firstAttribute="centerY" secondItem="Mw8-B7-rHd" secondAttribute="centerY" id="xYb-B3-WrF"/>
                             <constraint firstAttribute="trailingMargin" secondItem="9BF-Ff-fDw" secondAttribute="trailing" constant="20" id="zqK-h5-QzZ"/>
                         </constraints>
@@ -266,6 +284,7 @@
                         <outlet property="cameraPreviewView" destination="006-ls-Skb" id="WOf-rz-rKu"/>
                         <outlet property="colorPreview" destination="9BF-Ff-fDw" id="cCo-eX-TuR"/>
                         <outlet property="playButton" destination="itP-PD-QSi" id="Ggp-cy-BNv"/>
+                        <outlet property="plot" destination="JBc-7v-RDy" id="YF1-5y-sCv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sAD-GH-Dd9" userLabel="First Responder" sceneMemberID="firstResponder"/>

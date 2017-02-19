@@ -17,18 +17,22 @@ class ColorViewController: UIViewController {
     @IBOutlet weak var preview: UIView!
     @IBOutlet weak var modeChanger : UISegmentedControl!
     @IBOutlet weak var colorPickerImageView : ColorPickerImageView!
-    @IBOutlet weak var playButton : UIButton!
+    @IBOutlet weak var playToggleButton : UIButton!
+    
+    @IBOutlet weak var plot : UIView!
 
     // MARK: View Controller Life Cycle
     
     override func viewDidLoad() {
+        
+        // add plot
+        self.plot.addSubview(AKRollingOutputPlot(frame: self.plot.bounds))
+        
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         
         // Color Picker 이미지 선택
         colorPickerImageView.image = UIImage(named: Constants.colorPickerImage)
         colorPickerImageView.isUserInteractionEnabled = true
-        
         
         /// Todo: userDefault 적용
         /// 흠.. 요상한 코드가 되버림
@@ -78,7 +82,8 @@ class ColorViewController: UIViewController {
     }
     
     @IBAction func play(_ sender: UIButton) {
-        
+        let f = DispatchQueue(label: "player")
+        f.suspend()
         let newFrame = self.colorPickerImageView.imageFrame()
         
         

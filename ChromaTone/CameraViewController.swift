@@ -34,10 +34,12 @@ class CameraViewController : UIViewController {
     private let sessionQueue = DispatchQueue(label: "session queue", attributes: [], target: nil) // session 관련 작업
     private let videoDataOutputQueue = DispatchQueue(label: "video data ouput queue") // capure frame 관련 작업
     
+    @IBOutlet weak var plot : UIView!
     // MARK: View Controller Life Cycle
     override func viewDidLoad() {
-
-        super.viewDidLoad()
+        
+        /// TODO : add plot
+//        self.plot.addSubview(AKRollingOutputPlot(frame: self.plot.bounds))
         
         // Set up the video preview view.
         cameraPreviewView.session = session
@@ -107,6 +109,10 @@ class CameraViewController : UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        
+        //plot clear
+//        self.plot.subviews.first!.removeFromSuperview()
+        
         sessionQueue.async { [unowned self] in
             if self.setupResult == .success {
                 self.session.stopRunning()

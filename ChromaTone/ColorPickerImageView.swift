@@ -97,8 +97,6 @@ class ColorPickerImageView : UIImageView {
         }
     }
     
-    
-    
     func getColorByPixel(touch : UITouch){
         
         let touchPoint = touch.location(in: self)
@@ -182,6 +180,7 @@ class ColorPickerImageView : UIImageView {
 
 extension UIImageView {
     
+    // AspectFit에 적용된 image 크기
     func imageFrame() -> CGRect {
         
         guard let image = self.image else {
