@@ -34,8 +34,12 @@ public class ToneController {
         
         print("ToneGenerator init")
         self.type = .oscillatorBank
-        self.detailType = .square
+        self.detailType = .positiveReverseSawtooth
         
+        /* 괜찮은 타입들
+         oscillatorBank - positiveReㅍerseSaw
+         oscillatorBank - sine
+         */
     }
     
     public var detailType : AKTableType {
@@ -57,7 +61,6 @@ public class ToneController {
                 tone.amplitude = 0
                 tone.play()
                 
-                // positiveRecerseSawe
             case .oscillatorBank:
                 let tone = AKOscillatorBank(waveform: AKTable(self.detailType),
                                             attackDuration: 0.01,
@@ -133,6 +136,7 @@ public class ToneController {
         
     }
     
+    // for Oscillator bank
     public func stopAll() {
         switch self.type {
             
