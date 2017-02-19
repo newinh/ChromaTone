@@ -18,12 +18,20 @@ public class ImagePlayer {
     var playHandler : ( (CGRect)  -> Void )?
     
     
+    /*
+     
+     
+ */
+    
+    
     public func play() {
         
         /*
          step1. Image 에서 픽셀location 가져오기
          step2. pixel을 색 정보 가져오기
-         step3. 얻어곤 색정도
+         step3. 얻어온 색정보로 소리 재생
+         
+         step4 현란하게 재생...
          */
         
     }
