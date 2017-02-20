@@ -16,6 +16,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        /// Todo: userDefault 적용
+        /// 흠.. 요상한 코드가 되버림
+
         ToneController.sharedInstance().detailType = ToneController.sharedInstance().detailType
         return true
     }

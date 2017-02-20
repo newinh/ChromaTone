@@ -34,9 +34,6 @@ class ColorViewController: UIViewController {
         colorPickerImageView.image = UIImage(named: Constants.colorPickerImage)
         colorPickerImageView.isUserInteractionEnabled = true
         
-        /// Todo: userDefault 적용
-        /// 흠.. 요상한 코드가 되버림
-        
         // Color Picked Completion Handler
         colorPickerImageView.pickedColor = { [unowned self] (newColor) in
             
@@ -85,86 +82,44 @@ class ColorViewController: UIViewController {
         
         let option = ImagePlayer.option(bpm: 120, rhythm: 3, noteCount: 100)
         let player = ImagePlayer(source: self.colorPickerImageView.image!, option: option)
-        player.prepare()
         player.play()
-//
         
-        let newFrame = self.colorPickerImageView.imageFrame()
+        let animation = CABasicAnimation(keyPath: "opacity")
         
+        animation.fromValue = 1
+        animation.toValue = 0
+        animation.duration = 0.5
+        animation.repeatCount = 1
         
-        let width = Int(newFrame.size.width)
-        let height = Int(newFrame.size.height)
-        
-        let size = width * height
-        var pixels : Set<Int> = []
-        
-        // 0 ~ 99
-        for location in 0 ..< 100 {
-            pixels.insert(location)
+        let imageFrame = self.colorPickerImageView.imageFrame()
+        let makerSize: CGFloat = 40
+        player.pickedSingleColor = { (color, x, y ) in
+            
+            let scale =  imageFrame.size.width / self.colorPickerImageView.intrinsicContentSize.width
+            let revisedX = imageFrame.minX + CGFloat(x) * scale
+            let revisedY = imageFrame.minY + CGFloat(y) * scale
+            
+            let layer = CALayer()
+            layer.backgroundColor = color.cgColor
+            layer.frame = CGRect(x: revisedX - makerSize/2, y: revisedY - makerSize/2, width: makerSize, height: makerSize)
+            
+            layer.cornerRadius = makerSize/2
+            layer.borderWidth = 1
+            layer.borderColor = UIColor.red.cgColor
+            
+            layer.opacity = 0
+            layer.add(animation, forKey: "opacity")
+            
+            self.colorPickerImageView.layer.addSublayer(layer)
         }
         
-        
-        let queue = DispatchQueue(label: "painter")
-        
-        for i in 0 ..< 100 {
-            
-            queue.async {
-                var pixelPointer = pixels.removeFirst()
-                
-                // 0 ~ 100
-                // 0 1 2 3 ... 9
-                // 10 11 12 ...19
-                
-                // 8hz
-                usleep(125000)
-                
-                let y = Int(newFrame.minY) + (pixelPointer / 10) * height/10
-                let x = Int(newFrame.minX) + (pixelPointer % 10) * width/10
-            
-//                print(Int(newFrame.minY))
-//                print(pixelPointer)
-//                print(height)
-//                print(width)
-//                
-//                print(" (\(x), \(y))")
-                
-
-                let t = CATiledLayer()
-                
-                t.tileSize = CGSize(width: newFrame.size.width/10, height: newFrame.size.height/10)
-                t.backgroundColor = UIColor.brown.cgColor
-                let rect = CGRect(x: x, y: y, width: width/10, height: height/10)
-                t.frame = rect
-                let ani = CABasicAnimation(keyPath: "opacity")
-                ani.fromValue = 1
-                ani.toValue = 0
-                ani.duration = 0.5
-                ani.repeatCount = 1
-                
-                t.opacity = 0
-                t.add(ani, forKey: "shot appear")
-                
-                
-                
-                DispatchQueue.main.async {
-                    self.colorPickerImageView.layer.addSublayer(t)
-                    
-//                    print(i)
-                }
-            }
-           
-            
-        }
-        
-        queue.async {
-            DispatchQueue.main.async {
-                for sublayer in self.colorPickerImageView.layer.sublayers!{
-                    sublayer.removeFromSuperlayer()
-                }
-                player.resume()
+        player.completionHandler = {
+            for sublayer in self.colorPickerImageView.layer.sublayers ?? [] {
+                sublayer.removeFromSuperlayer()
             }
         }
     }
+    
     
 }
 

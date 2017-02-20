@@ -137,25 +137,25 @@ public class ToneController {
     }
     
     // for Oscillator bank
-    public func stopAll() {
-        switch self.type {
-            
-        case .oscillator:
-            let tone = AudioKit.output as! AKOscillator
-            tone.stop()
-            
-        case .oscillatorBank:
-            let tone = AudioKit.output as! AKOscillatorBank
-            
-            for midiNumber in 0...255 {
-                tone.stop(noteNumber: MIDINoteNumber(midiNumber))
-            }
-            
-        default:
-            print("stop default")
-        }
-        self.isPlaying = false
-    }
+//    public func stopForAsync() {
+//        switch self.type {
+//            
+//        case .oscillator:
+//            let tone = AudioKit.output as! AKOscillator
+//            tone.stop()
+//            
+//        case .oscillatorBank:
+//            let tone = AudioKit.output as! AKOscillatorBank
+//            
+//            for midiNumber in 0...255 {
+//                tone.stop(noteNumber: MIDINoteNumber(midiNumber))
+//            }
+//            
+//        default:
+//            print("stop default")
+//        }
+//        self.isPlaying = false
+//    }
 }
 
 // midi = 69 + 12 * { log( freq / 440) / log(2) }

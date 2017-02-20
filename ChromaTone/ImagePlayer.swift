@@ -14,9 +14,10 @@ public class ImagePlayer {
     
     let image : UIImage
     
-    // pixel 넣어서 MainUI update 할것 : 해당하는 픽셀 없어진것처럼 표현
-    var playHandler : ( (CGRect)  -> Void )?
-    var pixelHandler : ( (CGRect)  -> Void )?
+    // pixel 하나 고를 때 마다 표현할 UI
+    var pickedSingleColor : ( (UIColor, _ x : Int, _ y : Int )  -> Void )?
+    // 동작이 끝났을 때 표현할 UI
+    var completionHandler: ( (Void) -> Void )?
     
     var timer : Timer?
     
@@ -31,6 +32,12 @@ public class ImagePlayer {
     init(source image: UIImage, option: ImagePlayer.option) {
         self.image = image
         self.option = option
+        
+        self.pixelData = image.cgImage?.dataProvider?.data
+        self.data = CFDataGetBytePtr(self.pixelData)
+        
+        self.prepare()
+        
     }
     
     
@@ -45,22 +52,18 @@ public class ImagePlayer {
     var i = 0
     
     var pixelLocations : [Int] = []
-    let pixelData = self.image.
+    let pixelData : CFData?
+    let data : UnsafePointer<UInt8>
     
+    // 새로운 음악을 만들자
     public func prepare() {
 
-        self.choosePixel()
-        
-//        let pixelData = self.cgImage!.dataProvider?.data
-//        let data : UnsafePointer<UInt8> = CFDataGetBytePtr(pixelData)
+        self.preparePixel()
         
         //timer setup
         // 1 비트를 4박자로 쪼갬
         let interval = TimeInterval(  (60 / self.option.bpm) / 4 )
         print("interval : \(interval)" )
-        
-        
-        
         self.timer = Timer(timeInterval: interval, target: self, selector: #selector(self.performImage), userInfo: nil, repeats: true)
     }
     
@@ -69,34 +72,26 @@ public class ImagePlayer {
     }
     
     public func stop() {
+        ToneController.sharedInstance().stop()
         // timer stop
         self.timer?.invalidate()
-        self.timer = nil
+        self.prepare()
+        
+        if let completionHandler = completionHandler {
+            completionHandler()
+        }
         
     }
     
     public func resume() {
-        print("timer resum")
-        self.timer = Timer(timeInterval: 0.125, repeats: true, block: { (timer) in
-            
-            /// 디버그용
-            self.i += 1
-            print(self.i)
-            print( Date.timeIntervalSinceReferenceDate.debugDescription )
-            
-            if self.i > 10 {
-                self.pause()
-            }
-        })
-        self.play()
+        // 1 비트를 4박자로 쪼갬
+        let interval = TimeInterval(  (60 / self.option.bpm) / 4 )
+        self.timer = Timer(timeInterval: interval, target: self, selector: #selector(self.performImage), userInfo: nil, repeats: true)
     }
     
     public func pause() {
+        ToneController.sharedInstance().stop()
         self.timer?.invalidate()
-    }
-    
-    public func step() {
-        // timer 단계
     }
     
     
@@ -104,19 +99,15 @@ public class ImagePlayer {
         
         if self.pixelLocations.isEmpty {
             self.stop()
+            return
         }
+        let color = getSingleColor()
+        ToneController.sharedInstance().play(color: color)
         
-        /// 디버그용
-        self.i += 1
-        print(self.i)
-        print( Date.timeIntervalSinceReferenceDate.debugDescription )
-        
-        if self.i > 10 {
-            self.pause()
-        }
     }
     
-    public func choosePixel() {
+    /// step1
+    public func preparePixel() {
         let lastPixelLocation = Int(self.image.size.width) * Int(self.image.size.height)
         
         // lastPixelLocation 이 2^32승을 넘어 가면 gg
@@ -126,6 +117,30 @@ public class ImagePlayer {
             let rand = arc4random_uniform(UInt32(lastPixelLocation))
             self.pixelLocations.append( Int(rand) )
         }
+    }
+    
+    /// step2
+    // pixelLocations 에서 pixel 하나 꺼내와서 컬러고 바꿈!
+    public func getSingleColor() -> UIColor{
+        
+        let pixelLocation = pixelLocations.removeFirst() * 4
+        
+        // get color
+        let r = CGFloat(data[pixelLocation]) / CGFloat(255.0)
+        let g = CGFloat(data[pixelLocation+1]) / CGFloat(255.0)
+        let b = CGFloat(data[pixelLocation+2]) / CGFloat(255.0)
+        let a = CGFloat(data[pixelLocation+3]) / CGFloat(255.0)
+        
+        let color = UIColor(red: r, green: g, blue: b, alpha: a)
+        
+        let y = (pixelLocation / 4) / Int(self.image.size.width)
+        let x = (pixelLocation / 4) % Int(self.image.size.width)
+        
+        if let pickedSingleColor = pickedSingleColor {
+            pickedSingleColor(color, x, y )
+        }
+        
+        return color
     }
     
 }
