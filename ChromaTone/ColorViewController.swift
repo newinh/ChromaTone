@@ -83,8 +83,11 @@ class ColorViewController: UIViewController {
     
     @IBAction func play(_ sender: UIButton) {
         
-//        let player = ImagePlayer()
-//        let option = ImagePlayer.option()
+        let option = ImagePlayer.option(bpm: 120, rhythm: 3, noteCount: 100)
+        let player = ImagePlayer(source: self.colorPickerImageView.image!, option: option)
+        player.prepare()
+        player.play()
+//
         
         let newFrame = self.colorPickerImageView.imageFrame()
         
@@ -118,12 +121,12 @@ class ColorViewController: UIViewController {
                 let y = Int(newFrame.minY) + (pixelPointer / 10) * height/10
                 let x = Int(newFrame.minX) + (pixelPointer % 10) * width/10
             
-                print(Int(newFrame.minY))
-                print(pixelPointer)
-                print(height)
-                print(width)
-                
-                print(" (\(x), \(y))")
+//                print(Int(newFrame.minY))
+//                print(pixelPointer)
+//                print(height)
+//                print(width)
+//                
+//                print(" (\(x), \(y))")
                 
 
                 let t = CATiledLayer()
@@ -133,8 +136,8 @@ class ColorViewController: UIViewController {
                 let rect = CGRect(x: x, y: y, width: width/10, height: height/10)
                 t.frame = rect
                 let ani = CABasicAnimation(keyPath: "opacity")
-                ani.fromValue = 0
-                ani.toValue = 1
+                ani.fromValue = 1
+                ani.toValue = 0
                 ani.duration = 0.5
                 ani.repeatCount = 1
                 
@@ -146,7 +149,7 @@ class ColorViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.colorPickerImageView.layer.addSublayer(t)
                     
-                    print(i)
+//                    print(i)
                 }
             }
            
@@ -158,6 +161,7 @@ class ColorViewController: UIViewController {
                 for sublayer in self.colorPickerImageView.layer.sublayers!{
                     sublayer.removeFromSuperlayer()
                 }
+                player.resume()
             }
         }
     }
