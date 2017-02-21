@@ -21,15 +21,31 @@ public class ImagePlayer {
     
     var timer : Timer?
     
-    
-    struct option {
+
+    /// Toto : Customizable
+    struct Option {
         var bpm : TimeInterval = 0
-        var rhythm : Int = 0
+        var rhythm : Int? = nil
         var noteCount : Int = 0
+        var playMode : PlayMode = .random
+        
+        enum PlayMode : String{
+            case random
+            case verticalScanBar
+            case horizontalScanBar
+        }
     }
-    var option : ImagePlayer.option
+    var option : ImagePlayer.Option
     
-    init(source image: UIImage, option: ImagePlayer.option) {
+    
+    enum PlayerStatus: String {
+        case playing
+        case pause
+        case stop
+    }
+    var status : ImagePlayer.PlayerStatus = .stop
+    
+    init(source image: UIImage, option: ImagePlayer.Option) {
         self.image = image
         self.option = option
         
@@ -69,6 +85,7 @@ public class ImagePlayer {
     
     public func play() {
         RunLoop.main.add(self.timer!, forMode: RunLoopMode.defaultRunLoopMode)
+        self.status = .playing
     }
     
     public func stop() {
@@ -76,28 +93,31 @@ public class ImagePlayer {
         // timer stop
         self.timer?.invalidate()
         self.prepare()
+        self.status = .stop
         
         if let completionHandler = completionHandler {
             completionHandler()
         }
-        
     }
     
     public func resume() {
         // 1 비트를 4박자로 쪼갬
         let interval = TimeInterval(  (60 / self.option.bpm) / 4 )
         self.timer = Timer(timeInterval: interval, target: self, selector: #selector(self.performImage), userInfo: nil, repeats: true)
+        play()
     }
     
     public func pause() {
         ToneController.sharedInstance().stop()
         self.timer?.invalidate()
+        self.status = .pause
     }
     
     
     @objc public func performImage() {
         
         if self.pixelLocations.isEmpty {
+            print("ImagePlayer.performImage() : pixels empty")
             self.stop()
             return
         }
@@ -108,36 +128,57 @@ public class ImagePlayer {
     
     /// step1
     public func preparePixel() {
-        let lastPixelLocation = Int(self.image.size.width) * Int(self.image.size.height)
-        
-        // lastPixelLocation 이 2^32승을 넘어 가면 gg
-        // 즉, 이미지 크기가 2^32 보다 크면 안된다...
-        // 2^16 = 65,536
-        for _ in 0 ..< self.option.noteCount {
-            let rand = arc4random_uniform(UInt32(lastPixelLocation))
-            self.pixelLocations.append( Int(rand) )
+
+        switch self.option.playMode {
+        case .random:
+            
+            let lastPixelLocation = Int(self.image.size.width) * Int(self.image.size.height)
+            
+            // lastPixelLocation 이 2^32승을 넘어 가면 gg
+            // 즉, 이미지 크기가 2^32 보다 크면 안된다...
+            // 2^16 = 65,536
+            for _ in 0 ..< self.option.noteCount {
+                let rand = arc4random_uniform(UInt32(lastPixelLocation))
+                self.pixelLocations.append( Int(rand) )
+            }
+            
+        case .horizontalScanBar:
+            print()
+        case .verticalScanBar :
+            print()
         }
+        
     }
     
     /// step2
-    // pixelLocations 에서 pixel 하나 꺼내와서 컬러고 바꿈!
+    // pixelLocations 에서 pixel 하나 꺼내와서 `색`으로 바꿈!
     public func getSingleColor() -> UIColor{
         
-        let pixelLocation = pixelLocations.removeFirst() * 4
+        var color = UIColor.cyan
         
-        // get color
-        let r = CGFloat(data[pixelLocation]) / CGFloat(255.0)
-        let g = CGFloat(data[pixelLocation+1]) / CGFloat(255.0)
-        let b = CGFloat(data[pixelLocation+2]) / CGFloat(255.0)
-        let a = CGFloat(data[pixelLocation+3]) / CGFloat(255.0)
-        
-        let color = UIColor(red: r, green: g, blue: b, alpha: a)
-        
-        let y = (pixelLocation / 4) / Int(self.image.size.width)
-        let x = (pixelLocation / 4) % Int(self.image.size.width)
-        
-        if let pickedSingleColor = pickedSingleColor {
-            pickedSingleColor(color, x, y )
+        switch self.option.playMode {
+            case .random:
+            let pixelLocation = pixelLocations.removeFirst() * 4
+            
+            // get color
+            let r = CGFloat(data[pixelLocation]) / CGFloat(255.0)
+            let g = CGFloat(data[pixelLocation+1]) / CGFloat(255.0)
+            let b = CGFloat(data[pixelLocation+2]) / CGFloat(255.0)
+            let a = CGFloat(data[pixelLocation+3]) / CGFloat(255.0)
+            
+            color = UIColor(red: r, green: g, blue: b, alpha: a)
+            
+            let y = (pixelLocation / 4) / Int(self.image.size.width)
+            let x = (pixelLocation / 4) % Int(self.image.size.width)
+            
+            if let pickedSingleColor = pickedSingleColor {
+                pickedSingleColor(color, x, y )
+            }
+           
+        case .horizontalScanBar:
+            color = UIColor.brown
+        case .verticalScanBar :
+            color = UIColor.brown
         }
         
         return color

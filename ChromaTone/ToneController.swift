@@ -12,14 +12,6 @@ import UIKit
 
 public class ToneController {
     
-    public enum Instrument{
-        // 뭐 기타 등등등 추가해보자
-        case oscillator
-        case oscillatorBank
-        case drum
-        case flute
-    }
-    
     private struct StaticInstance {
         static var instance: ToneController?
     }
@@ -30,14 +22,23 @@ public class ToneController {
         }
         return StaticInstance.instance!
     }
+    
+    /// Todo: Customize!
+    public enum Instrument{
+        // 뭐 기타 등등등 추가해보자
+        case oscillator
+        case oscillatorBank
+        case drum
+        case flute
+    }
     private init() {
         
         print("ToneGenerator init")
         self.type = .oscillatorBank
-        self.detailType = .positiveReverseSawtooth
+        self.detailType = .sine
         
         /* 괜찮은 타입들
-         oscillatorBank - positiveReㅍerseSaw
+         oscillatorBank - positiveReverseSaw 포켓몬
          oscillatorBank - sine
          */
     }
@@ -75,46 +76,68 @@ public class ToneController {
         }
     }
     
-    var isPlaying: Bool = false
+//    var isPlaying: Bool = false
     
     
     
     // 기준 : A4.
     var memory : MIDINoteNumber = 0
     
-    public func play(color: UIColor) {
+    
+    // Volum : 0 ~ 100 사이로 받자.
+    // 특정한 볼륨 재생
+    public func play(color: UIColor , volume: Int? = nil) {
         
         switch self.type {
             
         case .oscillator:
             let tone = AudioKit.output as! AKOscillator
-            tone.frequency = color.color2soundSimple()
             
-            if !isPlaying{
-                print("Playing")
-                tone.amplitude = 1
-                tone.play()
+            let soundInfo = color.color2soundTest()
+            
+            tone.frequency = soundInfo.frequency
+            tone.play()
+            
+            
+            if let volume = volume {
+                tone.amplitude = Double(volume) / 100
+            }else {
+                tone.amplitude = Double(soundInfo.volume) / 100
             }
+            
             
         case .oscillatorBank:
             
-            let midiNumber = color.color2midiNumberSimple()
+            let tone = AudioKit.output as! AKOscillatorBank
             
-            if memory == midiNumber && isPlaying{
+            let soundInfo = color.color2soundTest()
+            
+            let MIDINumber = MIDINoteNumber( soundInfo.frequency.frequencyToMIDINote() )
+            var MIDIVolume : MIDIVelocity
+            
+            if let volume = volume {
+                MIDIVolume = MIDIVelocity((volume * 255 )  / 100 )
+            }else {
+                MIDIVolume = MIDIVelocity ((soundInfo.volume * 255 )  / 100 )
+            }
+            
+            if memory == MIDINumber {
+                tone.play(noteNumber: MIDINumber, velocity: MIDIVolume )
                 return
             }else {
-                let tone = AudioKit.output as! AKOscillatorBank
-                tone.play(noteNumber: midiNumber, velocity: 255)
+                
+                tone.play(noteNumber: MIDINumber, velocity: MIDIVolume )
                 tone.stop(noteNumber: memory)
-                memory = midiNumber
+                memory = MIDINumber
             }
             
         default:
             print("play default")
         }
-        self.isPlaying = true
         
     }
+    
+    
     
     public func stop() {
         
@@ -123,6 +146,7 @@ public class ToneController {
         case .oscillator:
             let tone = AudioKit.output as! AKOscillator
             tone.amplitude = 0
+//            tone.stop()
             
         case .oscillatorBank:
             let tone = AudioKit.output as! AKOscillatorBank
@@ -132,30 +156,9 @@ public class ToneController {
             print("stop default")
         }
         
-        self.isPlaying = false
         
     }
     
-    // for Oscillator bank
-//    public func stopForAsync() {
-//        switch self.type {
-//            
-//        case .oscillator:
-//            let tone = AudioKit.output as! AKOscillator
-//            tone.stop()
-//            
-//        case .oscillatorBank:
-//            let tone = AudioKit.output as! AKOscillatorBank
-//            
-//            for midiNumber in 0...255 {
-//                tone.stop(noteNumber: MIDINoteNumber(midiNumber))
-//            }
-//            
-//        default:
-//            print("stop default")
-//        }
-//        self.isPlaying = false
-//    }
 }
 
 // midi = 69 + 12 * { log( freq / 440) / log(2) }
@@ -164,12 +167,10 @@ extension Double {
         return MIDINoteNumber ( 69 + ( 12 * log2( self / 440) ) )
     }
 }
-
-
 extension UIColor {
     
     // frequency = 110 * pow(2, (saturation*2)) * pow(2, hue)
-    func color2sound() -> Double{
+    func color2soundOne() -> Double{
         
         var hue: CGFloat = 0
         var saturation: CGFloat = 0
@@ -177,7 +178,17 @@ extension UIColor {
         let result = self.getHue(&hue, saturation: &saturation, brightness: nil, alpha: nil)
         
         if result {
-            let hue = Double(hue)
+            var hue : Double {
+                get {
+                    let hue = Double(hue)
+                    if hue < 0.75 {
+                        return 0.75 - hue
+                    }else {
+                        return 1.75 - hue
+                    }
+                }
+            }
+            
             let saturation = Double(saturation)
             let frequency = 110 * pow(2,saturation*2) * pow(2, hue)
             
@@ -197,10 +208,22 @@ extension UIColor {
         let result = self.getHue(&hue, saturation: nil, brightness: &brightness, alpha: nil)
         
         if result {
-            let hue = Double(hue)
+            
+            var hue : Double {
+                get {
+                    let hue = Double(hue)
+                    if hue < 0.75 {
+                        return 0.75 - hue
+                    }else {
+                        return 1.75 - hue
+                    }
+                }
+            }
             let frequency = 220 *  pow(2, hue*2)
             let formattedFrequency = String(format: "%.2f", frequency)
+            
             print("frequency : \(formattedFrequency)Hz")
+            print("hue : \(hue)")
             print("brightness : \(brightness)")
             return frequency
             
@@ -209,9 +232,56 @@ extension UIColor {
         return 440
     }
     
-    
-    // midi = 69 + 12 * { log( freq / 440) / log(2) }
-    func color2midiNumberSimple() -> MIDINoteNumber {
-        return MIDINoteNumber ( 69 + ( 12 * log2( self.color2soundSimple() / 440) ) )
+    func color2soundTest() -> (frequency: Double, volume: Int){
+        
+        var hue: CGFloat = 0
+        var saturation: CGFloat = 0
+        var brightness : CGFloat = 0
+        let result = self.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: nil)
+        
+        if result {
+            var hue : Double {
+                get {
+                    let hue = Double(hue)
+                    if hue < 0.75 {
+                        return 0.75 - hue
+                    }else {
+                        return 1.75 - hue
+                    }
+                }
+            }
+            // saturation 이 볼륨
+            let saturation: Double = min(Double(saturation) * 100, 100)
+            let brightness = Double(brightness) * 100
+            
+            // 거의 무채색이라고보자.
+            /// Todo
+            if saturation + brightness < 115 {
+                
+                // 가장 낮은 음 발생
+                print("무채색..")
+//                return (219, (Int(saturation) / 10) * 10 )
+                return (219, Int(saturation) )
+                
+            }else {
+                
+                // frequencty : 220 ~ 880
+                let frequency = 220 *  pow(2, hue*2)
+                let formattedFrequency = String(format: "%.2f", frequency)
+                print("frequency : \(formattedFrequency)Hz")
+                print("brightness : \(brightness)")
+                print("saturation : \(saturation)")
+                
+//                print("일의 자리 버림 :  \((Int(saturation) / 10) * 10) ")
+                // 1의 자리 버림
+//                return (frequency, (Int(saturation) / 10) * 10 )
+                return (frequency, Int(saturation) )
+                
+            }
+            
+        }
+        // 기본음 A (라)
+        print("color2soundTest : 변환 실패")
+        return (440, 0)
     }
 }

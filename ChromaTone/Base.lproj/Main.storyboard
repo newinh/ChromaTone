@@ -149,13 +149,14 @@
                                     <constraint firstAttribute="height" constant="50" id="NGj-t8-Gez"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jxX-Xh-5aZ">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jxX-Xh-5aZ" customClass="AKRollingOutputPlot" customModule="AudioKit">
                                 <rect key="frame" x="96" y="533" width="183" height="50"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="3IF-9D-W73" firstAttribute="leading" secondItem="jxX-Xh-5aZ" secondAttribute="trailing" constant="20" id="1o2-hv-j17"/>
                             <constraint firstItem="xRL-Er-NNd" firstAttribute="width" secondItem="D8s-Fy-OgR" secondAttribute="width" id="8i2-Bb-icx"/>
                             <constraint firstItem="4RV-u5-oTy" firstAttribute="top" secondItem="KTv-KE-s4U" secondAttribute="bottom" constant="95" id="BwN-UC-7J9"/>
                             <constraint firstItem="7PL-dA-f3H" firstAttribute="leading" secondItem="D8s-Fy-OgR" secondAttribute="leadingMargin" constant="10" id="CaS-nI-CsR"/>
@@ -168,7 +169,6 @@
                             <constraint firstItem="4RV-u5-oTy" firstAttribute="top" secondItem="3IF-9D-W73" secondAttribute="bottom" constant="35" id="eOL-8M-mTW"/>
                             <constraint firstItem="KTv-KE-s4U" firstAttribute="width" secondItem="D8s-Fy-OgR" secondAttribute="width" id="f7U-w1-ZLj"/>
                             <constraint firstItem="KTv-KE-s4U" firstAttribute="top" secondItem="xRL-Er-NNd" secondAttribute="bottom" constant="10" id="kB2-Or-Tcz"/>
-                            <constraint firstItem="3IF-9D-W73" firstAttribute="leading" secondItem="jxX-Xh-5aZ" secondAttribute="trailing" constant="20" id="mNT-dK-qca"/>
                             <constraint firstItem="xRL-Er-NNd" firstAttribute="top" secondItem="us5-MV-cjF" secondAttribute="bottom" id="o9a-TX-acd"/>
                             <constraint firstItem="jxX-Xh-5aZ" firstAttribute="leading" secondItem="7PL-dA-f3H" secondAttribute="trailing" constant="20" id="rFJ-Zy-eSJ"/>
                             <constraint firstAttribute="trailingMargin" secondItem="3IF-9D-W73" secondAttribute="trailing" constant="10" id="tgr-Hq-o34"/>
@@ -212,7 +212,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hxp-qh-nz7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2127.1999999999998" y="-260.41979010494754"/>
+            <point key="canvasLocation" x="-2127.536231884058" y="-260.86956521739131"/>
         </scene>
         <!--Camera View Controller-->
         <scene sceneID="sJy-Iw-ZAD">
