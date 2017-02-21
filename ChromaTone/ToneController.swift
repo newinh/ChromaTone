@@ -28,19 +28,29 @@ public class ToneController {
         // 뭐 기타 등등등 추가해보자
         case oscillator
         case oscillatorBank
+        
+        case piano
+        
         case drum
         case flute
     }
     private init() {
         
         print("ToneGenerator init")
-        self.type = .oscillatorBank
+        self.type = .piano
         self.detailType = .sine
         
         /* 괜찮은 타입들
          oscillatorBank - positiveReverseSaw 포켓몬
          oscillatorBank - sine
          */
+
+        try! hiHat.loadWav(Constants.hiHat)
+        
+        for i in 36...61 {
+            let file = try! AKAudioFile(readFileName: "piano-\(i).wav")
+            melody.append(try! AKAudioPlayer(file: file)) 
+        }
     }
     
     public var detailType : AKTableType {
@@ -50,27 +60,55 @@ public class ToneController {
         }
     }
     
+    var oscillatorBank : AKOscillatorBank!
+    var oscillator : AKOscillator!
+    var mixer = AKMixer()
+    
+    let kick = AKSynthKick()
+    let snare = AKSynthSnare()
+    let hiHat = AKSampler()
+    
+    var melody : [AKAudioPlayer] = []
+    var ii : [Int] = []
+    
     public var type : Instrument {
         
         didSet {
-            print("Type will Set")
+            print("TonController type didSet")
+            
+            mixer = AKMixer()
+            mixer.connect(kick)
+            mixer.connect(snare)
+            mixer.connect(hiHat)
+            
+            
             switch type {
                 
             case .oscillator:
-                let tone = AKOscillator(waveform: AKTable(self.detailType))
-                AudioKit.output = tone
-                tone.amplitude = 0
-                tone.play()
+                oscillator = AKOscillator(waveform: AKTable(self.detailType))
+                
+                oscillator.amplitude = 0
+                oscillator.play()
+                mixer.connect(oscillator)
                 
             case .oscillatorBank:
-                let tone = AKOscillatorBank(waveform: AKTable(self.detailType),
+                oscillatorBank = AKOscillatorBank(waveform: AKTable(self.detailType),
                                             attackDuration: 0.01,
                                             releaseDuration: 0.01)
-                AudioKit.output = tone
+                mixer.connect(oscillatorBank!)
+                
+            case .piano:
+                
+                for (i, node) in melody.enumerated() {
+                    mixer.connect(node)
+                }
+                
+                
             default :
                 print("default")
             }
             defer{
+                AudioKit.output = mixer
                 AudioKit.start()
             }
         }
@@ -86,31 +124,24 @@ public class ToneController {
     
     // Volum : 0 ~ 100 사이로 받자.
     // 특정한 볼륨 재생
-    public func play(color: UIColor , volume: Int? = nil) {
+    public func playMelody(color: UIColor , volume: Int? = nil, interval : Double? = nil) {
+        
+        let soundInfo = color.color2soundTwo()
         
         switch self.type {
             
         case .oscillator:
-            let tone = AudioKit.output as! AKOscillator
-            
-            let soundInfo = color.color2soundTest()
-            
-            tone.frequency = soundInfo.frequency
-            tone.play()
-            
+            oscillator.frequency = soundInfo.frequency
+            oscillator.play()
             
             if let volume = volume {
-                tone.amplitude = Double(volume) / 100
+                oscillator.amplitude = Double(volume) / 100
             }else {
-                tone.amplitude = Double(soundInfo.volume) / 100
+                oscillator.amplitude = Double(soundInfo.volume) / 100
             }
-            
             
         case .oscillatorBank:
             
-            let tone = AudioKit.output as! AKOscillatorBank
-            
-            let soundInfo = color.color2soundTest()
             
             let MIDINumber = MIDINoteNumber( soundInfo.frequency.frequencyToMIDINote() )
             var MIDIVolume : MIDIVelocity
@@ -120,15 +151,27 @@ public class ToneController {
             }else {
                 MIDIVolume = MIDIVelocity ((soundInfo.volume * 255 )  / 100 )
             }
+            print("MIDINoteNumber : \(MIDINumber)")
             
             if memory == MIDINumber {
-                tone.play(noteNumber: MIDINumber, velocity: MIDIVolume )
+                oscillatorBank.play(noteNumber: MIDINumber, velocity: MIDIVolume )
                 return
             }else {
                 
-                tone.play(noteNumber: MIDINumber, velocity: MIDIVolume )
-                tone.stop(noteNumber: memory)
+                oscillatorBank.play(noteNumber: MIDINumber, velocity: MIDIVolume )
+                oscillatorBank.stop(noteNumber: memory)
                 memory = MIDINumber
+            }
+            
+        case .piano:
+            let MIDINumber = MIDINoteNumber( soundInfo.frequency.frequency2midiNumber() )
+            let index : Int = Int(MIDINumber) - 56
+
+            
+            if let interval = interval {
+                melody[index].play(from: 0, to: interval)
+            }else {
+              melody[index].play()
             }
             
         default:
@@ -144,19 +187,28 @@ public class ToneController {
         print("tone stop")
         switch self.type {
         case .oscillator:
-            let tone = AudioKit.output as! AKOscillator
-            tone.amplitude = 0
-//            tone.stop()
+            oscillator.amplitude = 0
             
         case .oscillatorBank:
-            let tone = AudioKit.output as! AKOscillatorBank
-            tone.stop(noteNumber: memory)
+            oscillatorBank.stop(noteNumber: memory)
             memory = 0
         default:
             print("stop default")
         }
         
         
+    }
+    
+    public func playKick(_ velocity : MIDIVelocity = 255) {
+        kick.play(noteNumber: 60, velocity: velocity)
+    }
+    
+    public func playSnare(_ velocity : MIDIVelocity = 255) {
+        snare.play(noteNumber: 60, velocity: velocity)
+    }
+    
+    public func playHiHat(_ velocity : MIDIVelocity = 255) {
+        hiHat.play(noteNumber: 60, velocity: velocity)
     }
     
 }
@@ -232,7 +284,7 @@ extension UIColor {
         return 440
     }
     
-    func color2soundTest() -> (frequency: Double, volume: Int){
+    func color2soundTwo() -> (frequency: Double, volume: Int){
         
         var hue: CGFloat = 0
         var saturation: CGFloat = 0
@@ -259,7 +311,7 @@ extension UIColor {
             if saturation + brightness < 115 {
                 
                 // 가장 낮은 음 발생
-                print("무채색..")
+                print("무채색.. , MIDINoteNumber : \(219.frequencyToMIDINote())")
 //                return (219, (Int(saturation) / 10) * 10 )
                 return (219, Int(saturation) )
                 
@@ -271,6 +323,7 @@ extension UIColor {
                 print("frequency : \(formattedFrequency)Hz")
                 print("brightness : \(brightness)")
                 print("saturation : \(saturation)")
+                
                 
 //                print("일의 자리 버림 :  \((Int(saturation) / 10) * 10) ")
                 // 1의 자리 버림

@@ -55,15 +55,17 @@ class CameraViewController : UIViewController {
         case .notDetermined:
             sessionQueue.suspend()
             AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo, completionHandler: { [unowned self] granted in
-                if !granted {
+                if !granted { // 허가되지 않았을 때
                     self.setupResult = .notAuthorized
                 }
                 self.sessionQueue.resume()
+                self.dismiss(animated: true, completion: nil)
             })
             
         default:
             // denied
             setupResult = .notAuthorized
+            self.dismiss(animated: true, completion: nil)
         }
         
         // session 작업은 따로
@@ -75,6 +77,7 @@ class CameraViewController : UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        print(self.setupResult)
         // Session Setup 결과에 대한 대응
         sessionQueue.async {
 
@@ -86,22 +89,20 @@ class CameraViewController : UIViewController {
                 
             case .notAuthorized:
                 DispatchQueue.main.async { [unowned self] in
-                    let message = NSLocalizedString("AVCam doesn't have permission to use the camera, please change privacy settings", comment: "Alert message when the user has denied access to the camera")
-                    let alertController = UIAlertController(title: "AVCam", message: message, preferredStyle: .alert)
+                    let message = NSLocalizedString("카메라에 접근할수 업습니다. 설정 > ChromaTone 에서 카메라를 승인해주세요.", comment: "카메가 접근 권한을 얻지 못했을 때")
+                    let alertController = UIAlertController(title: "ChromaTone", message: message, preferredStyle: .alert)
                     alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: .cancel, handler: nil))
-                    alertController.addAction(UIAlertAction(title: NSLocalizedString("Settings", comment: "Alert button to open Settings"), style: .`default`, handler: { action in
+                    alertController.addAction(UIAlertAction(title: NSLocalizedString("Settings", comment: "go Settings"), style: .`default`, handler: { action in
                         UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!, options: [:], completionHandler: nil)
                     }))
-                    
                     self.present(alertController, animated: true, completion: nil)
                 }
                 
             case .configurationFailed:
                 DispatchQueue.main.async { [unowned self] in
-                    let message = NSLocalizedString("Unable to capture media", comment: "Alert message when something goes wrong during capture session configuration")
-                    let alertController = UIAlertController(title: "AVCam", message: message, preferredStyle: .alert)
+                    let message = NSLocalizedString("카메라 기능을 사용할 수 없습니다.", comment: "카메라 설정 실패...")
+                    let alertController = UIAlertController(title: "ChromaTone", message: message, preferredStyle: .alert)
                     alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: .cancel, handler: nil))
-                    
                     self.present(alertController, animated: true, completion: nil)
                 }
             }
@@ -165,7 +166,8 @@ class CameraViewController : UIViewController {
             guard let defaultVideoDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo) else {
                 
                 print(" No Video Device ")
-                self.dismiss(animated: true, completion: nil)
+                self.setupResult = .configurationFailed
+                session.commitConfiguration()
                 return
             }
             
@@ -313,7 +315,7 @@ extension CameraViewController : AVCaptureVideoDataOutputSampleBufferDelegate {
         DispatchQueue.main.async {
             
             if self.isPlaying {
-                ToneController.sharedInstance().play(color: color)
+                ToneController.sharedInstance().playMelody(color: color, volume: 100)
             }
             self.colorPreview.backgroundColor = color
         }

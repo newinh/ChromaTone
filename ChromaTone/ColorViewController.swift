@@ -147,7 +147,7 @@ class ColorViewController: UIViewController {
         self.colorPickerImageView.pickedColor = { [unowned self] (newColor) in
             // 색 미리보기
             self.preview.backgroundColor = newColor
-            ToneController.sharedInstance().play(color: newColor)
+            ToneController.sharedInstance().playMelody(color: newColor)
         }
         self.colorPickerImageView.endedTouch = {
             ToneController.sharedInstance().stop()
@@ -198,7 +198,7 @@ extension ColorViewController {
         
         // image 바꾸면 imagePlayer 생성
         // 1beat 에 4 노트
-        let option = ImagePlayer.Option(bpm: 120, rhythm: nil, noteCount: 40, playMode: .random)
+        let option = ImagePlayer.Option(bpm: 60, timePerBeat: 4, noteCount: 40, playMode: .random)
         let imagePlayer = ImagePlayer(source: self.image!, option: option)
         imagePlayer.completionHandler = self.imagePlayerCompleted
         imagePlayer.pickedSingleColor = self.receivedColorByImagePlyer
@@ -212,7 +212,7 @@ extension ColorViewController {
         
         animation.fromValue = 1
         animation.toValue = 0
-        animation.duration = 0.5
+        animation.duration = 1
         animation.repeatCount = 1
         
         let imageFrame = self.colorPickerImageView.imageFrame()

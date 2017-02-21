@@ -131,7 +131,7 @@
                                     <segment title="Camera"/>
                                 </segments>
                                 <connections>
-                                    <action selector="modeChanged:" destination="682-5y-E1L" eventType="valueChanged" id="YRH-FK-7mr"/>
+                                    <action selector="modeChanged:" destination="682-5y-E1L" eventType="valueChanged" id="zQ8-MM-Eme"/>
                                 </connections>
                             </segmentedControl>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7PL-dA-f3H">

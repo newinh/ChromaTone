@@ -24,8 +24,8 @@ public class ImagePlayer {
 
     /// Toto : Customizable
     struct Option {
-        var bpm : TimeInterval = 0
-        var rhythm : Int? = nil
+        var bpm : TimeInterval = 100
+        var timePerBeat : Int = 4    /// 1비트당 박자
         var noteCount : Int = 0
         var playMode : PlayMode = .random
         
@@ -73,12 +73,13 @@ public class ImagePlayer {
     
     // 새로운 음악을 만들자
     public func prepare() {
+        
+        print("prepare")
 
         self.preparePixel()
         
         //timer setup
-        // 1 비트를 4박자로 쪼갬
-        let interval = TimeInterval(  (60 / self.option.bpm) / 4 )
+        let interval = TimeInterval( 1 / ( Double(self.option.bpm/60) * Double(self.option.timePerBeat) ))
         print("interval : \(interval)" )
         self.timer = Timer(timeInterval: interval, target: self, selector: #selector(self.performImage), userInfo: nil, repeats: true)
     }
@@ -101,8 +102,7 @@ public class ImagePlayer {
     }
     
     public func resume() {
-        // 1 비트를 4박자로 쪼갬
-        let interval = TimeInterval(  (60 / self.option.bpm) / 4 )
+        let interval = TimeInterval( 1 / ( Double(self.option.bpm/60) * Double(self.option.timePerBeat) ))
         self.timer = Timer(timeInterval: interval, target: self, selector: #selector(self.performImage), userInfo: nil, repeats: true)
         play()
     }
@@ -114,16 +114,56 @@ public class ImagePlayer {
     }
     
     
-    @objc public func performImage() {
+    var count = 0
+    var melodyChecker : Bool = true
+    var melodyLength: Int = 0
+    
+    /// step3
+    @objc public func performImage() {  /// 한박자
         
         if self.pixelLocations.isEmpty {
             print("ImagePlayer.performImage() : pixels empty")
             self.stop()
             return
         }
-        let color = getSingleColor()
-        ToneController.sharedInstance().play(color: color)
         
+        count += 1
+        
+        
+        let onFirstBeat = count % self.option.timePerBeat == 0
+        let everyOtherBeat = count % self.option.timePerBeat == self.option.timePerBeat/2
+
+        var oddBeat : Bool = false
+        if self.option.timePerBeat % 2 == 1{
+            oddBeat = count % self.option.timePerBeat == self.option.timePerBeat - 1
+        }
+        
+//        let melodyBeat = Array(0...3).randomElement() == 0
+//        let randomHit2 = Array(0...7).randomElement() == 0
+//        let randomHit3 = Array(0...7).randomElement() == 0
+        
+        let color = getSingleColor()
+        if onFirstBeat{
+            ToneController.sharedInstance().playKick()
+            ToneController.sharedInstance().playMelody(color: color, volume: 100)
+        }else if everyOtherBeat || oddBeat {
+            ToneController.sharedInstance().playSnare()
+            ToneController.sharedInstance().playMelody(color: color)
+        }else {
+            ToneController.sharedInstance().playHiHat(100)
+            ToneController.sharedInstance().playMelody(color: color)
+        }
+        
+        
+//        if melodyBeat{
+//            let color = getSingleColor()
+//            ToneController.sharedInstance().play(color: color)
+//            melodyChecker = false
+//            melodyLength = 0
+//        }else if melodyLength > 2 {
+//            ToneController.sharedInstance().stop()
+//        }
+//        melodyLength += 1
     }
     
     /// step1
