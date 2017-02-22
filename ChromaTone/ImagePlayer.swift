@@ -162,10 +162,13 @@ public class ImagePlayer {
         var heightUnit : Int = 0
         
         
+        
         if option.playMode == .verticalScanBar {
             
             widthUnit = Int( image.size.width / CGFloat(option.scanUnit) )
             heightUnit = Int( image.size.height / sampleNumber )
+            
+            
             
         }else if option.playMode == .horizontalScanBar{
             widthUnit = Int( image.size.width / sampleNumber )
@@ -185,13 +188,13 @@ public class ImagePlayer {
                 
                 switch option.playMode {
                 case .verticalScanBar:
-                    pixelLocation = faster * heightUnit * Int(self.image.size.width) + ( later * widthUnit )
+                    pixelLocation = ( faster * heightUnit * Int(self.image.size.width) + ( later * widthUnit ) )
                     
                     print ("pixelLocation : \(pixelLocation)")
                     print ("x : \(pixelLocation % Int(self.image.size.width)) , y : \(pixelLocation / Int(self.image.size.width))")
                     
                 case .horizontalScanBar:
-                    pixelLocation = later * heightUnit * Int(self.image.size.width) + ( faster * widthUnit )
+                    pixelLocation = ( later * heightUnit * Int(self.image.size.width) + ( faster * widthUnit ) ) 
                 default:
                     print("ImagePlayer.prepareScan() : 아무것도 안하고싶어...")
                     return
@@ -286,8 +289,9 @@ public class ImagePlayer {
             var b : CGFloat = 0
             var a : CGFloat = 0
             
-            var x: Int = 0
-            var y :Int = 0
+            // 화면에서 없애자...
+            var x: Int = -100
+            var y :Int = -100
             
             
             var signitureSaturation : CGFloat = 0
