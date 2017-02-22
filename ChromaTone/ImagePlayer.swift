@@ -95,6 +95,7 @@ public class ImagePlayer {
         self.timer?.invalidate()
         self.prepare()
         self.status = .stop
+        count = 0
         
         if let completionHandler = completionHandler {
             completionHandler()
@@ -115,8 +116,8 @@ public class ImagePlayer {
     
     
     var count = 0
-    var melodyChecker : Bool = true
-    var melodyLength: Int = 0
+//    var melodyChecker : Bool = true
+//    var melodyLength: Int = 0
     
     /// step3
     @objc public func performImage() {  /// 한박자
@@ -143,27 +144,26 @@ public class ImagePlayer {
 //        let randomHit3 = Array(0...7).randomElement() == 0
         
         let color = getSingleColor()
-        if onFirstBeat{
+        
+        
+        let info = color.color2soundTwo()
+        
+        // 무채색
+        let achroma = info.frequency < 220
+        let rand = arc4random_uniform(2) == 0
+
+        
+        if onFirstBeat || (achroma && rand ){
             ToneController.sharedInstance().playKick()
             ToneController.sharedInstance().playMelody(color: color, volume: 100)
-        }else if everyOtherBeat || oddBeat {
+        }else if everyOtherBeat || oddBeat || (achroma && !rand ){
             ToneController.sharedInstance().playSnare()
             ToneController.sharedInstance().playMelody(color: color)
-        }else {
-            ToneController.sharedInstance().playHiHat(100)
+        }else if !achroma{
             ToneController.sharedInstance().playMelody(color: color)
         }
+        ToneController.sharedInstance().playHiHat(50)
         
-        
-//        if melodyBeat{
-//            let color = getSingleColor()
-//            ToneController.sharedInstance().play(color: color)
-//            melodyChecker = false
-//            melodyLength = 0
-//        }else if melodyLength > 2 {
-//            ToneController.sharedInstance().stop()
-//        }
-//        melodyLength += 1
     }
     
     /// step1

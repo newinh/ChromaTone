@@ -30,6 +30,7 @@ public class ToneController {
         case oscillatorBank
         
         case piano
+        case pianoFM
         
         case drum
         case flute
@@ -47,10 +48,17 @@ public class ToneController {
 
         try! hiHat.loadWav(Constants.hiHat)
         
-        for i in 36...61 {
+        for i in 56...81 {
             let file = try! AKAudioFile(readFileName: "piano-\(i).wav")
             melody.append(try! AKAudioPlayer(file: file)) 
         }
+        
+        for i in 56...81 {
+            melody2.append(AKSampler())
+            try! melody2[i-56].loadWav("piano-\(i)")
+        }
+        
+        try! pianoFM.loadWav("FM-Piano")
     }
     
     public var detailType : AKTableType {
@@ -64,12 +72,18 @@ public class ToneController {
     var oscillator : AKOscillator!
     var mixer = AKMixer()
     
+    var mixer2 = AKMixer()
+    
     let kick = AKSynthKick()
     let snare = AKSynthSnare()
     let hiHat = AKSampler()
     
     var melody : [AKAudioPlayer] = []
-    var ii : [Int] = []
+    
+    /// TODO : Sampler
+    var melody2 : [AKSampler] = []
+    
+    var pianoFM = AKSampler()
     
     public var type : Instrument {
         
@@ -103,6 +117,23 @@ public class ToneController {
                     mixer.connect(node)
                 }
                 
+                for (i, node) in melody2.enumerated() {
+                    mixer2.connect(node)
+                }
+                mixer.connect(mixer2)
+                
+            case .pianoFM :
+                
+                var delay  = AKDelay(pianoFM)
+//                delay.time = pulse * 1.5
+                delay.dryWetMix = 0.3
+                delay.feedback = 0.2
+                
+                let reverb = AKReverb(delay)
+                reverb.loadFactoryPreset(.largeRoom)
+                let mix = AKMixer(reverb)
+                mix.volume = 5.0
+                mixer.connect(mix)
                 
             default :
                 print("default")
@@ -165,14 +196,45 @@ public class ToneController {
             
         case .piano:
             let MIDINumber = MIDINoteNumber( soundInfo.frequency.frequency2midiNumber() )
+//            var MIDIVolume : MIDIVelocity
             let index : Int = Int(MIDINumber) - 56
+            
+            
+            if melody[index].isPlaying {
+                print("ToneController.play : 이미 연주중")
+                return
+            }
 
             
             if let interval = interval {
                 melody[index].play(from: 0, to: interval)
+                
+                // 화성 테스트
+                if index > 3 {
+                    melody[index-4].play(from: 0, to: interval)
+                }
+                
             }else {
               melody[index].play()
+                if index > 3 {
+                    melody[index-4].play()
+                }
             }
+            
+        case .pianoFM:
+            
+            let MIDINumber = MIDINoteNumber( soundInfo.frequency.frequencyToMIDINote() )
+            var MIDIVolume : MIDIVelocity
+            
+            if let volume = volume {
+                MIDIVolume = MIDIVelocity((volume * 255 )  / 100 )
+            }else {
+                MIDIVolume = MIDIVelocity ((soundInfo.volume * 255 )  / 100 )
+            }
+            print("MIDINoteNumber : \(MIDINumber)")
+            
+            pianoFM.play(noteNumber: MIDINumber, velocity: MIDIVolume)
+            
             
         default:
             print("play default")
@@ -214,6 +276,7 @@ public class ToneController {
 }
 
 // midi = 69 + 12 * { log( freq / 440) / log(2) }
+// A3 (라) / 220Hz / 57
 extension Double {
     func frequency2midiNumber() -> MIDINoteNumber {
         return MIDINoteNumber ( 69 + ( 12 * log2( self / 440) ) )
@@ -284,6 +347,7 @@ extension UIColor {
         return 440
     }
     
+    // 220Hz ~ 880Hz / A3 ~ A5
     func color2soundTwo() -> (frequency: Double, volume: Int){
         
         var hue: CGFloat = 0
@@ -308,7 +372,7 @@ extension UIColor {
             
             // 거의 무채색이라고보자.
             /// Todo
-            if saturation + brightness < 115 {
+            if saturation + brightness < 100 {
                 
                 // 가장 낮은 음 발생
                 print("무채색.. , MIDINoteNumber : \(219.frequencyToMIDINote())")
