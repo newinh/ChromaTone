@@ -24,7 +24,7 @@ class ColorViewController: UIViewController {
     var imagePlayer: ImagePlayer?
     
     var imagePlayerCompleted : ( (Void) -> Void  )?
-    var receivedColorByImagePlyer : ( (UIColor, _ x : Int, _ y : Int )  -> Void )?
+    var receivedColorByImagePlyer : ( (UIColor, _ x : Int?, _ y : Int? )  -> Void )?
     
     var image : UIImage?{
         get {
@@ -198,7 +198,7 @@ extension ColorViewController {
         
         // image 바꾸면 imagePlayer 생성
         // 1beat 에 4 노트
-        let option = ImagePlayer.Option(bpm: 60, timePerBeat: 4, noteCount: 40, playMode: .random)
+        let option = ImagePlayer.Option(bpm: 60, timePerBeat: 4, noteCount: 40, playMode: .verticalScanBar, scanSampleNumber: 11)
         let imagePlayer = ImagePlayer(source: self.image!, option: option)
         imagePlayer.completionHandler = self.imagePlayerCompleted
         imagePlayer.pickedSingleColor = self.receivedColorByImagePlyer
@@ -218,28 +218,35 @@ extension ColorViewController {
         let imageFrame = self.colorPickerImageView.imageFrame()
         let makerSize: CGFloat = 40
         
+        
         self.receivedColorByImagePlyer = {
             (color, x, y ) in
             
-            self.view.backgroundColor = color
             
-            // animation
-            let scale =  imageFrame.size.width / self.colorPickerImageView.intrinsicContentSize.width
-            let revisedX = imageFrame.minX + CGFloat(x) * scale
-            let revisedY = imageFrame.minY + CGFloat(y) * scale
-            
-            let layer = CALayer()
-            layer.backgroundColor = color.cgColor
-            layer.frame = CGRect(x: revisedX - makerSize/2, y: revisedY - makerSize/2, width: makerSize, height: makerSize)
-            
-            layer.cornerRadius = makerSize/2
-            layer.borderWidth = 1
-            layer.borderColor = UIColor.white.cgColor
-            
-            layer.opacity = 0
-            layer.add(animation, forKey: "opacity")
-            
-            self.colorPickerImageView.layer.addSublayer(layer)
+            /// TODO!!! 스캔바 이동하게 해보장
+            if let x = x, let y = y {   /// x , y 모두 지정 되었을 경우
+                self.view.backgroundColor = color
+                
+                // animation
+                let scale =  imageFrame.size.width / self.colorPickerImageView.intrinsicContentSize.width
+                let revisedX = imageFrame.minX + CGFloat(x) * scale
+                let revisedY = imageFrame.minY + CGFloat(y) * scale
+                
+                let layer = CALayer()
+                layer.backgroundColor = color.cgColor
+                layer.frame = CGRect(x: revisedX - makerSize/2, y: revisedY - makerSize/2, width: makerSize, height: makerSize)
+                
+                layer.cornerRadius = makerSize/2
+                layer.borderWidth = 1
+                layer.borderColor = UIColor.white.cgColor
+                
+                layer.opacity = 0
+                layer.add(animation, forKey: "opacity")
+                
+                self.colorPickerImageView.layer.addSublayer(layer)
+                
+            }
         }
+            
     }
 }
