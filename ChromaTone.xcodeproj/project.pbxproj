@@ -45,6 +45,7 @@
 		78E4F7C31E5CE8A20055AB5A /* piano-56.wav in Resources */ = {isa = PBXBuildFile; fileRef = 78E4F7C11E5CE8A20055AB5A /* piano-56.wav */; };
 		78E4F7C41E5CE8A20055AB5A /* piano-81.wav in Resources */ = {isa = PBXBuildFile; fileRef = 78E4F7C21E5CE8A20055AB5A /* piano-81.wav */; };
 		78E4F7C81E5D84C50055AB5A /* FM-Piano.wav in Resources */ = {isa = PBXBuildFile; fileRef = 78E4F7C71E5D84C50055AB5A /* FM-Piano.wav */; };
+		78E4F7CA1E5E2BE70055AB5A /* ColorViewController+ImagePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E4F7C91E5E2BE70055AB5A /* ColorViewController+ImagePlayer.swift */; };
 		78E63E711E58B91100A9B96F /* ToneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E63E701E58B91100A9B96F /* ToneController.swift */; };
 		78E63E731E59A86200A9B96F /* ImagePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E63E721E59A86200A9B96F /* ImagePlayer.swift */; };
 		78FF99881E530CE100D93738 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FF99871E530CE100D93738 /* CameraViewController.swift */; };
@@ -94,6 +95,7 @@
 		78E4F7C11E5CE8A20055AB5A /* piano-56.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "piano-56.wav"; sourceTree = "<group>"; };
 		78E4F7C21E5CE8A20055AB5A /* piano-81.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "piano-81.wav"; sourceTree = "<group>"; };
 		78E4F7C71E5D84C50055AB5A /* FM-Piano.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "FM-Piano.wav"; sourceTree = "<group>"; };
+		78E4F7C91E5E2BE70055AB5A /* ColorViewController+ImagePlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ColorViewController+ImagePlayer.swift"; sourceTree = "<group>"; };
 		78E63E701E58B91100A9B96F /* ToneController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToneController.swift; sourceTree = "<group>"; };
 		78E63E721E59A86200A9B96F /* ImagePlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePlayer.swift; sourceTree = "<group>"; };
 		78FF99871E530CE100D93738 /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
@@ -213,6 +215,7 @@
 			isa = PBXGroup;
 			children = (
 				78684B2E1E49BDD800E626AF /* ColorViewController.swift */,
+				78E4F7C91E5E2BE70055AB5A /* ColorViewController+ImagePlayer.swift */,
 				78E63E6D1E586BB100A9B96F /* PickerView */,
 				78E63E6C1E586BA400A9B96F /* CameraView */,
 			);
@@ -426,6 +429,7 @@
 				78684B2F1E49BDD800E626AF /* ColorViewController.swift in Sources */,
 				78FF99881E530CE100D93738 /* CameraViewController.swift in Sources */,
 				78684B2D1E49BDD800E626AF /* AppDelegate.swift in Sources */,
+				78E4F7CA1E5E2BE70055AB5A /* ColorViewController+ImagePlayer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -19,9 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("실행된 적 있음")
             
             
-        } else {
+        } else {    // 첫실행
+            print("첫실행")
             
-            print("첫 실행")
             UserDefaults.standard.set(true, forKey: "firstLauch")
 
             // TonController
@@ -31,17 +31,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UserDefaults.standard.set(Double(60.0), forKey: "ImagePlayer Option BPM Key")
             UserDefaults.standard.set(Int(4), forKey: "ImagePlayer Option TimerPerBeat Key")
             UserDefaults.standard.set(Int(40), forKey: "ImagePlayer Option NoteCount Key")
-            UserDefaults.standard.set("random", forKey: "ImagePlayer Option PlayMode Key")
-            
-            // String은 옵셔널 타입으로 나오넹
-//            let instrument : String = UserDefaults.standard.string(forKey: "Tone Instrument Type Key")!
-//            let detailType : String = UserDefaults.standard.string(forKey: "Tone Instrument DetailType Key")!
-//            
-//            ToneController.sharedInstance().type = ToneController.Instrument(rawValue: instrument)!
-//            ToneController.sharedInstance().detailType = AKTableType(rawValue: detailType)!
-            
-            
-            
+            UserDefaults.standard.set("verticalScanBar", forKey: "ImagePlayer Option PlayMode Key")
+            UserDefaults.standard.set(Int(10), forKey: "ImagePlayer Option Scan Sample Number Key")
             
             UserDefaults.standard.synchronize()
         }
@@ -50,11 +41,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+
+        checkIfFirstLaunch()
         
-        ToneController.sharedInstance().type = ToneController.sharedInstance().type 
-        /// Todo: userDefault 적용
-        /// 흠.. 요상한 코드가 되버림
-//        checkIfFirstLaunch()
+        // 싱글턴 생성요맨
+        let _ = ToneController.sharedInstance()
+        
         return true
     }
 

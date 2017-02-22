@@ -15,7 +15,8 @@ public class ImagePlayer {
     let image : UIImage
     
     // pixel 하나 고를 때 마다 표현할 UI
-    var pickedSingleColor : ( (UIColor, _ x : Int?, _ y : Int? )  -> Void )?
+    var pickedSingleColor : ( (UIColor, _ x : Int, _ y : Int )  -> Void )?
+    var pickedScanColor : ( (UIColor, _ x : Int, _ y : Int ,_ option: Option, _ count: Int)  -> Void )?
     // 동작이 끝났을 때 표현할 UI
     var completionHandler: ( (Void) -> Void )?
     
@@ -23,12 +24,11 @@ public class ImagePlayer {
     
 
     /// TODO : Customizable
-    struct Option {
+    public struct Option {
         var bpm : TimeInterval = 100
         var timePerBeat : Int = 4    /// 1비트당 박자
         var noteCount : Int = 0
         var playMode : PlayMode = .verticalScanBar
-        
         var scanSampleNumber : Int = 10 /// 1번에 scanBar 가져올 샘플 수
         
         var scanUnit: Int {     /// Random하게 재생할 때는 noteCount 수 만큼 재생하는데 , Scan으로 재생할 때도 맞추자.
@@ -155,22 +155,27 @@ public class ImagePlayer {
         print("\(self.image.size.debugDescription)")
         
         let sampleNumber = CGFloat(option.scanSampleNumber)
+        print(sampleNumber)
         
         /// 이미지를 샘플 수로 쪼갬
         var widthUnit : Int = 0
         var heightUnit : Int = 0
         
+        
         if option.playMode == .verticalScanBar {
             
             widthUnit = Int( image.size.width / CGFloat(option.scanUnit) )
-            heightUnit = Int ( Int( image.size.height / sampleNumber ) )
+            heightUnit = Int( image.size.height / sampleNumber )
             
         }else if option.playMode == .horizontalScanBar{
             widthUnit = Int( image.size.width / sampleNumber )
-            heightUnit = Int ( Int( image.size.height / CGFloat(option.scanUnit) ) )
+            heightUnit = Int (image.size.height / CGFloat(option.scanUnit) )
         }else {
             print("ImagePlayer.prepareScan() : Error")
         }
+        
+        print("widthUnit : \(widthUnit)")
+        print("heightUnit : \(heightUnit)")
         
         for later in 0..<option.scanUnit {
             
@@ -181,6 +186,10 @@ public class ImagePlayer {
                 switch option.playMode {
                 case .verticalScanBar:
                     pixelLocation = faster * heightUnit * Int(self.image.size.width) + ( later * widthUnit )
+                    
+                    print ("pixelLocation : \(pixelLocation)")
+                    print ("x : \(pixelLocation % Int(self.image.size.width)) , y : \(pixelLocation / Int(self.image.size.width))")
+                    
                 case .horizontalScanBar:
                     pixelLocation = later * heightUnit * Int(self.image.size.width) + ( faster * widthUnit )
                 default:
@@ -248,7 +257,7 @@ public class ImagePlayer {
     // pixelLocations 에서 pixel 하나 꺼내와서 `색`으로 바꿈!
     public func getSingleColor() -> UIColor{
         
-        var color = UIColor.cyan
+        var color = UIColor.clear
         
         switch self.option.playMode {
             case .random:
@@ -277,55 +286,61 @@ public class ImagePlayer {
             var b : CGFloat = 0
             var a : CGFloat = 0
             
-            let onePiece = colorPieces[ option.scanSampleNumber/2 ]
-            let x = onePiece.location % Int(image.size.width)
-            let y = onePiece.location / Int(image.size.width)
+            var x: Int = 0
+            var y :Int = 0
             
-            var signitureColor : UIColor = UIColor(hue: 0, saturation: 0, brightness: 0, alpha: 1)
             
-            var sisignitureColorSaturation = 0
-            var sisignitureColorbrightness = 0
+            var signitureSaturation : CGFloat = 0
+            var signitureBrightness : CGFloat = 0
             
             for _ in 0 ..< option.scanSampleNumber {
-                let RGBA = colorPieces.removeFirst()
+                let colorPiece = colorPieces.removeFirst()
                 
-                r = RGBA.r
-                g = RGBA.g
-                b = RGBA.b
-                a = RGBA.a
+                r = colorPiece.r
+                g = colorPiece.g
+                b = colorPiece.b
+                a = colorPiece.a
                 
-                var compareColor = UIColor(red: r, green: g, blue: b, alpha: a)
+                let compareColor = UIColor(red: r, green: g, blue: b, alpha: a)
+                var compareSaturation : CGFloat = 0
+                var compareBrightness : CGFloat = 0
+                
+                compareColor.getHue(nil, saturation: &compareSaturation, brightness: &compareBrightness, alpha: nil)
+                
+                if compareSaturation > signitureSaturation &&
+                    compareBrightness > signitureBrightness {
+                    
+                    color = compareColor
+                    signitureSaturation = compareSaturation
+                    signitureBrightness = compareBrightness
+                    
+                    x = colorPiece.location % Int(image.size.width)
+                    y = colorPiece.location / Int(image.size.width)
+                }
                 
             }
             
-            print("\(r),\(g),\(b),\(a) ")
             
-            
-            /// 평균
-            r /= CGFloat(option.scanSampleNumber)
-            g /= CGFloat(option.scanSampleNumber)
-            b /= CGFloat(option.scanSampleNumber)
-            a /= CGFloat(option.scanSampleNumber)
-            
-            
-            
-            print(color.debugDescription)
-            
-            
-            if let pickedSingleColor = pickedSingleColor {
-                switch option.playMode {
-                case .verticalScanBar:
-//                    pickedSingleColor(color, x, nil)
-                    pickedSingleColor(color, x, y )
-                case .horizontalScanBar :
-//                    pickedSingleColor(color, nil, y)
-                    pickedSingleColor(color, x, y )
-                default :
-                    print("ImagePlayer.getSingleColor BUG!!!")
-                }
+            if let pickedSingleColor = pickedSingleColor , let pickedScanColor = pickedScanColor {
+                pickedSingleColor(color, x, y)
+                pickedScanColor(color, x, y, self.option, self.count)
             }
         }
         
         return color
+    }
+}
+
+extension ImagePlayer {
+    public static func getOption() -> ImagePlayer.Option {
+        
+        let bpm = UserDefaults.standard.double(forKey: "ImagePlayer Option BPM Key")
+        let timerPerBeat = UserDefaults.standard.integer(forKey: "ImagePlayer Option TimerPerBeat Key")
+        let noteCount = UserDefaults.standard.integer(forKey: "ImagePlayer Option NoteCount Key")
+        let playModeRawValue = UserDefaults.standard.string(forKey: "ImagePlayer Option PlayMode Key")!
+        let playMode = ImagePlayer.Option.PlayMode(rawValue: playModeRawValue)!
+        let scanSampleNumber = UserDefaults.standard.integer(forKey: "ImagePlayer Option Scan Sample Number Key")
+        
+        return ImagePlayer.Option(bpm: bpm, timePerBeat: timerPerBeat, noteCount: noteCount, playMode: playMode, scanSampleNumber: scanSampleNumber)
     }
 }

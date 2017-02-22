@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AVFoundation
 import AudioKit
 
 class ColorViewController: UIViewController {
@@ -24,7 +23,10 @@ class ColorViewController: UIViewController {
     var imagePlayer: ImagePlayer?
     
     var imagePlayerCompleted : ( (Void) -> Void  )?
-    var receivedColorByImagePlyer : ( (UIColor, _ x : Int?, _ y : Int? )  -> Void )?
+    var receivedSingleColorByImagePlyer : ( (UIColor, _ x : Int?, _ y : Int? )  -> Void )?
+    var receivedScanColorByImagePlyer : ( (UIColor, _ x : Int, _ y : Int ,_ option: ImagePlayer.Option, _ count : Int)  -> Void )?
+    
+    var scanBarIsMoving : Bool = false
     
     var image : UIImage?{
         get {
@@ -76,8 +78,10 @@ class ColorViewController: UIViewController {
     }
     
     override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
-        prepareRecevingColor()
-        imagePlayer?.pickedSingleColor = self.receivedColorByImagePlyer
+        prepareReceivingSingleColor()
+        prepareReceivingScanColor()
+        imagePlayer?.pickedSingleColor = self.receivedSingleColorByImagePlyer
+        imagePlayer?.pickedScanColor = self.receivedScanColorByImagePlyer
         
         if let view = self.view.subviews.first as? UIVisualEffectView {
             view.frame = CGRect(x: 0, y: self.modeChanger.frame.maxY,
@@ -130,6 +134,9 @@ class ColorViewController: UIViewController {
             playToggleButton.setImage(UIImage(named: Constants.playIcon), for: .normal)
             pickerSoundOn()
             
+            self.scanBarIsMoving = false
+            self.colorPickerImageView.layer.sublayers?[0].removeAllAnimations()
+            
         case .pause:
             player.resume()
             playToggleButton.setImage(UIImage(named: Constants.pauseIcon), for: .normal)
@@ -180,73 +187,4 @@ extension ColorViewController : UINavigationControllerDelegate, UIImagePickerCon
     }
 }
 
-extension ColorViewController {
-    
-    func prepareImagePlayer() -> ImagePlayer{
-        
-        // ImagePlyer 종료시 동작
-        self.imagePlayerCompleted = {
-            for sublayer in self.colorPickerImageView.layer.sublayers ?? [] {
-                sublayer.removeFromSuperlayer()
-            }
-            self.playToggleButton.setImage(UIImage(named: Constants.playIcon), for: .normal)
-            self.pickerSoundOn()
-            self.view.backgroundColor = UIColor.white
-        }
-        
-        prepareRecevingColor()
-        
-        // image 바꾸면 imagePlayer 생성
-        // 1beat 에 4 노트
-        let option = ImagePlayer.Option(bpm: 60, timePerBeat: 4, noteCount: 40, playMode: .verticalScanBar, scanSampleNumber: 11)
-        let imagePlayer = ImagePlayer(source: self.image!, option: option)
-        imagePlayer.completionHandler = self.imagePlayerCompleted
-        imagePlayer.pickedSingleColor = self.receivedColorByImagePlyer
-        
-        return imagePlayer
-    }
-    
-    func prepareRecevingColor() {
-        // ImagePlayer가 `색`을 만들었을 때 동작
-        let animation = CABasicAnimation(keyPath: "opacity")
-        
-        animation.fromValue = 1
-        animation.toValue = 0
-        animation.duration = 1
-        animation.repeatCount = 1
-        
-        let imageFrame = self.colorPickerImageView.imageFrame()
-        let makerSize: CGFloat = 40
-        
-        
-        self.receivedColorByImagePlyer = {
-            (color, x, y ) in
-            
-            
-            /// TODO!!! 스캔바 이동하게 해보장
-            if let x = x, let y = y {   /// x , y 모두 지정 되었을 경우
-                self.view.backgroundColor = color
-                
-                // animation
-                let scale =  imageFrame.size.width / self.colorPickerImageView.intrinsicContentSize.width
-                let revisedX = imageFrame.minX + CGFloat(x) * scale
-                let revisedY = imageFrame.minY + CGFloat(y) * scale
-                
-                let layer = CALayer()
-                layer.backgroundColor = color.cgColor
-                layer.frame = CGRect(x: revisedX - makerSize/2, y: revisedY - makerSize/2, width: makerSize, height: makerSize)
-                
-                layer.cornerRadius = makerSize/2
-                layer.borderWidth = 1
-                layer.borderColor = UIColor.white.cgColor
-                
-                layer.opacity = 0
-                layer.add(animation, forKey: "opacity")
-                
-                self.colorPickerImageView.layer.addSublayer(layer)
-                
-            }
-        }
-            
-    }
-}
+

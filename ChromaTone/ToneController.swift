@@ -18,7 +18,14 @@ public class ToneController {
     
     public class func sharedInstance() -> ToneController {
         if StaticInstance.instance == nil {
-            StaticInstance.instance = ToneController()
+            
+            let instrumentRawValue : String = UserDefaults.standard.string(forKey: "Tone Instrument Type Key")!
+            let detailTypeRawValue : String = UserDefaults.standard.string(forKey: "Tone Instrument DetailType Key")!
+            
+            let type = ToneController.Instrument(rawValue: instrumentRawValue)!
+            let detailType = AKTableType(rawValue: detailTypeRawValue)!
+            
+            StaticInstance.instance = ToneController(type: type, detailType: detailType)
         }
         return StaticInstance.instance!
     }
@@ -35,11 +42,11 @@ public class ToneController {
         case drum
         case flute
     }
-    private init() {
+    private init(type : Instrument, detailType : AKTableType) {
         
         print("ToneGenerator init")
-        self.type = .piano
-        self.detailType = .sine
+        self.type = type
+        self.detailType = detailType
         
         /* 괜찮은 타입들
          oscillatorBank - positiveReverseSaw 포켓몬
@@ -59,6 +66,8 @@ public class ToneController {
         }
         
         try! pianoFM.loadWav("FM-Piano")
+        
+        prepareType()
     }
     
     public var detailType : AKTableType
@@ -81,67 +90,66 @@ public class ToneController {
     var pianoFM = AKSampler()
     
     /// TODO : prepare
-//    func prepareType(oldValue type : Instrument) {
-//        
-//    }
+    func prepareType() {
+        mixer = AKMixer()
+        mixer.connect(kick)
+        mixer.connect(snare)
+        mixer.connect(hiHat)
+        
+        
+        switch type {
+            
+        case .oscillator:
+            oscillator = AKOscillator(waveform: AKTable(self.detailType))
+            
+            oscillator.amplitude = 0
+            oscillator.play()
+            mixer.connect(oscillator)
+            
+        case .oscillatorBank:
+            oscillatorBank = AKOscillatorBank(waveform: AKTable(self.detailType),
+                                              attackDuration: 0.01,
+                                              releaseDuration: 0.01)
+            mixer.connect(oscillatorBank!)
+            
+        case .piano:
+            
+            for (i, node) in melody.enumerated() {
+                mixer.connect(node)
+            }
+            
+            for (i, node) in melody2.enumerated() {
+                mixer2.connect(node)
+            }
+            mixer.connect(mixer2)
+            
+        case .pianoFM :
+            
+            var delay  = AKDelay(pianoFM)
+            //                delay.time = pulse * 1.5
+            delay.dryWetMix = 0.3
+            delay.feedback = 0.2
+            
+            let reverb = AKReverb(delay)
+            reverb.loadFactoryPreset(.largeRoom)
+            let mix = AKMixer(reverb)
+            mix.volume = 5.0
+            mixer.connect(mix)
+            
+        default :
+            print("default")
+        }
+        defer{
+            AudioKit.output = mixer
+            AudioKit.start()
+        }
+    }
     
     public var type : Instrument {
         
         didSet {
+            prepareType()
             print("TonController type didSet")
-            
-            mixer = AKMixer()
-            mixer.connect(kick)
-            mixer.connect(snare)
-            mixer.connect(hiHat)
-            
-            
-            switch type {
-                
-            case .oscillator:
-                oscillator = AKOscillator(waveform: AKTable(self.detailType))
-                
-                oscillator.amplitude = 0
-                oscillator.play()
-                mixer.connect(oscillator)
-                
-            case .oscillatorBank:
-                oscillatorBank = AKOscillatorBank(waveform: AKTable(self.detailType),
-                                            attackDuration: 0.01,
-                                            releaseDuration: 0.01)
-                mixer.connect(oscillatorBank!)
-                
-            case .piano:
-                
-                for (i, node) in melody.enumerated() {
-                    mixer.connect(node)
-                }
-                
-                for (i, node) in melody2.enumerated() {
-                    mixer2.connect(node)
-                }
-                mixer.connect(mixer2)
-                
-            case .pianoFM :
-                
-                var delay  = AKDelay(pianoFM)
-//                delay.time = pulse * 1.5
-                delay.dryWetMix = 0.3
-                delay.feedback = 0.2
-                
-                let reverb = AKReverb(delay)
-                reverb.loadFactoryPreset(.largeRoom)
-                let mix = AKMixer(reverb)
-                mix.volume = 5.0
-                mixer.connect(mix)
-                
-            default :
-                print("default")
-            }
-            defer{
-                AudioKit.output = mixer
-                AudioKit.start()
-            }
         }
     }
     
@@ -198,28 +206,29 @@ public class ToneController {
             let MIDINumber = MIDINoteNumber( soundInfo.frequency.frequency2midiNumber() )
 //            var MIDIVolume : MIDIVelocity
             let index : Int = Int(MIDINumber) - 56
-            
-            
-            if melody[index].isPlaying {
-                print("ToneController.play : 이미 연주중")
-                return
-            }
 
+//            melody2[index].play()
             
-            if let interval = interval {
-                melody[index].play(from: 0, to: interval)
-                
-                // 화성 테스트
-                if index > 3 {
-                    melody[index-4].play(from: 0, to: interval)
-                }
-                
-            }else {
-              melody[index].play()
-                if index > 3 {
-                    melody[index-4].play()
-                }
-            }
+//            if melody[index].isPlaying {
+//                print("ToneController.play : 이미 연주중")
+//                return
+//            }
+//
+//            
+//            if let interval = interval {
+//                melody[index].play(from: 0, to: interval)
+//                
+//                // 화성 테스트
+//                if index > 3 {
+//                    melody[index-4].play(from: 0, to: interval)
+//                }
+//                
+//            }else {
+//              melody[index].play()
+//                if index > 3 {
+//                    melody[index-4].play()
+//                }
+//            }
             
         case .pianoFM:
             
