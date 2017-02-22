@@ -27,7 +27,7 @@ public class ImagePlayer {
         var bpm : TimeInterval = 100
         var timePerBeat : Int = 4    /// 1비트당 박자
         var noteCount : Int = 0
-        var playMode : PlayMode = .random
+        var playMode : PlayMode = .verticalScanBar
         
         enum PlayMode : String{
             case random
@@ -46,6 +46,7 @@ public class ImagePlayer {
     var status : ImagePlayer.PlayerStatus = .stop
     
     init(source image: UIImage, option: ImagePlayer.Option) {
+        
         self.image = image
         self.option = option
         
@@ -64,6 +65,9 @@ public class ImagePlayer {
      
      step4 현란하게 재생...
      */
+    /// New step 1.
+    ///
+    ///
     
     var i = 0
     
@@ -77,6 +81,7 @@ public class ImagePlayer {
         print("prepare")
 
         self.preparePixel()
+        self.prepareScan()
         
         //timer setup
         let interval = TimeInterval( 1 / ( Double(self.option.bpm/60) * Double(self.option.timePerBeat) ))
@@ -90,7 +95,6 @@ public class ImagePlayer {
     }
     
     public func stop() {
-        ToneController.sharedInstance().stop()
         // timer stop
         self.timer?.invalidate()
         self.prepare()
@@ -100,6 +104,7 @@ public class ImagePlayer {
         if let completionHandler = completionHandler {
             completionHandler()
         }
+        ToneController.sharedInstance().stop()
     }
     
     public func resume() {
@@ -122,8 +127,20 @@ public class ImagePlayer {
     /// step3
     @objc public func performImage() {  /// 한박자
         
-        if self.pixelLocations.isEmpty {
-            print("ImagePlayer.performImage() : pixels empty")
+//        if self.pixelLocations.isEmpty {
+//            print("ImagePlayer.performImage() : pixels empty")
+//            self.stop()
+//            return
+//        }
+        
+//        if colors.isEmpty {
+//            print("ImagePlayer.performImage() : pixels empty")
+//            self.stop()
+//            return
+//        }
+        
+        if RGBAs.isEmpty {
+//            print("ImagePlayer.performImage() : pixels empty")
             self.stop()
             return
         }
@@ -135,7 +152,7 @@ public class ImagePlayer {
         let everyOtherBeat = count % self.option.timePerBeat == self.option.timePerBeat/2
 
         var oddBeat : Bool = false
-        if self.option.timePerBeat % 2 == 1{
+        if self.option.timePerBeat % 2 == 1{ // 홀수 일때 마지막 박자에 true!
             oddBeat = count % self.option.timePerBeat == self.option.timePerBeat - 1
         }
         
@@ -143,25 +160,22 @@ public class ImagePlayer {
 //        let randomHit2 = Array(0...7).randomElement() == 0
 //        let randomHit3 = Array(0...7).randomElement() == 0
         
-        let color = getSingleColor()
-        
-        
-        let info = color.color2soundTwo()
+//        let color = getSingleColor()
+//        let color = colors.removeFirst()
+//        let info = color.color2soundTwo()
+        let color = getScanColor()
         
         // 무채색
-        let achroma = info.frequency < 220
-        let rand = arc4random_uniform(2) == 0
+//        let achroma = info.frequency < 220
+//        let rand = arc4random_uniform(2) == 0
 
         
-        if onFirstBeat || (achroma && rand ){
-            ToneController.sharedInstance().playKick()
-            ToneController.sharedInstance().playMelody(color: color, volume: 100)
-        }else if everyOtherBeat || oddBeat || (achroma && !rand ){
-            ToneController.sharedInstance().playSnare()
-            ToneController.sharedInstance().playMelody(color: color)
-        }else if !achroma{
-            ToneController.sharedInstance().playMelody(color: color)
-        }
+//        if onFirstBeat {
+//            ToneController.sharedInstance().playKick()
+//        }else if everyOtherBeat || oddBeat {
+//            ToneController.sharedInstance().playSnare()
+//        }
+        ToneController.sharedInstance().playMelody(color: color)
         ToneController.sharedInstance().playHiHat(50)
         
     }
@@ -198,6 +212,7 @@ public class ImagePlayer {
         
         switch self.option.playMode {
             case .random:
+                
             let pixelLocation = pixelLocations.removeFirst() * 4
             
             // get color
@@ -217,11 +232,80 @@ public class ImagePlayer {
            
         case .horizontalScanBar:
             color = UIColor.brown
+            
         case .verticalScanBar :
+            
+            
             color = UIColor.brown
         }
         
         return color
     }
     
+
+    var colors : [UIColor] = []
+    var RGBAs : [(r: CGFloat,g: CGFloat, b: CGFloat, a: CGFloat, location : Int )] = []
+    ///vertical
+    private func prepareScan() {
+        print("\(self.image.size.debugDescription)")
+        /// test 10개
+        for i in 0...10 {
+            
+            var r : CGFloat = 0
+            var g : CGFloat = 0
+            var b : CGFloat = 0
+            var a : CGFloat = 0
+            
+            
+            for j in 0...10 {
+                let pixelLocation = j * (Int(self.image.size.height) / 10)  * Int(self.image.size.width) + ( i * Int(self.image.size.width/10) )
+                
+                print("///////////////// : \(pixelLocation)")
+                let pixelLocationPointer = pixelLocation * 4
+                
+                let debugR = (CGFloat(data[pixelLocationPointer]) / CGFloat(255.0) )
+                let debugG = (CGFloat(data[pixelLocationPointer+1]) / CGFloat(255.0) )
+                let debugB = (CGFloat(data[pixelLocationPointer+2]) / CGFloat(255.0) )
+                let debugA = (CGFloat(data[pixelLocationPointer+3]) / CGFloat(255.0) )
+//                let debugColor = UIColor(red: debugR, green: debugG, blue: debugB, alpha: debugA)
+                
+                
+                RGBAs.append((debugR,debugG,debugB,debugA , pixelLocation) )
+                
+                
+//                r += (CGFloat(data[pixelLocationPointer]) / CGFloat(255.0) ) / 10
+//                g += (CGFloat(data[pixelLocationPointer+1]) / CGFloat(255.0) ) / 10
+//                b += (CGFloat(data[pixelLocationPointer+2]) / CGFloat(255.0) ) / 10
+//                a += (CGFloat(data[pixelLocationPointer+3]) / CGFloat(255.0) ) / 10
+            }
+            
+//            let color = UIColor(red: r, green: g, blue: b, alpha: a)
+//            colors.append(color)
+        }
+    }
+    
+    public func getScanColor() -> UIColor {
+        
+        let RGBA = RGBAs.removeFirst()
+        
+        // get color
+        let r = RGBA.r
+        let g = RGBA.g
+        let b = RGBA.b
+        let a = RGBA.a
+        
+        let x = RGBA.location % Int(image.size.width)
+        let y = RGBA.location / Int(image.size.width)
+        
+        let color = UIColor(red: r, green: g, blue: b, alpha: a)
+        
+//        let y = (pixelLocation / 4) / Int(self.image.size.width)
+//        let x = (pixelLocation / 4) % Int(self.image.size.width)
+        
+        if let pickedSingleColor = pickedSingleColor {
+            pickedSingleColor(color, x, y )
+        }
+        
+        return color
+    }
 }

@@ -14,14 +14,47 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+    func checkIfFirstLaunch() {
+        if UserDefaults.standard.bool(forKey: "firstLauch") {
+            print("실행된 적 있음")
+            
+            
+        } else {
+            
+            print("첫 실행")
+            UserDefaults.standard.set(true, forKey: "firstLauch")
+
+            // TonController
+            UserDefaults.standard.set("piano", forKey: "Tone Instrument Type Key")
+            UserDefaults.standard.set("sine", forKey: "Tone Instrument DetailType Key")
+            
+            UserDefaults.standard.set(Double(60.0), forKey: "ImagePlayer Option BPM Key")
+            UserDefaults.standard.set(Int(4), forKey: "ImagePlayer Option TimerPerBeat Key")
+            UserDefaults.standard.set(Int(40), forKey: "ImagePlayer Option NoteCount Key")
+            UserDefaults.standard.set("random", forKey: "ImagePlayer Option PlayMode Key")
+            
+            // String은 옵셔널 타입으로 나오넹
+//            let instrument : String = UserDefaults.standard.string(forKey: "Tone Instrument Type Key")!
+//            let detailType : String = UserDefaults.standard.string(forKey: "Tone Instrument DetailType Key")!
+//            
+//            ToneController.sharedInstance().type = ToneController.Instrument(rawValue: instrument)!
+//            ToneController.sharedInstance().detailType = AKTableType(rawValue: detailType)!
+            
+            
+            
+            
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
+        ToneController.sharedInstance().type = ToneController.sharedInstance().type 
         /// Todo: userDefault 적용
         /// 흠.. 요상한 코드가 되버림
-
-        ToneController.sharedInstance().detailType = ToneController.sharedInstance().detailType
+//        checkIfFirstLaunch()
         return true
     }
 

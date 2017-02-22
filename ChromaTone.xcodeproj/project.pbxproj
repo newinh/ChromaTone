@@ -143,9 +143,9 @@
 		78684B2B1E49BDD800E626AF /* ChromaTone */ = {
 			isa = PBXGroup;
 			children = (
-				78E4F7561E5CBDAD0055AB5A /* Sounds */,
 				78684B2C1E49BDD800E626AF /* AppDelegate.swift */,
 				78BA40D91E4EF2AD00B76BB0 /* Constants.swift */,
+				78E4F7561E5CBDAD0055AB5A /* Sounds */,
 				78E63E6A1E586B0500A9B96F /* Supporting Files */,
 				78E63E691E586AFA00A9B96F /* Assets */,
 				78E63E681E586AF500A9B96F /* ColorView */,

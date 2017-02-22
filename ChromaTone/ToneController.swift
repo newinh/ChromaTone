@@ -24,7 +24,7 @@ public class ToneController {
     }
     
     /// Todo: Customize!
-    public enum Instrument{
+    public enum Instrument: String{
         // 뭐 기타 등등등 추가해보자
         case oscillator
         case oscillatorBank
@@ -61,12 +61,7 @@ public class ToneController {
         try! pianoFM.loadWav("FM-Piano")
     }
     
-    public var detailType : AKTableType {
-        didSet{
-            let type = self.type
-            self.type = type // type의 willSet을 부르자!
-        }
-    }
+    public var detailType : AKTableType
     
     var oscillatorBank : AKOscillatorBank!
     var oscillator : AKOscillator!
@@ -84,6 +79,11 @@ public class ToneController {
     var melody2 : [AKSampler] = []
     
     var pianoFM = AKSampler()
+    
+    /// TODO : prepare
+//    func prepareType(oldValue type : Instrument) {
+//        
+//    }
     
     public var type : Instrument {
         
@@ -377,7 +377,7 @@ extension UIColor {
                 // 가장 낮은 음 발생
                 print("무채색.. , MIDINoteNumber : \(219.frequencyToMIDINote())")
 //                return (219, (Int(saturation) / 10) * 10 )
-                return (219, Int(saturation) )
+                return (220, Int(saturation) )
                 
             }else {
                 
