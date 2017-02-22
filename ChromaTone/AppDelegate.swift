@@ -43,7 +43,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
 
         checkIfFirstLaunch()
-        
         // 싱글턴 생성요맨
         let _ = ToneController.sharedInstance()
         

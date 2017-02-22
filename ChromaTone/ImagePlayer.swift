@@ -161,24 +161,42 @@ public class ImagePlayer {
         var widthUnit : Int = 0
         var heightUnit : Int = 0
         
+        var wr : Int = 0
+        var hr : Int = 0
         
+        var dwr : Double = 0
+        var dhr : Double = 0
         
         if option.playMode == .verticalScanBar {
             
-            widthUnit = Int( image.size.width / CGFloat(option.scanUnit) )
-            heightUnit = Int( image.size.height / sampleNumber )
+            widthUnit = Int( image.size.width) / option.scanUnit
             
             
+            heightUnit = Int( image.size.height) / option.scanSampleNumber
+            
+            wr = Int( image.size.width) % option.scanUnit
+            hr = Int( image.size.height) % option.scanSampleNumber
+            dwr = Double(wr) / Double(option.scanUnit)
+            dhr = Double(hr) / Double(option.scanSampleNumber)
             
         }else if option.playMode == .horizontalScanBar{
             widthUnit = Int( image.size.width / sampleNumber )
             heightUnit = Int (image.size.height / CGFloat(option.scanUnit) )
+            
+            wr = Int( image.size.width) % option.scanSampleNumber
+            hr = Int( image.size.height) % option.scanUnit
+            dwr = Double(wr) / Double(option.scanSampleNumber)
+            dhr = Double(hr) / Double(option.scanUnit)
+            
         }else {
             print("ImagePlayer.prepareScan() : Error")
         }
         
         print("widthUnit : \(widthUnit)")
         print("heightUnit : \(heightUnit)")
+        
+        let fwr = dwr
+        let fhr = dhr
         
         for later in 0..<option.scanUnit {
             
@@ -188,17 +206,46 @@ public class ImagePlayer {
                 
                 switch option.playMode {
                 case .verticalScanBar:
-                    pixelLocation = ( faster * heightUnit * Int(self.image.size.width) + ( later * widthUnit ) )
+                    pixelLocation =  faster * ( heightUnit ) * Int(self.image.size.width) + ( later * (widthUnit ) )
                     
                     print ("pixelLocation : \(pixelLocation)")
                     print ("x : \(pixelLocation % Int(self.image.size.width)) , y : \(pixelLocation / Int(self.image.size.width))")
                     
+                    dwr += fwr
+                    dhr += fhr
+                    
+                    if dwr > 1 {
+                        pixelLocation += 1 * later
+                        dwr -= 1
+                    }
+                    
+                    if dhr > 1 {
+                        pixelLocation += 1 * Int(self.image.size.width) * faster
+                        dhr -= 1
+                    }
+                    
+                    
                 case .horizontalScanBar:
-                    pixelLocation = ( later * heightUnit * Int(self.image.size.width) + ( faster * widthUnit ) ) 
+                    pixelLocation = ( later * heightUnit * Int(self.image.size.width) + ( faster * widthUnit ) )
+                    
+                    dwr += fwr
+                    dhr += fhr
+                    
+                    if dwr > 1 {
+                        pixelLocation += 1 * faster
+                        dwr -= 1
+                    }
+                    
+                    if dhr > 1 {
+                        pixelLocation += 1 * Int(self.image.size.width) * later
+                        dhr -= 1
+                    }
+                    
                 default:
                     print("ImagePlayer.prepareScan() : 아무것도 안하고싶어...")
                     return
                 }
+                
                 
                 
                 
