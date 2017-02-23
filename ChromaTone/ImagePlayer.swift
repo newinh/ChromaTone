@@ -246,9 +246,6 @@ public class ImagePlayer {
                     return
                 }
                 
-                
-                
-                
                 let pixelLocationPointer = pixelLocation * 4
                 let r = CGFloat(data[pixelLocationPointer]) / CGFloat(255.0)
                 let g = CGFloat(data[pixelLocationPointer+1]) / CGFloat(255.0)
@@ -293,11 +290,11 @@ public class ImagePlayer {
 //        let rand = arc4random_uniform(2) == 0
 
         
-//        if onFirstBeat {
-//            ToneController.sharedInstance().playKick()
-//        }else if everyOtherBeat || oddBeat {
-//            ToneController.sharedInstance().playSnare()
-//        }
+        if onFirstBeat {
+            ToneController.sharedInstance().playKick()
+        }else if everyOtherBeat || oddBeat {
+            ToneController.sharedInstance().playSnare()
+        }
         ToneController.sharedInstance().playMelody(color: color)
         ToneController.sharedInstance().playHiHat(50)
         

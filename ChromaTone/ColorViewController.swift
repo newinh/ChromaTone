@@ -67,6 +67,7 @@ class ColorViewController: UIViewController {
         
         // Image / ImageView 초기화
         colorPickerImageView.isUserInteractionEnabled = true
+        colorPickerImageView.isMultipleTouchEnabled = true
         colorPickerImageView.image = UIImage(named: Constants.colorPickerImage)
         
         

@@ -26,18 +26,18 @@ class ColorPickerImageView : UIImageView {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        guard let firstTouch = touches.first else{
-            print("colorPickerImageView : touch error")
-            return
-        }
         
-        switch mode {
-        case .makeHSBColor:
-            makeColor(touch: firstTouch)
-        case .getColorByPixel:
-            getColorByPixel(touch: firstTouch)
-        default:
-            print("maybe camera mode...")
+        for (_, touch) in touches.enumerated() {
+            
+            switch mode {
+            case .makeHSBColor:
+                makeColor(touch: touch)
+            case .getColorByPixel:
+                getColorByPixel(touch: touch)
+            default:
+                print("maybe camera mode...")
+            }
+            
         }
         
         
@@ -45,19 +45,21 @@ class ColorPickerImageView : UIImageView {
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        guard let firstTouch = touches.first else{
-            print("colorPickerImageView : touch error")
-            return
+        
+        for (_, touch) in touches.enumerated() {
+            
+            switch mode {
+            case .makeHSBColor:
+                makeColor(touch: touch)
+            case .getColorByPixel:
+                getColorByPixel(touch: touch)
+            default:
+                print("maybe camera mode...")
+            }
+            
         }
         
-        switch mode {
-        case .makeHSBColor:
-            makeColor(touch: firstTouch)
-        case .getColorByPixel:
-            getColorByPixel(touch: firstTouch)
-        default:
-            print("maybe camera mode...")
-        }
+        
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {

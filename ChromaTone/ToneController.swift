@@ -117,7 +117,6 @@ public class ToneController {
             for (i, node) in melody.enumerated() {
                 mixer.connect(node)
             }
-            
             for (i, node) in melody2.enumerated() {
                 mixer2.connect(node)
             }
@@ -207,7 +206,7 @@ public class ToneController {
 //            var MIDIVolume : MIDIVelocity
             let index : Int = Int(MIDINumber) - 56
 
-//            melody2[index].play()
+            melody2[index].play()
             
 //            if melody[index].isPlaying {
 //                print("ToneController.play : 이미 연주중")
