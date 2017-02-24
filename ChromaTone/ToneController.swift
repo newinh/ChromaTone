@@ -139,6 +139,8 @@ public class ToneController {
     
     func prepareType() {
         
+        //gggggg
+        
         
         mainMixer = AKMixer()
         melodyMixer = AKMixer()
