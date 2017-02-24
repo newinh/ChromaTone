@@ -78,7 +78,6 @@ public class ImagePlayer {
     /// New step 2. getColor        ->  배열에서 색 생성
     /// New step 3. performImage    ->  타이밍 맞춰 색 반환(음 재생)
     
-    var i = 0
     
     let pixelData : CFData?
     let data : UnsafePointer<UInt8>

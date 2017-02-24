@@ -97,6 +97,7 @@ class ColorViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         self.imagePlayer = prepareImagePlayer()
+        
     }
     override func viewWillDisappear(_ animated: Bool) {
         self.imagePlayer?.stop()

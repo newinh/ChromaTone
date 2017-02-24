@@ -45,15 +45,15 @@ extension UIColor {
             
             // 거의 무채색이라고보자.
             /// Todo
-//            if saturation + brightness < 100 {
-            
+            if saturation + brightness < 100 && ToneController.sharedInstance().aChromaOff{
+                
                 // 가장 낮은 음 발생
-//                print("무채색.. , MIDINoteNumber : \(219.frequencyToMIDINote())")
-//                //                return (219, (Int(saturation) / 10) * 10 )
-//                return (220, Int(saturation) )
-            
-//            }else {
-            
+                print("무채색.. , MIDINoteNumber : \(219.frequencyToMIDINote())")
+                //                return (219, (Int(saturation) / 10) * 10 )
+                return (220, Int(saturation) )
+                
+            }else {
+                
                 // frequencty : 220 ~ 880
                 let frequency = 220 *  pow(2, hue*2)
                 let formattedFrequency = String(format: "%.2f", frequency)
@@ -67,7 +67,7 @@ extension UIColor {
                 //                return (frequency, (Int(saturation) / 10) * 10 )
                 return (frequency, Int(saturation) )
                 
-//            }
+            }
             
         }
         // 기본음 A (라)

@@ -90,7 +90,7 @@ public class ToneController {
     
     var pianoFM = AKSampler()
     
-    
+    var aChromaOff : Bool = false
     
     public var type : Instrument {
         willSet {

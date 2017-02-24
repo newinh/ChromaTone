@@ -74,6 +74,7 @@ class CameraViewController : UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        ToneController.sharedInstance().aChromaOff = true
         
         print(self.setupResult)
         // Session Setup 결과에 대한 대응
@@ -112,6 +113,8 @@ class CameraViewController : UIViewController {
         
         //plot clear
 //        self.plot.subviews.first!.removeFromSuperview()
+        
+        ToneController.sharedInstance().aChromaOff = true
         
         sessionQueue.async { [unowned self] in
             if self.setupResult == .success {
