@@ -37,9 +37,6 @@ class CameraViewController : UIViewController {
     // MARK: View Controller Life Cycle
     override func viewDidLoad() {
         
-        
-        self.tabBarController?.tabBar.isTranslucent = true
-        self.tabBarController?.tabBar.barStyle = .black
         /// TODO : add plot
 //        self.plot.addSubview(AKRollingOutputPlot(frame: self.plot.bounds))
         
@@ -78,6 +75,8 @@ class CameraViewController : UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         ToneController.sharedInstance().aChromaOff = true
+        self.tabBarController?.tabBar.isTranslucent = true
+        self.tabBarController?.tabBar.barStyle = .black
         
         print(self.setupResult)
         // Session Setup 결과에 대한 대응

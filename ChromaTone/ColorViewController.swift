@@ -54,6 +54,10 @@ class ColorViewController: UIViewController {
         // add plot
 //        self.plot.addSubview(AKRollingOutputPlot(frame: self.plot.bounds))
         
+        
+        self.tabBarController?.tabBar.items?[1].image = UIImage.fontAwesomeIcon(name: .camera, textColor: UIColor.blue, size: CGSize(width: 30, height: 30))
+        self.tabBarController?.tabBar.items?[2].image = UIImage.fontAwesomeIcon(name: .cog, textColor: UIColor.blue, size: CGSize(width: 30, height: 30))
+        
         // blurView : background 색이 너무 강렬하다.. blur 추가!
         let blur = UIBlurEffect(style: .prominent)
         let blurView = UIVisualEffectView(effect: blur)

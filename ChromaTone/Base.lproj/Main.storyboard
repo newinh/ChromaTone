@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="JvQ-nd-86T">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="lqb-Lb-CJQ">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -23,7 +23,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="tEj-Vx-jIY">
-                                <rect key="frame" x="0.0" y="20" width="375" height="598"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TableViewCell" textLabel="k45-Rh-KJm" detailTextLabel="5XI-bV-eSO" style="IBUITableViewCellStyleValue1" id="MnC-wB-oA5">
@@ -72,7 +72,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4dE-fx-eSE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="17" y="22"/>
+            <point key="canvasLocation" x="1508" y="-773"/>
         </scene>
         <!--Setting View Controller-->
         <scene sceneID="3jX-Vx-j2h">
@@ -296,6 +296,7 @@
                             <outlet property="delegate" destination="JvQ-nd-86T" id="V0l-42-gws"/>
                         </connections>
                     </tableView>
+                    <tabBarItem key="tabBarItem" title="" id="m5c-1m-CPd"/>
                     <connections>
                         <outlet property="bpmCell" destination="vuT-pQ-YIc" id="GVL-TO-2iH"/>
                         <outlet property="dynamicCell" destination="KwC-Mn-WkF" id="IGp-33-99n"/>
@@ -347,7 +348,7 @@
                     <connections>
                         <segue destination="682-5y-E1L" kind="relationship" relationship="viewControllers" id="8kN-Wj-MZI"/>
                         <segue destination="u0k-FD-rD5" kind="relationship" relationship="viewControllers" id="fEY-WU-rFD"/>
-                        <segue destination="pYC-Cm-2Od" kind="relationship" relationship="viewControllers" id="tOP-3U-dUm"/>
+                        <segue destination="JvQ-nd-86T" kind="relationship" relationship="viewControllers" id="JR4-Mk-HjG"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sMO-5e-XLy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -402,11 +403,6 @@
                                 <rect key="frame" x="96" y="533" width="183" height="50"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v2P-hc-WRi">
-                                <rect key="frame" x="96" y="580" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -468,7 +464,7 @@
             </objects>
             <point key="canvasLocation" x="-2127.536231884058" y="-260.86956521739131"/>
         </scene>
-        <!--Item-->
+        <!--Camera View Controller-->
         <scene sceneID="sJy-Iw-ZAD">
             <objects>
                 <viewController id="u0k-FD-rD5" customClass="CameraViewController" customModule="ChromaTone" customModuleProvider="target" sceneMemberID="viewController">
@@ -534,7 +530,7 @@
                             <constraint firstAttribute="trailingMargin" secondItem="9BF-Ff-fDw" secondAttribute="trailing" constant="20" id="zqK-h5-QzZ"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="3ov-gD-3BK"/>
+                    <tabBarItem key="tabBarItem" title="" id="3ov-gD-3BK"/>
                     <connections>
                         <outlet property="cameraPreviewView" destination="006-ls-Skb" id="WOf-rz-rKu"/>
                         <outlet property="colorPreview" destination="9BF-Ff-fDw" id="cCo-eX-TuR"/>
@@ -611,6 +607,6 @@
         <image name="icon_spectrum" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="fEY-WU-rFD"/>
+        <segue reference="aYz-V2-BuH"/>
     </inferredMetricsTieBreakers>
 </document>

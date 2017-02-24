@@ -83,17 +83,28 @@ class SettingViewController : UITableViewController{
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        let instrument = toneInstrumentControl.titleForSegment(at: toneInstrumentControl.selectedSegmentIndex)
-        UserDefaults.standard.set(instrument, forKey: Constants.keys["Instrument"]!)
+        let instrumentRawValue = Constants.instrument[toneInstrumentControl.selectedSegmentIndex]
+        UserDefaults.standard.set(instrumentRawValue, forKey: Constants.keys["Instrument"]!)
         
-        let detail = toneDetailControl.titleForSegment(at: toneDetailControl.selectedSegmentIndex)
-        UserDefaults.standard.set(detail, forKey: Constants.keys["Detail"]!)
+        let detailIndex = toneDetailControl.selectedSegmentIndex
+        let detailRawValue = Constants.detail[detailIndex]
+        UserDefaults.standard.set(detailRawValue, forKey: Constants.keys["Detail"]!)
+        
+        
+        let type = ToneController.Instrument(rawValue: instrumentRawValue)!
+        let detail = AKTableType(rawValue: detailRawValue)!
+        
+        ToneController.sharedInstance().type = type
+        ToneController.sharedInstance().detailType = detail
+        
+        ///////////////////
         
         let staccato = dynamicCell.accessoryType == .checkmark ? true : false
         UserDefaults.standard.set(staccato, forKey: Constants.keys["Staccato"]!)
         
-        let playMode = playModeControl.titleForSegment(at: playModeControl.selectedSegmentIndex)
-            UserDefaults.standard.set(playMode, forKey: Constants.keys["Play Mode"]!)
+        let playMode = Constants.playMode[playModeControl.selectedSegmentIndex]
+        UserDefaults.standard.set(playMode, forKey: Constants.keys["Play Mode"]!)
+        
         let bpm = Double((bpmCell.detailTextLabel?.text)!)
         UserDefaults.standard.set(bpm, forKey: Constants.keys["BPM"]!)
         let time = Int((timeCell.detailTextLabel?.text)!)
