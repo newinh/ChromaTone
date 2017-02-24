@@ -64,11 +64,11 @@ struct Constants {
     static let imagePlayer : [ String : Any ] = [
         
 //        "Image Player" : "",
-        "BPM" : 50...150,
-        "Time" : 2...4,
-        "Note Count" : 10...60,
+        "BPM" : [50, 150],
+        "Time" : [2, 4],
+        "Note Count" : [10, 80],
         "Play Mode" : playMode,
-        "Number Of Sample" : 5...15 ,
+        "Number Of Sample" : [5, 15],
         "Staccato" : [true, false]
         ]
     

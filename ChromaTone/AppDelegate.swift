@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UserDefaults.standard.set(Int(40), forKey: Constants.keys["Note Count"]!)
             UserDefaults.standard.set(ImagePlayer.Option.PlayMode.verticalScanBar.rawValue,
                                       forKey: Constants.keys["Play Mode"]!)
-            UserDefaults.standard.set(Int(10), forKey: Constants.keys["Number Of Sample"]!)
+            UserDefaults.standard.set(Int(15), forKey: Constants.keys["Number Of Sample"]!)
             UserDefaults.standard.set(false, forKey: Constants.keys["Staccato"]!)
             
             UserDefaults.standard.synchronize()
