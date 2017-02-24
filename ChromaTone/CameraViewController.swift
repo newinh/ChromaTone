@@ -58,7 +58,6 @@ class CameraViewController : UIViewController {
                     self.setupResult = .notAuthorized
                 }
                 self.sessionQueue.resume()
-                self.dismiss(animated: true, completion: nil)
             })
             
         default:
@@ -89,7 +88,9 @@ class CameraViewController : UIViewController {
                 DispatchQueue.main.async { [unowned self] in
                     let message = NSLocalizedString("카메라에 접근할수 업습니다. 설정 > ChromaTone 에서 카메라를 승인해주세요.", comment: "카메가 접근 권한을 얻지 못했을 때")
                     let alertController = UIAlertController(title: "ChromaTone", message: message, preferredStyle: .alert)
-                    alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: .cancel, handler: nil))
+                    alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: .cancel, handler: {action in
+                        self.dismiss(animated: true, completion: nil)
+                    }))
                     alertController.addAction(UIAlertAction(title: NSLocalizedString("Settings", comment: "go Settings"), style: .`default`, handler: { action in
                         UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!, options: [:], completionHandler: nil)
                     }))

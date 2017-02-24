@@ -49,6 +49,8 @@
 		78E4F7CE1E5EFE2F0055AB5A /* SettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E4F7CD1E5EFE2F0055AB5A /* SettingTableViewController.swift */; };
 		78E63E711E58B91100A9B96F /* ToneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E63E701E58B91100A9B96F /* ToneController.swift */; };
 		78E63E731E59A86200A9B96F /* ImagePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E63E721E59A86200A9B96F /* ImagePlayer.swift */; };
+		78EFC0521E60259200750801 /* ToneController+prepare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78EFC0511E60259200750801 /* ToneController+prepare.swift */; };
+		78EFC0541E60265F00750801 /* UIColor+frequency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78EFC0531E60265F00750801 /* UIColor+frequency.swift */; };
 		78FF99881E530CE100D93738 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FF99871E530CE100D93738 /* CameraViewController.swift */; };
 		78FF998A1E530D4200D93738 /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78FF99891E530D4200D93738 /* CameraPreviewView.swift */; };
 		E60583ADA24671EE92F3C002 /* Pods_ChromaTone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F328018FC6C917F3CC030C1E /* Pods_ChromaTone.framework */; };
@@ -100,6 +102,8 @@
 		78E4F7CD1E5EFE2F0055AB5A /* SettingTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingTableViewController.swift; sourceTree = "<group>"; };
 		78E63E701E58B91100A9B96F /* ToneController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToneController.swift; sourceTree = "<group>"; };
 		78E63E721E59A86200A9B96F /* ImagePlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePlayer.swift; sourceTree = "<group>"; };
+		78EFC0511E60259200750801 /* ToneController+prepare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ToneController+prepare.swift"; sourceTree = "<group>"; };
+		78EFC0531E60265F00750801 /* UIColor+frequency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+frequency.swift"; sourceTree = "<group>"; };
 		78FF99871E530CE100D93738 /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		78FF99891E530D4200D93738 /* CameraPreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraPreviewView.swift; sourceTree = "<group>"; };
 		CF578028574678AA4A8E109C /* Pods-ChromaTone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChromaTone.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ChromaTone/Pods-ChromaTone.debug.xcconfig"; sourceTree = "<group>"; };
@@ -152,7 +156,7 @@
 				78E4F7561E5CBDAD0055AB5A /* Sounds */,
 				78E63E6A1E586B0500A9B96F /* Supporting Files */,
 				78E63E681E586AF500A9B96F /* ColorView */,
-				78E63E671E586AE500A9B96F /* Models */,
+				78E63E671E586AE500A9B96F /* Tool */,
 				78E63E691E586AFA00A9B96F /* Assets */,
 				78E4F7CD1E5EFE2F0055AB5A /* SettingTableViewController.swift */,
 			);
@@ -205,13 +209,15 @@
 			name = piano;
 			sourceTree = "<group>";
 		};
-		78E63E671E586AE500A9B96F /* Models */ = {
+		78E63E671E586AE500A9B96F /* Tool */ = {
 			isa = PBXGroup;
 			children = (
 				78E63E701E58B91100A9B96F /* ToneController.swift */,
+				78EFC0511E60259200750801 /* ToneController+prepare.swift */,
 				78E63E721E59A86200A9B96F /* ImagePlayer.swift */,
+				78EFC0531E60265F00750801 /* UIColor+frequency.swift */,
 			);
-			name = Models;
+			name = Tool;
 			sourceTree = "<group>";
 		};
 		78E63E681E586AF500A9B96F /* ColorView */ = {
@@ -430,7 +436,9 @@
 				78BA40D81E4EF20A00B76BB0 /* ColorPickerImageView.swift in Sources */,
 				78E4F7CE1E5EFE2F0055AB5A /* SettingTableViewController.swift in Sources */,
 				78E63E711E58B91100A9B96F /* ToneController.swift in Sources */,
+				78EFC0521E60259200750801 /* ToneController+prepare.swift in Sources */,
 				78684B2F1E49BDD800E626AF /* ColorViewController.swift in Sources */,
+				78EFC0541E60265F00750801 /* UIColor+frequency.swift in Sources */,
 				78FF99881E530CE100D93738 /* CameraViewController.swift in Sources */,
 				78684B2D1E49BDD800E626AF /* AppDelegate.swift in Sources */,
 				78E4F7CA1E5E2BE70055AB5A /* ColorViewController+ImagePlayer.swift in Sources */,

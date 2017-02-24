@@ -361,7 +361,7 @@ public class ImagePlayer {
                     if option.staccato {
                         
                         
-                        if newColor.color2soundTwo().frequency.frequency2midiNumber() != colorMemory.color2soundTwo().frequency.frequency2midiNumber(){
+                        if newColor.color2sound().frequency.frequency2midiNumber() != colorMemory.color2sound().frequency.frequency2midiNumber(){
                             
                             color = newColor
                             x = colorPiece.location % Int(image.size.width)

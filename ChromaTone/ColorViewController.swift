@@ -70,12 +70,16 @@ class ColorViewController: UIViewController {
         colorPickerImageView.isMultipleTouchEnabled = true
         colorPickerImageView.image = UIImage(named: Constants.colorPickerImage)
         
-        
         // ImagePlayer 초기화
         self.imagePlayer = prepareImagePlayer()
         
         pickerSoundOn()
         
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        /// 초기화면 카메라뷰!
+        self.performSegue(withIdentifier: "CameraView", sender: nil)
     }
     
     override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
