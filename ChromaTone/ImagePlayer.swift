@@ -7,8 +7,8 @@
 //
 
 import Foundation
-import AVFoundation
 import UIKit
+import AudioKit
 
 public class ImagePlayer {
     
@@ -30,6 +30,7 @@ public class ImagePlayer {
         var noteCount : Int = 0
         var playMode : PlayMode = .verticalScanBar
         var scanSampleNumber : Int = 10 /// 1번에 scanBar 가져올 샘플 수
+        var staccato : Bool = false
         
         var scanUnit: Int {     /// Random하게 재생할 때는 noteCount 수 만큼 재생하는데 , Scan으로 재생할 때도 맞추자.
             get {
@@ -38,9 +39,9 @@ public class ImagePlayer {
         }
         
         enum PlayMode : String{
-            case random
-            case verticalScanBar
-            case horizontalScanBar
+            case random = "Random"
+            case verticalScanBar = "Vertical ScanBar"
+            case horizontalScanBar = "Horizontal ScanBar"
         }
     }
     var option : ImagePlayer.Option
@@ -112,6 +113,7 @@ public class ImagePlayer {
         self.prepare()
         self.status = .stop
         count = 0
+        colorMemory = UIColor.clear
         
         if let completionHandler = completionHandler {
             completionHandler()
@@ -208,8 +210,8 @@ public class ImagePlayer {
                 case .verticalScanBar:
                     pixelLocation =  faster * ( heightUnit ) * Int(self.image.size.width) + ( later * (widthUnit ) )
                     
-                    print ("pixelLocation : \(pixelLocation)")
-                    print ("x : \(pixelLocation % Int(self.image.size.width)) , y : \(pixelLocation / Int(self.image.size.width))")
+//                    print ("pixelLocation : \(pixelLocation)")
+//                    print ("x : \(pixelLocation % Int(self.image.size.width)) , y : \(pixelLocation / Int(self.image.size.width))")
                     
                     dwr += fwr
                     dhr += fhr
@@ -261,7 +263,7 @@ public class ImagePlayer {
     
     
     
-    
+    var colorMemory : UIColor = UIColor.clear
     var count = 0
     /// step3
     @objc public func performImage() {  /// 한박자
@@ -283,28 +285,34 @@ public class ImagePlayer {
             oddBeat = count % self.option.timePerBeat == self.option.timePerBeat - 1
         }
         
-        let color = getSingleColor()
         
         // 무채색
 //        let achroma = info.frequency < 220
 //        let rand = arc4random_uniform(2) == 0
 
-        
         if onFirstBeat {
             ToneController.sharedInstance().playKick()
         }else if everyOtherBeat || oddBeat {
             ToneController.sharedInstance().playSnare()
         }
-        ToneController.sharedInstance().playMelody(color: color)
+        
+//        for (_, color) in fetchColor().enumerated() {
+//            ToneController.sharedInstance().playMelody(color: color, staccato: true)
+//        }
+        let color = fetchColor().first!
+        colorMemory = color
+        ToneController.sharedInstance().playMelody(color: color, staccato: option.staccato)
+        
+        
         ToneController.sharedInstance().playHiHat(50)
         
     }
     
     /// step2
     // pixelLocations 에서 pixel 하나 꺼내와서 `색`으로 바꿈!
-    public func getSingleColor() -> UIColor{
+    public func fetchColor() -> [UIColor]{
         
-        var color = UIColor.clear
+        var colors : [UIColor] = []
         
         switch self.option.playMode {
             case .random:
@@ -317,12 +325,12 @@ public class ImagePlayer {
             let b = CGFloat(data[pixelLocation+2]) / CGFloat(255.0)
             let a = CGFloat(data[pixelLocation+3]) / CGFloat(255.0)
             
-            color = UIColor(red: r, green: g, blue: b, alpha: a)
+            colors.append(UIColor(red: r, green: g, blue: b, alpha: a))
             
             let y = (pixelLocation / 4) / Int(self.image.size.width)
             let x = (pixelLocation / 4) % Int(self.image.size.width)
             
-            if let pickedSingleColor = pickedSingleColor {
+            if let pickedSingleColor = pickedSingleColor, let color = colors.first  {
                 pickedSingleColor(color, x, y )
             }
            
@@ -337,10 +345,7 @@ public class ImagePlayer {
             var x: Int = -100
             var y :Int = -100
             
-            
-            var signitureSaturation : CGFloat = 0
-            var signitureBrightness : CGFloat = 0
-            
+            var color = UIColor.clear
             for _ in 0 ..< option.scanSampleNumber {
                 let colorPiece = colorPieces.removeFirst()
                 
@@ -349,46 +354,94 @@ public class ImagePlayer {
                 b = colorPiece.b
                 a = colorPiece.a
                 
-                let compareColor = UIColor(red: r, green: g, blue: b, alpha: a)
-                var compareSaturation : CGFloat = 0
-                var compareBrightness : CGFloat = 0
+                let newColor = UIColor(red: r, green: g, blue: b, alpha: a)
                 
-                compareColor.getHue(nil, saturation: &compareSaturation, brightness: &compareBrightness, alpha: nil)
-                
-                if compareSaturation > signitureSaturation &&
-                    compareBrightness > signitureBrightness {
-                    
-                    color = compareColor
-                    signitureSaturation = compareSaturation
-                    signitureBrightness = compareBrightness
-                    
-                    x = colorPiece.location % Int(image.size.width)
-                    y = colorPiece.location / Int(image.size.width)
+                if newColor > color {
+                        
+                    if option.staccato {
+                        
+                        
+                        if newColor.color2soundTwo().frequency.frequency2midiNumber() != colorMemory.color2soundTwo().frequency.frequency2midiNumber(){
+                            
+                            color = newColor
+                            x = colorPiece.location % Int(image.size.width)
+                            y = colorPiece.location / Int(image.size.width)
+                            colors.append(newColor)
+                        }
+                        
+                        
+                    }else {
+                        color = newColor
+                        x = colorPiece.location % Int(image.size.width)
+                        y = colorPiece.location / Int(image.size.width)
+                        colors.append(newColor)
+                    }
                 }
-                
             }
+            colors.append(color)
+            colors.sort(by: { $0 > $1 })
             
+//            let reducedColor = colors.reduce(UIColor.clear, { (origin, new) in
+//            
+//                if option.staccato {
+//                    
+//                    if origin > new && origin.color2soundTwo().frequency.frequency2midiNumber() != colorMemory.color2soundTwo().frequency.frequency2midiNumber(){
+//                        return origin
+//                    }else {
+//                        return new
+//                    }
+//                    
+//                }else {
+//                    return origin > new ? origin : new
+//                }
+//                
+//                }
+//            )
+//            
+//            colors.removeAll()
+//            colors.append(reducedColor)
             
-            if let pickedSingleColor = pickedSingleColor , let pickedScanColor = pickedScanColor {
+            if let pickedSingleColor = pickedSingleColor , let pickedScanColor = pickedScanColor, let color = colors.first {
                 pickedSingleColor(color, x, y)
                 pickedScanColor(color, x, y, self.option, self.count)
             }
+            return colors
+            
         }
         
-        return color
+        return colors
     }
 }
 
 extension ImagePlayer {
     public static func getOption() -> ImagePlayer.Option {
         
-        let bpm = UserDefaults.standard.double(forKey: "ImagePlayer Option BPM Key")
-        let timerPerBeat = UserDefaults.standard.integer(forKey: "ImagePlayer Option TimerPerBeat Key")
-        let noteCount = UserDefaults.standard.integer(forKey: "ImagePlayer Option NoteCount Key")
-        let playModeRawValue = UserDefaults.standard.string(forKey: "ImagePlayer Option PlayMode Key")!
+        let bpm = UserDefaults.standard.double(forKey: Constants.keys["BPM"]!)
+        let timerPerBeat = UserDefaults.standard.integer(forKey: Constants.keys["Time"]!)
+        let noteCount = UserDefaults.standard.integer(forKey: Constants.keys["Note Count"]!)
+        let playModeRawValue = UserDefaults.standard.string(forKey: Constants.keys["Play Mode"]!)!
         let playMode = ImagePlayer.Option.PlayMode(rawValue: playModeRawValue)!
-        let scanSampleNumber = UserDefaults.standard.integer(forKey: "ImagePlayer Option Scan Sample Number Key")
+        let scanSampleNumber = UserDefaults.standard.integer(forKey: Constants.keys["Number Of Sample"]!)
+        let staccato = UserDefaults.standard.bool(forKey: Constants.keys["Staccato"]!)
         
-        return ImagePlayer.Option(bpm: bpm, timePerBeat: timerPerBeat, noteCount: noteCount, playMode: playMode, scanSampleNumber: scanSampleNumber)
+        return ImagePlayer.Option(bpm: bpm, timePerBeat: timerPerBeat, noteCount: noteCount, playMode: playMode, scanSampleNumber: scanSampleNumber, staccato: staccato)
+    }
+}
+
+extension UIColor : Comparable {
+    static public func < (lhs: UIColor , rhs : UIColor) -> Bool {
+        
+        var lSaturation : CGFloat = 0
+        var lBrightness : CGFloat = 0
+        
+        var rSaturation : CGFloat = 0
+        var rBrightness : CGFloat = 0
+        
+        lhs.getHue(nil, saturation: &lSaturation, brightness: &lBrightness, alpha: nil)
+        rhs.getHue(nil, saturation: &rSaturation, brightness: &rBrightness, alpha: nil)
+        
+        
+        
+        return (lSaturation < rSaturation) && (lBrightness < rBrightness)
     }
 }

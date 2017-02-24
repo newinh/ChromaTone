@@ -15,7 +15,7 @@ extension ColorViewController {
     func prepareImagePlayer() -> ImagePlayer{
         
         // ImagePlyer 종료시 동작
-        self.imagePlayerCompleted = {
+        self.imagePlayerCompleted = {  [unowned self] in
             for sublayer in self.colorPickerImageView.layer.sublayers ?? [] {
                 sublayer.removeFromSuperlayer()
             }
@@ -45,7 +45,7 @@ extension ColorViewController {
         let imageFrame = self.colorPickerImageView.imageFrame()
         
         
-        self.receivedScanColorByImagePlyer = { (color, x, y, option, count) in
+        self.receivedScanColorByImagePlyer = { [unowned self] (color, x, y, option, count) in
             
             if self.scanBarIsMoving {
                 return
@@ -107,7 +107,7 @@ extension ColorViewController {
         let makerSize: CGFloat = 40
         
         
-        self.receivedSingleColorByImagePlyer = {
+        self.receivedSingleColorByImagePlyer = { [unowned self]
             (color, x, y ) in
             
             self.view.backgroundColor = color

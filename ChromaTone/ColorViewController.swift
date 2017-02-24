@@ -18,7 +18,7 @@ class ColorViewController: UIViewController {
     @IBOutlet weak var colorPickerImageView : ColorPickerImageView!
     @IBOutlet weak var playToggleButton : UIButton!
     
-    @IBOutlet weak var plot : UIView!
+    @IBOutlet weak var plot : AKRollingOutputPlot!
     
     var imagePlayer: ImagePlayer?
     
@@ -121,7 +121,6 @@ class ColorViewController: UIViewController {
             self.colorPickerImageView.mode = .makeHSBColor
         }
     }
-    
     @IBAction func play(_ sender: UIButton) {
         
         guard let player = self.imagePlayer else {

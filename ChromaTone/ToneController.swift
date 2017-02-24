@@ -19,34 +19,47 @@ public class ToneController {
     public class func sharedInstance() -> ToneController {
         if StaticInstance.instance == nil {
             
-            let instrumentRawValue : String = UserDefaults.standard.string(forKey: "Tone Instrument Type Key")!
-            let detailTypeRawValue : String = UserDefaults.standard.string(forKey: "Tone Instrument DetailType Key")!
+            let instrumentKey = Constants.keys["Instrument"]!
+            let detailKey = Constants.keys["Detail"]!
+            let instrumentRawValue : String = UserDefaults.standard.string(forKey: instrumentKey)!
+            let detailTypeRawValue : String = UserDefaults.standard.string(forKey: detailKey)!
             
             let type = ToneController.Instrument(rawValue: instrumentRawValue)!
-            let detailType = AKTableType(rawValue: detailTypeRawValue)!
-            
+            let detailType = ToneController.Instrument.DetailType(rawValue: detailTypeRawValue)!
             StaticInstance.instance = ToneController(type: type, detailType: detailType)
         }
+        
         return StaticInstance.instance!
     }
     
-    /// Todo: Customize!
     public enum Instrument: String{
         // 뭐 기타 등등등 추가해보자
-        case oscillator
-        case oscillatorBank
+        case oscillator = "Oscillator"
+        case oscillatorBank = "OscillatorBank"
         
-        case piano
-        case pianoFM
+        case piano = "Piano"
+        case pianoFM = "PianoFM"
+//        case drum
+//        case flute
         
-        case drum
-        case flute
+        public enum DetailType : String{
+            case sine   = "Sine"
+            case triangle = "Triangle"
+            case square = "Squre"
+            case sawtooth = "Sawtooth"
+            case reverseSawtooth = "Reverse Sawtooth"
+            case positiveSine = "Positive Sine"
+            case positiveTriangle = "Positive Triangle"
+            case positiveSquare = "Positive Squre"
+            case positiveSawtooth = "Positive Sawtooth"
+            case positiveReverseSawtooth = "Positive Reverse Sawtooth"
+        }
     }
-    private init(type : Instrument, detailType : AKTableType) {
+    private init(type : Instrument, detailType : Instrument.DetailType) {
         
         print("ToneGenerator init")
         self.type = type
-        self.detailType = detailType
+        self.secretDetailType = detailType
         
         /* 괜찮은 타입들
          oscillatorBank - positiveReverseSaw 포켓몬
@@ -55,14 +68,9 @@ public class ToneController {
 
         try! hiHat.loadWav(Constants.hiHat)
         
-        for i in 56...81 {
-            let file = try! AKAudioFile(readFileName: "piano-\(i).wav")
-            melody.append(try! AKAudioPlayer(file: file)) 
-        }
-        
-        for i in 56...81 {
-            melody2.append(AKSampler())
-            try! melody2[i-56].loadWav("piano-\(i)")
+        for i in Constants.minimumPianoMIDINoteNumber...Constants.maximumPianoMIDINoteNumber {
+            melody.append(AKSampler())
+            try! melody[i-Constants.minimumPianoMIDINoteNumber].loadWav("piano-\(i)")
         }
         
         try! pianoFM.loadWav("FM-Piano")
@@ -70,62 +78,104 @@ public class ToneController {
         prepareType()
     }
     
-    public var detailType : AKTableType
+    public var secretDetailType : ToneController.Instrument.DetailType
+    
+    public var detailType : AKTableType {
+        get { //////////////////
+            switch self.detailType {
+                
+            case .sine:     return AKTableType.sine
+            case .triangle: return AKTableType.triangle
+            case .square:   return AKTableType.square
+            case .sawtooth: return AKTableType.sawtooth
+            case .reverseSawtooth:  return AKTableType.reverseSawtooth
+            case .positiveSine: return AKTableType.positiveSine
+            case .positiveTriangle: return AKTableType.positiveTriangle
+            case .positiveSquare:   return AKTableType.positiveSquare
+            case .positiveSawtooth: return AKTableType.positiveSawtooth
+            case .positiveReverseSawtooth:  return AKTableType.positiveReverseSawtooth
+            }
+        }set {
+            switch newValue {
+            case .sine:
+                secretDetailType = ToneController.Instrument.DetailType.sine
+            case .triangle:
+                secretDetailType = ToneController.Instrument.DetailType.triangle
+            case .square:
+                secretDetailType = ToneController.Instrument.DetailType.square
+            case .sawtooth:
+                secretDetailType = ToneController.Instrument.DetailType.sawtooth
+            case .reverseSawtooth:
+                secretDetailType = ToneController.Instrument.DetailType.reverseSawtooth
+            case .positiveSine:
+                secretDetailType = ToneController.Instrument.DetailType.positiveSine
+            case .positiveTriangle:
+                secretDetailType = ToneController.Instrument.DetailType.positiveTriangle
+            case .positiveSquare:
+                secretDetailType = ToneController.Instrument.DetailType.positiveSquare
+            case .positiveSawtooth:
+                secretDetailType = ToneController.Instrument.DetailType.positiveSawtooth
+            case .positiveReverseSawtooth:
+                secretDetailType = ToneController.Instrument.DetailType.positiveReverseSawtooth
+            }
+            
+            prepareType()
+        }
+    }
     
     var oscillatorBank : AKOscillatorBank!
     var oscillator : AKOscillator!
-    var mixer = AKMixer()
     
-    var mixer2 = AKMixer()
+    var mainMixer = AKMixer()
+    var melodyMixer = AKMixer()
     
     let kick = AKSynthKick()
     let snare = AKSynthSnare()
     let hiHat = AKSampler()
     
-    var melody : [AKAudioPlayer] = []
-    
-    /// TODO : Sampler
-    var melody2 : [AKSampler] = []
+    var melody : [AKSampler] = []
     
     var pianoFM = AKSampler()
     
-    /// TODO : prepare
     func prepareType() {
-        mixer = AKMixer()
-        mixer.connect(kick)
-        mixer.connect(snare)
-        mixer.connect(hiHat)
+        
+        
+        mainMixer = AKMixer()
+        melodyMixer = AKMixer()
+
+        mainMixer.connect(kick)
+        mainMixer.connect(snare)
+        mainMixer.connect(hiHat)
         
         
         switch type {
             
         case .oscillator:
+            print("fff")
             oscillator = AKOscillator(waveform: AKTable(self.detailType))
             
             oscillator.amplitude = 0
             oscillator.play()
-            mixer.connect(oscillator)
+            mainMixer.connect(oscillator)
             
         case .oscillatorBank:
             oscillatorBank = AKOscillatorBank(waveform: AKTable(self.detailType),
                                               attackDuration: 0.01,
                                               releaseDuration: 0.01)
-            mixer.connect(oscillatorBank!)
+            mainMixer.connect(oscillatorBank!)
             
         case .piano:
             
             for (i, node) in melody.enumerated() {
-                mixer.connect(node)
+                melodyMixer.connect(node)
             }
-            for (i, node) in melody2.enumerated() {
-                mixer2.connect(node)
-            }
-            mixer.connect(mixer2)
+            melodyMixer.volume = 5
+            mainMixer.connect(melodyMixer)
             
         case .pianoFM :
             
             var delay  = AKDelay(pianoFM)
-            //                delay.time = pulse * 1.5
+//                delay.time = pulse * 1.5
             delay.dryWetMix = 0.3
             delay.feedback = 0.2
             
@@ -133,14 +183,16 @@ public class ToneController {
             reverb.loadFactoryPreset(.largeRoom)
             let mix = AKMixer(reverb)
             mix.volume = 5.0
-            mixer.connect(mix)
+            mainMixer.connect(mix)
             
         default :
             print("default")
         }
         defer{
-            AudioKit.output = mixer
+            AudioKit.output = mainMixer
             AudioKit.start()
+            
+            print(mainMixer.volume)
         }
     }
     
@@ -152,17 +204,13 @@ public class ToneController {
         }
     }
     
-//    var isPlaying: Bool = false
-    
-    
-    
     // 기준 : A4.
     var memory : MIDINoteNumber = 0
-    
+    var volumeMemory : MIDIVelocity = 0
     
     // Volum : 0 ~ 100 사이로 받자.
-    // 특정한 볼륨 재생
-    public func playMelody(color: UIColor , volume: Int? = nil, interval : Double? = nil) {
+    // 특정한 음 재생
+    public func playMelody(color: UIColor , volume: Int? = nil, staccato : Bool? = nil) {
         
         let soundInfo = color.color2soundTwo()
         
@@ -203,31 +251,38 @@ public class ToneController {
             
         case .piano:
             let MIDINumber = MIDINoteNumber( soundInfo.frequency.frequency2midiNumber() )
-//            var MIDIVolume : MIDIVelocity
-            let index : Int = Int(MIDINumber) - 56
-
-            melody2[index].play()
             
-//            if melody[index].isPlaying {
-//                print("ToneController.play : 이미 연주중")
-//                return
-//            }
-//
-//            
-//            if let interval = interval {
-//                melody[index].play(from: 0, to: interval)
-//                
-//                // 화성 테스트
-//                if index > 3 {
-//                    melody[index-4].play(from: 0, to: interval)
-//                }
-//                
-//            }else {
-//              melody[index].play()
-//                if index > 3 {
-//                    melody[index-4].play()
-//                }
-//            }
+            var MIDIVolume : MIDIVelocity
+            if let volume = volume {
+                MIDIVolume = MIDIVelocity((volume * 255 )  / 100 )
+            }else {
+                MIDIVolume = MIDIVelocity ((soundInfo.volume * 255 )  / 100 )
+            }
+            let index : Int = Int(MIDINumber) - Constants.minimumPianoMIDINoteNumber
+
+            
+            if let staccato = staccato, staccato == true {
+                
+                print("I'm here")
+                
+                melody[index].play(velocity : MIDIVolume)
+                
+                // 화성 test
+                if index > 3 {
+                    melody[index-4].play(velocity : MIDIVolume)
+                }
+                
+            }else if memory == MIDINumber {
+                break
+            }else {
+                melody[index].play(velocity : MIDIVolume)
+                // 화성 test
+                if index > 3 {
+                    melody[index-4].play(velocity : MIDIVolume)
+                }
+                memory = MIDINumber
+            }
+
             
         case .pianoFM:
             
@@ -290,6 +345,7 @@ extension Double {
         return MIDINoteNumber ( 69 + ( 12 * log2( self / 440) ) )
     }
 }
+
 extension UIColor {
     
     // frequency = 110 * pow(2, (saturation*2)) * pow(2, hue)

@@ -37,14 +37,10 @@ class ColorPickerImageView : UIImageView {
             default:
                 print("maybe camera mode...")
             }
-            
         }
-        
-        
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
         
         for (_, touch) in touches.enumerated() {
             
@@ -56,10 +52,7 @@ class ColorPickerImageView : UIImageView {
             default:
                 print("maybe camera mode...")
             }
-            
         }
-        
-        
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
