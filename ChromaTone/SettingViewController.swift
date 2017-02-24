@@ -104,10 +104,8 @@ class SettingViewController : UITableViewController{
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-//        super.tableView(tableView, didSelectRowAt: indexPath)
         selectedIndexPath = indexPath
         
-        print(indexPath)
         if indexPath.section == 0 {
             return
         }else if indexPath.row == 0{
@@ -125,6 +123,18 @@ class SettingViewController : UITableViewController{
         let picker = UIPickerView()
         picker.dataSource = self
         picker.delegate = self
+        
+        var data = 0
+        
+        if selectedIndexPath.row == 2{
+            data = Int((bpmCell.detailTextLabel?.text)!)! - (Constants.imagePlayer["BPM"] as! [Int])[0]
+        }else if selectedIndexPath.row == 3{
+            data = Int((timeCell.detailTextLabel?.text)!)! - (Constants.imagePlayer["Time"] as! [Int])[0]
+        }else if selectedIndexPath.row == 4{
+            data = Int((noteCountCell.detailTextLabel?.text)!)! -  (Constants.imagePlayer["Note Count"] as! [Int])[0]
+        }
+        
+        picker.selectRow(data, inComponent: 0, animated: true)
 
         let alertController = UIAlertController(title: "", message: "\n\n\n\n\n", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("done", comment: "Alert OK button"), style: .cancel, handler: {action in
@@ -141,7 +151,6 @@ class SettingViewController : UITableViewController{
         
         picker.frame = CGRect(x: 4, y: 45, width: 270, height: 100)
         alertController.view.addSubview(picker)
-        print(alertController.view.frame)
         self.present(alertController, animated: true, completion: nil)
     }
     
@@ -150,10 +159,10 @@ class SettingViewController : UITableViewController{
             bpmCell.detailTextLabel?.text = "\((Constants.imagePlayer["BPM"] as! [Int])[0] + selectedRow!)"
         }else if selectedIndexPath.row == 3{
             timeCell.detailTextLabel?.text = "\((Constants.imagePlayer["Time"] as! [Int])[0] + selectedRow!)"
-        }else if selectedIndexPath.row == 3{
+        }else if selectedIndexPath.row == 4{
             noteCountCell.detailTextLabel?.text = "\((Constants.imagePlayer["Note Count"] as! [Int])[0] + selectedRow!)"
         }
-        self.tableView.reloadRows(at: [selectedIndexPath], with: .middle)
+        self.tableView.reloadData()
     }
 }
 
@@ -194,8 +203,5 @@ extension SettingViewController : UIPickerViewDelegate, UIPickerViewDataSource {
             return " \((Constants.imagePlayer["Note Count"] as! [Int])[0] + row)"
         }
         return "error"
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
     }
 }
