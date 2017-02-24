@@ -34,9 +34,7 @@ public class ToneController {
     
     public enum Instrument: String{
         // 뭐 기타 등등등 추가해보자
-        case oscillator = "Oscillator"
         case oscillatorBank = "OscillatorBank"
-        
         case piano = "Piano"
         case pianoFM = "PianoFM"
         
@@ -54,10 +52,31 @@ public class ToneController {
         prepareType()
     }
     
-    public var detailType : AKTableType
+    public var detailType : AKTableType {
+        didSet{
+            stop()
+            
+            switch detailType {
+            case .sine:
+                mainOscillator = oscillatorSine
+            case .triangle:
+                mainOscillator = oscillatorTriangle
+            case .square:
+                mainOscillator = oscillatorSquare
+            case .sawtooth:
+                mainOscillator = oscillatorSawtooth
+            default:
+                mainOscillator = oscillatorSine
+            }
+        }
+    }
     
-    var oscillatorBank : AKOscillatorBank!
-    var oscillator : AKOscillator!
+    var oscillatorSine : AKOscillatorBank!
+    var oscillatorTriangle : AKOscillatorBank!
+    var oscillatorSquare : AKOscillatorBank!
+    var oscillatorSawtooth : AKOscillatorBank!
+    
+    var mainOscillator : AKOscillatorBank!
     
     var mainMixer = AKMixer()
     var melodyMixer = AKMixer()
@@ -82,15 +101,36 @@ public class ToneController {
     
     func prepareOscillator(){
         
-        oscillator = AKOscillator(waveform: AKTable(self.detailType))
-        oscillator.amplitude = 0
-        oscillator.play()
-        mainMixer.connect(oscillator)
         
-        oscillatorBank = AKOscillatorBank(waveform: AKTable(self.detailType),
-                                          attackDuration: 0.01,
-                                          releaseDuration: 0.01)
-        mainMixer.connect(oscillatorBank!)
+        oscillatorSine = AKOscillatorBank(waveform: AKTable(AKTableType.sine),
+                                          attackDuration: 0.01, releaseDuration: 0.01)
+        
+        oscillatorTriangle = AKOscillatorBank(waveform: AKTable(AKTableType.triangle),
+                                          attackDuration: 0.01,releaseDuration: 0.01)
+        
+        oscillatorSquare = AKOscillatorBank(waveform: AKTable(AKTableType.square),
+                                          attackDuration: 0.01, releaseDuration: 0.01)
+        
+        oscillatorSawtooth = AKOscillatorBank(waveform: AKTable(AKTableType.sawtooth),
+                                          attackDuration: 0.01, releaseDuration: 0.01)
+        
+        switch detailType {
+        case .sine:
+            mainOscillator = oscillatorSine
+        case .triangle:
+            mainOscillator = oscillatorTriangle
+        case .square:
+            mainOscillator = oscillatorSquare
+        case .sawtooth:
+            mainOscillator = oscillatorSawtooth
+        default:
+            mainOscillator = oscillatorSine
+        }
+        
+        mainMixer.connect(oscillatorSine)
+        mainMixer.connect(oscillatorTriangle)
+        mainMixer.connect(oscillatorSquare)
+        mainMixer.connect(oscillatorSawtooth)
     }
     
     func prepareMelody() {
@@ -143,12 +183,9 @@ public class ToneController {
         }
     }
     
-    public var type : Instrument
-        {
-        
-        didSet {
-            prepareOscillator()
-            print("TonController type didSet")
+    public var type : Instrument {
+        willSet {
+            stop()
         }
     }
     
@@ -165,16 +202,6 @@ public class ToneController {
         print("PLAY!!")
         switch self.type {
             
-        case .oscillator:
-            oscillator.frequency = soundInfo.frequency
-            oscillator.play()
-            
-            if let volume = volume {
-                oscillator.amplitude = Double(volume) / 100
-            }else {
-                oscillator.amplitude = Double(soundInfo.volume) / 100
-            }
-            
         case .oscillatorBank:
             
             
@@ -189,12 +216,12 @@ public class ToneController {
             print("MIDINoteNumber : \(MIDINumber)")
             
             if memory == MIDINumber {
-                oscillatorBank.play(noteNumber: MIDINumber, velocity: MIDIVolume )
+                mainOscillator.play(noteNumber: MIDINumber, velocity: MIDIVolume )
                 return
             }else {
                 
-                oscillatorBank.play(noteNumber: MIDINumber, velocity: MIDIVolume )
-                oscillatorBank.stop(noteNumber: memory)
+                mainOscillator.play(noteNumber: MIDINumber, velocity: MIDIVolume )
+                mainOscillator.stop(noteNumber: memory)
                 memory = MIDINumber
             }
             
@@ -257,11 +284,9 @@ public class ToneController {
         
         print("tone stop")
         switch self.type {
-        case .oscillator:
-            oscillator.amplitude = 0
             
         case .oscillatorBank:
-            oscillatorBank.stop(noteNumber: memory)
+            mainOscillator.stop(noteNumber: memory)
             memory = 0
         default:
             print("stop default")

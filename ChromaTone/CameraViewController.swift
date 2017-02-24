@@ -29,7 +29,6 @@ class CameraViewController : UIViewController {
     var videoDeviceInput: AVCaptureDeviceInput!
     var videoDataOutput: AVCaptureVideoDataOutput!
     
-    private var isSessionRunning = false
     
     private let sessionQueue = DispatchQueue(label: "session queue", attributes: [], target: nil) // session 관련 작업
     private let videoDataOutputQueue = DispatchQueue(label: "video data ouput queue") // capure frame 관련 작업
@@ -85,7 +84,6 @@ class CameraViewController : UIViewController {
             case .success:
                 
                 self.session.startRunning()
-                self.isSessionRunning = self.session.isRunning
                 
             case .notAuthorized:
                 DispatchQueue.main.async { [unowned self] in
@@ -117,7 +115,6 @@ class CameraViewController : UIViewController {
         sessionQueue.async { [unowned self] in
             if self.setupResult == .success {
                 self.session.stopRunning()
-                self.isSessionRunning = self.session.isRunning
             }
         }
         

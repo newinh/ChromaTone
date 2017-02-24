@@ -37,7 +37,6 @@ struct Constants {
     
     
     static let instrument : [String] = [
-        ToneController.Instrument.oscillator.rawValue,
         ToneController.Instrument.oscillatorBank.rawValue,
         ToneController.Instrument.piano.rawValue,
         ToneController.Instrument.pianoFM.rawValue
@@ -48,12 +47,6 @@ struct Constants {
         AKTableType.triangle.rawValue,
         AKTableType.square.rawValue,
         AKTableType.sawtooth.rawValue,
-        AKTableType.reverseSawtooth.rawValue,
-        AKTableType.positiveSine.rawValue,
-        AKTableType.positiveTriangle.rawValue,
-        AKTableType.positiveSquare.rawValue,
-        AKTableType.positiveSawtooth.rawValue,
-        AKTableType.reverseSawtooth.rawValue,
     ]
     
     static let toneController : [ String : [String] ] = [
