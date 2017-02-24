@@ -145,13 +145,6 @@ extension SettingTableViewController : UIPickerViewDataSource, UIPickerViewDeleg
         
         ToneController.sharedInstance().type = type
         ToneController.sharedInstance().detailType = detailType
-        
-//        let option = ImagePlayer.getOption()
-//        
-//        
-//        if let viewController = self.tabBarController?.viewControllers?.first as? ColorViewController {
-//            viewController.imagePlayer?.option = option 
-//        }
     }
     
 }

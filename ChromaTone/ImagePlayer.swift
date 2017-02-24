@@ -310,12 +310,19 @@ public class ImagePlayer {
 //        for (_, color) in fetchColor().enumerated() {
 //            ToneController.sharedInstance().playMelody(color: color, staccato: true)
 //        }
+        
         let color = fetchColor().first!
         colorMemory = color
-        ToneController.sharedInstance().playMelody(color: color, staccato: option.staccato)
         
         
-        
+        if self.option.timePerBeat == 2 {
+            if count % 2 == 0 {
+                ToneController.sharedInstance().playMelody(color: color, staccato: option.staccato)
+            }
+        }else {
+            
+            ToneController.sharedInstance().playMelody(color: color, volume: 20, staccato: option.staccato)
+        }
         
     }
     
@@ -353,8 +360,8 @@ public class ImagePlayer {
             var a : CGFloat = 0
             
             // 화면에서 없애자...
-            var x: Int = -100
-            var y :Int = -100
+            var x: Int = -300
+            var y :Int = -300
             
             var color = UIColor.clear
             for _ in 0 ..< option.scanSampleNumber {

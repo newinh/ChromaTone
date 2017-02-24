@@ -192,12 +192,15 @@ public class ToneController {
     public func stop() {
         
         print("tone stop")
+        
         switch self.type {
             
         case .oscillatorBank:
             mainOscillator.stop(noteNumber: memory)
             memory = 0
+            
         default:
+            memory = 0
             print("stop default")
         }
         

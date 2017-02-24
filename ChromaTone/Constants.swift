@@ -31,10 +31,8 @@ struct Constants {
         "Play Mode" : "ImagePlayer Option PlayMode Key",
         "Number Of Sample" : "ImagePlayer Option Scan Sample Number Key" ,
         "Staccato" : "ImagePlayer Option Staccato Key",
-        
         ]
-    
-    
+
     
     static let instrument : [String] = [
         ToneController.Instrument.oscillatorBank.rawValue,
