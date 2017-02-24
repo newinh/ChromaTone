@@ -76,11 +76,6 @@ class ColorViewController: UIViewController {
         pickerSoundOn()
         
     }
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        /// 초기화면 카메라뷰!
-        self.performSegue(withIdentifier: "CameraView", sender: nil)
-    }
     
     override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
         prepareReceivingSingleColor()
