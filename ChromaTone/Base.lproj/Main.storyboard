@@ -72,7 +72,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4dE-fx-eSE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-253.59999999999999" y="393.55322338830587"/>
+            <point key="canvasLocation" x="-1156" y="979"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="oa2-Wd-Z4e">
@@ -97,7 +97,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aPu-b9-8iF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-253.59999999999999" y="-260.41979010494754"/>
+            <point key="canvasLocation" x="-46" y="640"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="PG4-qk-BVV">
@@ -109,7 +109,7 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="682-5y-E1L" kind="relationship" relationship="viewControllers" id="8kN-Wj-MZI"/>
+                        <segue destination="Wz4-iL-ai8" kind="relationship" relationship="viewControllers" id="NFa-PY-M7A"/>
                         <segue destination="Jib-d6-KGt" kind="relationship" relationship="viewControllers" id="v0d-NY-ATX"/>
                         <segue destination="Ng7-Xj-Oxm" kind="relationship" relationship="viewControllers" id="M5N-MD-0D1"/>
                         <segue destination="pYC-Cm-2Od" kind="relationship" relationship="viewControllers" id="tOP-3U-dUm"/>
@@ -118,6 +118,23 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sMO-5e-XLy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1207" y="66"/>
+        </scene>
+        <!--Item-->
+        <scene sceneID="Cdg-oP-KQF">
+            <objects>
+                <navigationController id="Wz4-iL-ai8" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" selectedImage="icon_palette" id="rBg-GB-Xds"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="wxj-W1-ktF">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="682-5y-E1L" kind="relationship" relationship="rootViewController" id="OMq-es-2kG"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Wii-KZ-NBP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-531" y="-491"/>
         </scene>
         <!--Color View Controller-->
         <scene sceneID="Ccs-mi-44k">
@@ -132,10 +149,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KTv-KE-s4U" customClass="ColorPickerImageView" customModule="ChromaTone" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="58" width="375" height="465"/>
+                                <rect key="frame" x="0.0" y="102" width="375" height="421"/>
                             </imageView>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="1" translatesAutoresizingMaskIntoConstraints="NO" id="xRL-Er-NNd">
-                                <rect key="frame" x="0.0" y="20" width="375" height="29"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="29"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="28" id="iwh-WK-dQQ"/>
                                 </constraints>
@@ -167,6 +184,14 @@
                                 <rect key="frame" x="96" y="533" width="183" height="50"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v2P-hc-WRi">
+                                <rect key="frame" x="96" y="568" width="85" height="12"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="testing...!"/>
+                                <connections>
+                                    <segue destination="JmQ-IT-0Zz" kind="show" id="6qd-Ub-iQX"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -215,6 +240,7 @@
                         </variation>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="icon_palette" id="Crp-49-kOu"/>
+                    <navigationItem key="navigationItem" id="5XG-uX-3Ay"/>
                     <connections>
                         <outlet property="colorPickerImageView" destination="KTv-KE-s4U" id="eVx-up-qaf"/>
                         <outlet property="modeChanger" destination="xRL-Er-NNd" id="ACP-Yt-lMH"/>
@@ -226,12 +252,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hxp-qh-nz7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2127.536231884058" y="-260.86956521739131"/>
+            <point key="canvasLocation" x="365.60000000000002" y="-385.45727136431788"/>
         </scene>
-        <!--View Controller-->
+        <!--Setting View Controller-->
         <scene sceneID="iWe-sk-QIt">
             <objects>
-                <viewController id="JmQ-IT-0Zz" sceneMemberID="viewController">
+                <viewController id="JmQ-IT-0Zz" customClass="SettingViewController" customModule="ChromaTone" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="BXX-Wv-XUb"/>
                         <viewControllerLayoutGuide type="bottom" id="GGj-nY-Pff"/>
@@ -242,6 +268,12 @@
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="feT-FV-yGI">
                                 <rect key="frame" x="-0.5" y="-0.5" width="375" height="667"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t44-mv-yTy">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                        <state key="normal" title="Button"/>
+                                    </button>
+                                </subviews>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -252,10 +284,13 @@
                             <constraint firstItem="feT-FV-yGI" firstAttribute="centerX" secondItem="s9L-5h-jH4" secondAttribute="centerX" id="tn4-0S-Lt2"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="button1" destination="t44-mv-yTy" id="RWu-WO-TsE"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Sp-Ts-oya" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2183" y="-1072"/>
+            <point key="canvasLocation" x="342" y="-1086"/>
         </scene>
         <!--Camera View Controller-->
         <scene sceneID="sJy-Iw-ZAD">
@@ -274,7 +309,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dys-hE-FRm">
-                                <rect key="frame" x="36" y="40" width="30" height="30"/>
+                                <rect key="frame" x="36" y="84" width="30" height="30"/>
                                 <state key="normal" image="icon_cancel"/>
                                 <connections>
                                     <action selector="canceld:" destination="u0k-FD-rD5" eventType="touchUpInside" id="5Hh-oY-5XC"/>
@@ -383,7 +418,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MZL-Gy-Qus" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2127" y="394"/>
+            <point key="canvasLocation" x="-2602" y="902"/>
         </scene>
     </scenes>
     <resources>
