@@ -37,6 +37,9 @@ class CameraViewController : UIViewController {
     // MARK: View Controller Life Cycle
     override func viewDidLoad() {
         
+        
+        self.tabBarController?.tabBar.isTranslucent = true
+        self.tabBarController?.tabBar.barStyle = .black
         /// TODO : add plot
 //        self.plot.addSubview(AKRollingOutputPlot(frame: self.plot.bounds))
         
@@ -113,6 +116,8 @@ class CameraViewController : UIViewController {
         
         //plot clear
 //        self.plot.subviews.first!.removeFromSuperview()
+        
+        self.tabBarController?.tabBar.barStyle = .default
         
         ToneController.sharedInstance().aChromaOff = true
         

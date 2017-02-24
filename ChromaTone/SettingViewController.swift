@@ -9,17 +9,22 @@
 import Foundation
 import UIKit
 import FontAwesome_swift
+import AudioKit
 
-class SettingViewController : UIViewController{
+class SettingViewController : UITableViewController{
     
-    @IBOutlet weak var button1 : UIButton!
     
-//    button.titleLabel?.font = UIFont.fontAwesome(ofSize: 30)
-//    button.setTitle(String.fontAwesomeIcon(name: .github), for: .normal)
+    @IBOutlet weak var toneInstrumentControl : UISegmentedControl!
+    @IBOutlet weak var toneDetailControl : UISegmentedControl!
+    
+    @IBOutlet weak var dynamicCell : UITableViewCell!
+    @IBOutlet weak var playModeControl : UISegmentedControl!
+    @IBOutlet weak var bpmSlider : AKPropertySlider!
+    @IBOutlet weak var timeSlider : AKPropertySlider!
+    @IBOutlet weak var noteCountSlider : AKPropertySlider!
     
     override func viewDidLoad() {
-        button1.titleLabel?.font = UIFont.fontAwesome(ofSize: 30)
-        button1.setTitle(String.fontAwesomeIcon(name: .pause), for: .normal)
+        
     }
     
 }
