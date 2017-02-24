@@ -83,6 +83,7 @@ public class ImagePlayer {
     let pixelData : CFData?
     let data : UnsafePointer<UInt8>
     
+    
     // 새로운 음악을 만들자
     public func prepare() {
         
@@ -97,7 +98,7 @@ public class ImagePlayer {
         
         
         //timer setup
-        let interval = TimeInterval( 1 / ( Double(self.option.bpm/60) * Double(self.option.timePerBeat) ))
+        let interval = TimeInterval( 1 / ( Double(self.option.bpm/60) * 4 ))
         print("interval : \(interval)" )
         self.timer = Timer(timeInterval: interval, target: self, selector: #selector(self.performImage), userInfo: nil, repeats: true)
     }
@@ -122,7 +123,7 @@ public class ImagePlayer {
     }
     
     public func resume() {
-        let interval = TimeInterval( 1 / ( Double(self.option.bpm/60) * Double(self.option.timePerBeat) ))
+        let interval = TimeInterval( 1 / ( Double(self.option.bpm/60) * 4 ))
         self.timer = Timer(timeInterval: interval, target: self, selector: #selector(self.performImage), userInfo: nil, repeats: true)
         play()
     }
@@ -265,6 +266,8 @@ public class ImagePlayer {
     
     var colorMemory : UIColor = UIColor.clear
     var count = 0
+    
+    var count2 = 1
     /// step3
     @objc public func performImage() {  /// 한박자
         
@@ -276,9 +279,15 @@ public class ImagePlayer {
         
         count += 1
         
+        if self.option.timePerBeat == 2 {
+            count2 = 4
+        }else {
+            count2 = 1
+        }
         
-        let onFirstBeat = count % self.option.timePerBeat == 0
-        let everyOtherBeat = count % self.option.timePerBeat == self.option.timePerBeat/2
+        
+        let onFirstBeat = count % (self.option.timePerBeat * count2) == 0
+        let everyOtherBeat = count % (self.option.timePerBeat * count2) == (self.option.timePerBeat * count2)/2
 
         var oddBeat : Bool = false
         if self.option.timePerBeat % 2 == 1{ // 홀수 일때 마지막 박자에 true!
@@ -294,6 +303,8 @@ public class ImagePlayer {
             ToneController.sharedInstance().playKick()
         }else if everyOtherBeat || oddBeat {
             ToneController.sharedInstance().playSnare()
+        }else {
+            ToneController.sharedInstance().playHiHat(100)
         }
         
 //        for (_, color) in fetchColor().enumerated() {
@@ -304,7 +315,7 @@ public class ImagePlayer {
         ToneController.sharedInstance().playMelody(color: color, staccato: option.staccato)
         
         
-        ToneController.sharedInstance().playHiHat(50)
+        
         
     }
     

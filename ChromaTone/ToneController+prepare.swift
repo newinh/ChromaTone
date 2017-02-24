@@ -81,7 +81,7 @@ extension ToneController {
         for (_, node) in melody.enumerated() {
             melodyMixer.connect(node)
         }
-        melodyMixer.volume = 5
+        melodyMixer.volume = 3
         mainMixer.connect(melodyMixer)
         
         

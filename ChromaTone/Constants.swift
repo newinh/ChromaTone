@@ -39,7 +39,7 @@ struct Constants {
     static let instrument : [String] = [
         ToneController.Instrument.oscillatorBank.rawValue,
         ToneController.Instrument.piano.rawValue,
-        ToneController.Instrument.pianoFM.rawValue
+//        ToneController.Instrument.pianoFM.rawValue
     ]
     
     static let detail : [String] = [
@@ -68,9 +68,9 @@ struct Constants {
 //        "Image Player" : "",
         "BPM" : 50...150,
         "Time" : 2...4,
-        "Note Count" : 10...200,
+        "Note Count" : 10...60,
         "Play Mode" : playMode,
-        "Number Of Sample" : 5...25 ,
+        "Number Of Sample" : 5...15 ,
         "Staccato" : [true, false]
         ]
     

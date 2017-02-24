@@ -78,6 +78,12 @@ class ColorViewController: UIViewController {
     }
     
     override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
+        
+        
+        for sublayer in self.colorPickerImageView.layer.sublayers ?? [] {
+            sublayer.removeFromSuperlayer()
+        }
+        self.scanBarIsMoving = false
         prepareReceivingSingleColor()
         prepareReceivingScanColor()
         imagePlayer?.pickedSingleColor = self.receivedSingleColorByImagePlyer
@@ -87,6 +93,13 @@ class ColorViewController: UIViewController {
             view.frame = CGRect(x: 0, y: self.modeChanger.frame.maxY,
                    width: self.view.frame.width, height: self.view.frame.height)
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.imagePlayer = prepareImagePlayer()
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        self.imagePlayer?.stop()
     }
     
     // MARK: IBAction
@@ -148,27 +161,6 @@ class ColorViewController: UIViewController {
         }
     }
     
-    func pickerSoundOn() {
-        // Color Picked Completion Handler
-        self.colorPickerImageView.pickedColor = { [unowned self] (newColor) in
-            // 색 미리보기
-            self.preview.backgroundColor = newColor
-            ToneController.sharedInstance().playMelody(color: newColor)
-        }
-        self.colorPickerImageView.endedTouch = {
-            ToneController.sharedInstance().stop()
-        }
-    }
-    
-    func pickerSoundOff() {
-        // Color Picked Completion Handler
-        self.colorPickerImageView.pickedColor = { [unowned self] (newColor) in
-            // 색 미리보기
-            self.preview.backgroundColor = newColor
-        }
-        self.colorPickerImageView.endedTouch = {
-        }
-    }
 }
 
 extension ColorViewController : UINavigationControllerDelegate, UIImagePickerControllerDelegate {

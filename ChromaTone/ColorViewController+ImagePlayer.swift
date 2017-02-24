@@ -54,7 +54,8 @@ extension ColorViewController {
             self.scanBarIsMoving = true
             
             let bpm = Double(option.bpm)
-            let timePerBeat = Double ( option.timePerBeat)
+//            let timePerBeat = Double ( option.timePerBeat)
+            let timePerBeat = 4
             let noteCount = Double (option.noteCount)
             
             let layer = CALayer()

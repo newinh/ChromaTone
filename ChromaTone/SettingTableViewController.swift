@@ -14,10 +14,11 @@ class SettingTableViewController : UIViewController, UITableViewDelegate, UITabl
     
     @IBOutlet weak var tableView : UITableView!
     
-    
     var titles : [String] = []
     var selectedInxdexPath : IndexPath!
     var nowValue : String = ""
+    
+    var updateOption : ( (ImagePlayer.Option) -> Void )?
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return Constants.options.count
@@ -144,9 +145,13 @@ extension SettingTableViewController : UIPickerViewDataSource, UIPickerViewDeleg
         
         ToneController.sharedInstance().type = type
         ToneController.sharedInstance().detailType = detailType
-//
         
 //        let option = ImagePlayer.getOption()
+//        
+//        
+//        if let viewController = self.tabBarController?.viewControllers?.first as? ColorViewController {
+//            viewController.imagePlayer?.option = option 
+//        }
     }
     
 }
