@@ -261,69 +261,7 @@ public class ImagePlayer {
         }
     }
     
-    
-    
     var colorMemory : UIColor = UIColor.clear
-    var count = 0
-    
-    var count2 = 1
-    /// step3
-    @objc public func performImage() {  /// 한박자
-        
-        
-        if pixelLocations.isEmpty && colorPieces.isEmpty {
-            self.stop()
-            return
-        }
-        
-        count += 1
-        
-        if self.option.timePerBeat == 2 {
-            count2 = 4
-        }else {
-            count2 = 1
-        }
-        
-        
-        let onFirstBeat = count % (self.option.timePerBeat * count2) == 0
-        let everyOtherBeat = count % (self.option.timePerBeat * count2) == (self.option.timePerBeat * count2)/2
-
-        var oddBeat : Bool = false
-        if self.option.timePerBeat % 2 == 1{ // 홀수 일때 마지막 박자에 true!
-            oddBeat = count % self.option.timePerBeat == self.option.timePerBeat - 1
-        }
-        
-        
-        // 무채색
-//        let achroma = info.frequency < 220
-//        let rand = arc4random_uniform(2) == 0
-
-        if onFirstBeat {
-            ToneController.sharedInstance().playKick()
-        }else if everyOtherBeat || oddBeat {
-            ToneController.sharedInstance().playSnare()
-        }else {
-            ToneController.sharedInstance().playHiHat(100)
-        }
-        
-//        for (_, color) in fetchColor().enumerated() {
-//            ToneController.sharedInstance().playMelody(color: color, staccato: true)
-//        }
-        
-        let color = fetchColor().first!
-        colorMemory = color
-        
-        
-        if self.option.timePerBeat == 2 {
-            if count % 2 == 0 {
-                ToneController.sharedInstance().playMelody(color: color, staccato: option.staccato)
-            }
-        }else {
-            
-            ToneController.sharedInstance().playMelody(color: color, volume: 20, staccato: option.staccato)
-        }
-        
-    }
     
     /// step2
     // pixelLocations 에서 pixel 하나 꺼내와서 `색`으로 바꿈!
@@ -428,6 +366,69 @@ public class ImagePlayer {
         
         return colors
     }
+    
+    var count = 0
+    
+    var count2 = 1
+    /// step3
+    @objc public func performImage() {  /// 한박자
+        
+        
+        if pixelLocations.isEmpty && colorPieces.isEmpty {
+            self.stop()
+            return
+        }
+        
+        count += 1
+        
+        if self.option.timePerBeat == 2 {
+            count2 = 4
+        }else {
+            count2 = 1
+        }
+        
+        
+        let onFirstBeat = count % (self.option.timePerBeat * count2) == 0
+        let everyOtherBeat = count % (self.option.timePerBeat * count2) == (self.option.timePerBeat * count2)/2
+        
+        var oddBeat : Bool = false
+        if self.option.timePerBeat % 2 == 1{ // 홀수 일때 마지막 박자에 true!
+            oddBeat = count % self.option.timePerBeat == self.option.timePerBeat - 1
+        }
+        
+        
+        // 무채색
+        //        let achroma = info.frequency < 220
+        //        let rand = arc4random_uniform(2) == 0
+        
+        if onFirstBeat {
+            ToneController.sharedInstance().playKick()
+        }else if everyOtherBeat || oddBeat {
+            ToneController.sharedInstance().playSnare()
+        }else {
+            ToneController.sharedInstance().playHiHat(100)
+        }
+        
+        //        for (_, color) in fetchColor().enumerated() {
+        //            ToneController.sharedInstance().playMelody(color: color, staccato: true)
+        //        }
+        
+        let color = fetchColor().first!
+        colorMemory = color
+        
+        
+        if self.option.timePerBeat == 2 {
+            if count % 2 == 0 {
+                ToneController.sharedInstance().playMelody(color: color, staccato: option.staccato)
+            }
+        }else {
+            
+            ToneController.sharedInstance().playMelody(color: color, volume: 20, staccato: option.staccato)
+        }
+        
+    }
+    
+    
 }
 
 extension ImagePlayer {
