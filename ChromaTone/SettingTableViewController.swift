@@ -134,20 +134,17 @@ extension SettingTableViewController : UIPickerViewDataSource, UIPickerViewDeleg
         let indexPathes : [IndexPath] = [selectedInxdexPath]
         tableView.reloadRows(at: indexPathes, with: .automatic)
         
-//        let instrumentKey = Constants.keys["Instrument"]!
-//        let detailKey = Constants.keys["Detail"]!
-//        let instrumentRawValue : String = UserDefaults.standard.string(forKey: instrumentKey)!
-//        let detailTypeRawValue : String = UserDefaults.standard.string(forKey: detailKey)!
-//        
-//        let type = ToneController.Instrument(rawValue: instrumentRawValue)!
-//        let detailType = ToneController.Instrument.DetailType(rawValue: detailTypeRawValue)!
+        let instrumentKey = Constants.keys["Instrument"]!
+        let detailKey = Constants.keys["Detail"]!
+        let instrumentRawValue : String = UserDefaults.standard.string(forKey: instrumentKey)!
+        let detailTypeRawValue : String = UserDefaults.standard.string(forKey: detailKey)!
         
-//        AudioKit.stop()
-//        AudioKit.init()
-//        ToneController.sharedInstance().type = type
-//        ToneController.sharedInstance().secretDetailType = detailType
+        let type = ToneController.Instrument(rawValue: instrumentRawValue)!
+        let detailType = AKTableType(rawValue: detailTypeRawValue)!
+        
+        ToneController.sharedInstance().type = type
+        ToneController.sharedInstance().detailType = detailType
 //
-//        AudioKit.start()
         
 //        let option = ImagePlayer.getOption()
     }

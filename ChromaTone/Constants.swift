@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import AudioKit
 
 struct Constants {
     static let colorPickerImage : String = "demo_color_wheel"
@@ -43,16 +44,16 @@ struct Constants {
     ]
     
     static let detail : [String] = [
-        ToneController.Instrument.DetailType.sine.rawValue,
-        ToneController.Instrument.DetailType.triangle.rawValue,
-        ToneController.Instrument.DetailType.square.rawValue,
-        ToneController.Instrument.DetailType.sawtooth.rawValue,
-        ToneController.Instrument.DetailType.reverseSawtooth.rawValue,
-        ToneController.Instrument.DetailType.positiveSine.rawValue,
-        ToneController.Instrument.DetailType.positiveTriangle.rawValue,
-        ToneController.Instrument.DetailType.positiveSquare.rawValue,
-        ToneController.Instrument.DetailType.positiveSawtooth.rawValue,
-        ToneController.Instrument.DetailType.reverseSawtooth.rawValue,
+        AKTableType.sine.rawValue,
+        AKTableType.triangle.rawValue,
+        AKTableType.square.rawValue,
+        AKTableType.sawtooth.rawValue,
+        AKTableType.reverseSawtooth.rawValue,
+        AKTableType.positiveSine.rawValue,
+        AKTableType.positiveTriangle.rawValue,
+        AKTableType.positiveSquare.rawValue,
+        AKTableType.positiveSawtooth.rawValue,
+        AKTableType.reverseSawtooth.rawValue,
     ]
     
     static let toneController : [ String : [String] ] = [

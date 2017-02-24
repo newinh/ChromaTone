@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // TonController
             UserDefaults.standard.set(ToneController.Instrument.piano.rawValue,
                                       forKey: Constants.keys["Instrument"]!)
-            UserDefaults.standard.set(ToneController.Instrument.DetailType.sine.rawValue,
+            UserDefaults.standard.set(AKTableType.sine.rawValue,
                                       forKey: Constants.keys["Detail"]!)
             
             UserDefaults.standard.set(Double(60.0), forKey: Constants.keys["BPM"]!)
