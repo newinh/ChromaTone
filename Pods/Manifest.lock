@@ -1,12 +1,15 @@
 PODS:
   - AudioKit (3.5.2)
+  - FontAwesome.swift (1.0.0)
 
 DEPENDENCIES:
   - AudioKit (~> 3.5)
+  - FontAwesome.swift
 
 SPEC CHECKSUMS:
   AudioKit: 77858cbdfc0d083c7ffba25e9bfad5de5921f944
+  FontAwesome.swift: 2d32a3d62195343c2004b7c9043294ed2948553a
 
-PODFILE CHECKSUM: 7587a4bade1b72127dcea4b810820ea4b8c154d5
+PODFILE CHECKSUM: 579edb5afc3f0ae9622f795012ac95870c35dfdc
 
 COCOAPODS: 1.2.0
