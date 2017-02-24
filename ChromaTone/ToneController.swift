@@ -60,7 +60,8 @@ public class ToneController {
     var oscillator : AKOscillator!
     
     var mainMixer = AKMixer()
-//    var melodyMixer = AKMixer()
+    var melodyMixer = AKMixer()
+    var fmMixer = AKMixer()
     
     let kick = AKSynthKick()
     let snare = AKSynthSnare()
@@ -86,7 +87,6 @@ public class ToneController {
         oscillator.play()
         mainMixer.connect(oscillator)
         
-        
         oscillatorBank = AKOscillatorBank(waveform: AKTable(self.detailType),
                                           attackDuration: 0.01,
                                           releaseDuration: 0.01)
@@ -96,36 +96,34 @@ public class ToneController {
     func prepareMelody() {
         
         melody = [AKSampler]()
-        let melodyMixer = AKMixer()
+        melodyMixer = AKMixer()
         
         for i in Constants.minimumPianoMIDINoteNumber...Constants.maximumPianoMIDINoteNumber {
             melody.append(AKSampler())
             try! melody[i-Constants.minimumPianoMIDINoteNumber].loadWav("piano-\(i)")
-            print("file")
         }
         
         
         for (_, node) in melody.enumerated() {
             melodyMixer.connect(node)
-            print("connect")
         }
         melodyMixer.volume = 5
         mainMixer.connect(melodyMixer)
-//
-//        
-//        try! pianoFM.loadWav("FM-Piano")
-//        
-//        let delay  = AKDelay(pianoFM)
-//        //        delay.time = pulse * 1.5
-//        delay.dryWetMix = 0.3
-//        delay.feedback = 0.2
-//        
-//        let reverb = AKReverb(delay)
-//        reverb.loadFactoryPreset(.largeRoom)
-//        let mix = AKMixer(reverb)
-//        mix.volume = 2
+
         
-//        mainMixer.connect(mix)
+        try! pianoFM.loadWav("FM-Piano")
+        
+        let delay  = AKDelay(pianoFM)
+        //        delay.time = pulse * 1.5
+        delay.dryWetMix = 0.3
+        delay.feedback = 0.2
+        
+        let reverb = AKReverb(delay)
+        reverb.loadFactoryPreset(.largeRoom)
+        fmMixer = AKMixer(reverb)
+        fmMixer.volume = 5.0
+        
+        mainMixer.connect(fmMixer)
         
     }
     
@@ -133,11 +131,10 @@ public class ToneController {
     
     func prepareType() {
         
-        
         mainMixer = AKMixer()
         
         prepareDrum()
-//        prepareOscillator()
+        prepareOscillator()
         prepareMelody()
         
         defer{
@@ -150,7 +147,7 @@ public class ToneController {
         {
         
         didSet {
-            prepareType()
+            prepareOscillator()
             print("TonController type didSet")
         }
     }
@@ -165,6 +162,7 @@ public class ToneController {
         
         let soundInfo = color.color2soundTwo()
         
+        print("PLAY!!")
         switch self.type {
             
         case .oscillator:

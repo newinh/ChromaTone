@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UserDefaults.standard.set(true, forKey: "firstLauch")
 
             // TonController
-            UserDefaults.standard.set(ToneController.Instrument.piano.rawValue,
+            UserDefaults.standard.set(ToneController.Instrument.oscillatorBank.rawValue,
                                       forKey: Constants.keys["Instrument"]!)
             UserDefaults.standard.set(AKTableType.sine.rawValue,
                                       forKey: Constants.keys["Detail"]!)

@@ -86,7 +86,7 @@ public class ImagePlayer {
     // 새로운 음악을 만들자
     public func prepare() {
         
-        print("prepare")
+        print("ImagePlayer prepare")
 
         switch self.option.playMode {
         case .random:
