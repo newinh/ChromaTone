@@ -108,7 +108,7 @@ public class ToneController {
         
         let soundInfo = color.color2sound()
         
-        print("PLAY!!")
+        print("PLAY MELODY")
         switch self.type {
             
         case .oscillatorBank:
@@ -148,23 +148,21 @@ public class ToneController {
             
             if let staccato = staccato, staccato == true {
                 
-                print("I'm here")
-                
                 melody[index].play(velocity : MIDIVolume)
                 
                 // 화성 test
-                if index > 3 {
-                    melody[index-4].play(velocity : MIDIVolume)
-                }
+//                if index > 3 {
+//                    melody[index-4].play(velocity : MIDIVolume)
+//                }
                 
             }else if memory == MIDINumber {
                 break
             }else {
                 melody[index].play(velocity : MIDIVolume)
                 // 화성 test
-                if index > 3 {
-                    melody[index-4].play(velocity : MIDIVolume)
-                }
+//                if index > 3 {
+//                    melody[index-4].play(velocity : MIDIVolume)
+//                }
                 memory = MIDINumber
             }
 

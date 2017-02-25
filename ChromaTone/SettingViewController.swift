@@ -111,6 +111,11 @@ class SettingViewController : UITableViewController{
         UserDefaults.standard.set(time, forKey: Constants.keys["Time"]!)
         let noteCount = Int((noteCountCell.detailTextLabel?.text)!)
         UserDefaults.standard.set(noteCount, forKey: Constants.keys["Note Count"]!)
+        
+        
+        /////
+        let colorView = self.tabBarController?.viewControllers?[0] as! ColorViewController
+        colorView.imagePlayer = colorView.prepareImagePlayer()
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
