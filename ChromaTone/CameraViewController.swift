@@ -141,17 +141,19 @@ class CameraViewController : UIViewController {
         
         super.viewWillTransition(to: size, with: coordinator)
         
-        if let videoPreviewLayerConnection = cameraPreviewView.videoPreviewLayer.connection,
-            let connection = videoDataOutput.connection(withMediaType: AVMediaTypeVideo)
-        {
-            let deviceOrientation = UIDevice.current.orientation
-            
-            guard let newVideoOrientation = deviceOrientation.videoOrientation, deviceOrientation.isPortrait || deviceOrientation.isLandscape else {
-                return
+        if self.session.isRunning {
+        
+            if let videoPreviewLayerConnection = cameraPreviewView.videoPreviewLayer.connection,
+                let connection = videoDataOutput.connection(withMediaType: AVMediaTypeVideo) {
+                let deviceOrientation = UIDevice.current.orientation
+                
+                guard let newVideoOrientation = deviceOrientation.videoOrientation, deviceOrientation.isPortrait || deviceOrientation.isLandscape else {
+                    return
+                }
+                
+                connection.videoOrientation = newVideoOrientation
+                videoPreviewLayerConnection.videoOrientation = newVideoOrientation
             }
-            
-            connection.videoOrientation = newVideoOrientation
-            videoPreviewLayerConnection.videoOrientation = newVideoOrientation
         }
     }
     
