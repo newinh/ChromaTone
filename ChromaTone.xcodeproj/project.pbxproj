@@ -46,7 +46,6 @@
 		78E4F7C41E5CE8A20055AB5A /* piano-81.wav in Resources */ = {isa = PBXBuildFile; fileRef = 78E4F7C21E5CE8A20055AB5A /* piano-81.wav */; };
 		78E4F7C81E5D84C50055AB5A /* FM-Piano.wav in Resources */ = {isa = PBXBuildFile; fileRef = 78E4F7C71E5D84C50055AB5A /* FM-Piano.wav */; };
 		78E4F7CA1E5E2BE70055AB5A /* ColorViewController+ImagePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E4F7C91E5E2BE70055AB5A /* ColorViewController+ImagePlayer.swift */; };
-		78E4F7CE1E5EFE2F0055AB5A /* SettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E4F7CD1E5EFE2F0055AB5A /* SettingTableViewController.swift */; };
 		78E63E711E58B91100A9B96F /* ToneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E63E701E58B91100A9B96F /* ToneController.swift */; };
 		78E63E731E59A86200A9B96F /* ImagePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E63E721E59A86200A9B96F /* ImagePlayer.swift */; };
 		78EFC0521E60259200750801 /* ToneController+prepare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78EFC0511E60259200750801 /* ToneController+prepare.swift */; };
@@ -101,7 +100,6 @@
 		78E4F7C21E5CE8A20055AB5A /* piano-81.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "piano-81.wav"; sourceTree = "<group>"; };
 		78E4F7C71E5D84C50055AB5A /* FM-Piano.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "FM-Piano.wav"; sourceTree = "<group>"; };
 		78E4F7C91E5E2BE70055AB5A /* ColorViewController+ImagePlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ColorViewController+ImagePlayer.swift"; sourceTree = "<group>"; };
-		78E4F7CD1E5EFE2F0055AB5A /* SettingTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingTableViewController.swift; sourceTree = "<group>"; };
 		78E63E701E58B91100A9B96F /* ToneController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToneController.swift; sourceTree = "<group>"; };
 		78E63E721E59A86200A9B96F /* ImagePlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePlayer.swift; sourceTree = "<group>"; };
 		78EFC0511E60259200750801 /* ToneController+prepare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ToneController+prepare.swift"; sourceTree = "<group>"; };
@@ -162,7 +160,6 @@
 				78E63E681E586AF500A9B96F /* ColorView */,
 				78E63E671E586AE500A9B96F /* Tool */,
 				78E63E691E586AFA00A9B96F /* Assets */,
-				78E4F7CD1E5EFE2F0055AB5A /* SettingTableViewController.swift */,
 				78EFC0571E60ABAB00750801 /* SettingViewController.swift */,
 			);
 			path = ChromaTone;
@@ -440,7 +437,6 @@
 				78E63E731E59A86200A9B96F /* ImagePlayer.swift in Sources */,
 				78FF998A1E530D4200D93738 /* CameraPreviewView.swift in Sources */,
 				78BA40D81E4EF20A00B76BB0 /* ColorPickerImageView.swift in Sources */,
-				78E4F7CE1E5EFE2F0055AB5A /* SettingTableViewController.swift in Sources */,
 				78EFC0581E60ABAB00750801 /* SettingViewController.swift in Sources */,
 				78E63E711E58B91100A9B96F /* ToneController.swift in Sources */,
 				78EFC0521E60259200750801 /* ToneController+prepare.swift in Sources */,

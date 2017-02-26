@@ -135,7 +135,6 @@ class SettingViewController : UITableViewController{
             return
         }
         
-        
         let picker = UIPickerView()
         picker.dataSource = self
         picker.delegate = self
@@ -152,21 +151,24 @@ class SettingViewController : UITableViewController{
         
         picker.selectRow(data, inComponent: 0, animated: true)
 
-        let alertController = UIAlertController(title: "", message: "\n\n\n\n\n", preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("done", comment: "Alert OK button"), style: .cancel, handler: {action in
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: .cancel, handler: {action in
             self.dismiss(animated: true, completion: nil)
             self.selectedRow = picker.selectedRow(inComponent: 0)
             self.update()
         }))
         
-        alertController.addAction(UIAlertAction(title: "cancel", style: .`default`, handler: {action in
-            self.dismiss(animated: true, completion: nil)
-            self.selectedRow = nil
-        } ) )
+        let height = NSLayoutConstraint(item: alertController.view, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: self.view.frame.height/3)
+        let center = NSLayoutConstraint(item: picker, attribute: .centerX, relatedBy: .equal, toItem: alertController.view, attribute: .centerXWithinMargins, multiplier: 1, constant: -10)
         
-        
-        picker.frame = CGRect(x: 4, y: 45, width: 270, height: 100)
         alertController.view.addSubview(picker)
+        alertController.view.addConstraint(height)
+        alertController.view.addConstraint(center)
+        
+        picker.frame = CGRect(x: 0, y: 0, width: alertController.view.frame.width, height: 150)
+        
+        
         self.present(alertController, animated: true, completion: nil)
     }
     
