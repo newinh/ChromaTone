@@ -14,12 +14,13 @@ extension ColorViewController {
     
     func prepareImagePlayer() -> ImagePlayer{
         
+        
         // ImagePlyer 종료시 동작
         self.imagePlayerCompleted = {  [unowned self] in
             for sublayer in self.colorPickerImageView.layer.sublayers ?? [] {
                 sublayer.removeFromSuperlayer()
             }
-            self.playToggleButton.setImage(UIImage(named: Constants.playIcon), for: .normal)
+            self.playButton.setTitle(String.fontAwesomeIcon(name: .playCircleO), for: .normal)
             self.pickerSoundOn()
             self.view.backgroundColor = UIColor.white
             

@@ -39,6 +39,8 @@ class CameraViewController : UIViewController {
         
         /// TODO : add plot
 //        self.plot.addSubview(AKRollingOutputPlot(frame: self.plot.bounds))
+        playButton.titleLabel?.font = UIFont.fontAwesome(ofSize: 50)
+        playButton.setTitle(String.fontAwesomeIcon(name: .playCircleO), for: .normal)
         
         // Set up the video preview view.
         cameraPreviewView.session = session
@@ -258,9 +260,9 @@ class CameraViewController : UIViewController {
     var isPlaying : Bool = false {
         didSet{
             if oldValue {
-                self.playButton.setBackgroundImage(UIImage(named: Constants.playIcon), for: UIControlState.normal)
+                playButton.setTitle(String.fontAwesomeIcon(name: .playCircleO), for: .normal)
             }else {
-                playButton.setBackgroundImage(UIImage(named: Constants.pauseIcon), for: UIControlState.normal)
+                playButton.setTitle(String.fontAwesomeIcon(name: .pauseCircleO), for: .normal)
             }
         }
     }

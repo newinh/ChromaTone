@@ -27,7 +27,19 @@ class SettingViewController : UITableViewController{
     var selectedIndexPath : IndexPath!
     var selectedRow : Int?
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.tableView.headerView(forSection: 0)?.textLabel?.font.withSize(60)
+        self.tableView.headerView(forSection: 1)?.textLabel?.font.withSize(60)
+        
+        self.tableView.headerView(forSection: 0)?.textLabel?.textColor = UIColor.black
+        self.tableView.headerView(forSection: 1)?.textLabel?.textColor = UIColor.black
+        
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
+        
         let instrument = UserDefaults.standard.string(forKey: Constants.keys["Instrument"]!)!
         let detail = UserDefaults.standard.string(forKey: Constants.keys["Detail"]!)!
         
@@ -41,8 +53,10 @@ class SettingViewController : UITableViewController{
         switch instrument {
         case Constants.instrument[0]:
             toneInstrumentControl.selectedSegmentIndex = 0
+            toneDetailControl.isEnabled = true
         case Constants.instrument[1]:
             toneInstrumentControl.selectedSegmentIndex = 1
+            toneDetailControl.isEnabled = false
         default:
             print("setting instrument error")
         }
@@ -181,6 +195,15 @@ class SettingViewController : UITableViewController{
             noteCountCell.detailTextLabel?.text = "\((Constants.imagePlayer["Note Count"] as! [Int])[0] + selectedRow!)"
         }
         self.tableView.reloadData()
+    }
+    
+    @IBAction func instrumentSelected(_ sender : UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case 0:
+            toneDetailControl.isEnabled = true
+        default:
+            toneDetailControl.isEnabled = false
+        }
     }
 }
 

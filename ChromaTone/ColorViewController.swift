@@ -14,11 +14,16 @@ class ColorViewController: UIViewController {
     
     // MARK: IBOuelt
     @IBOutlet weak var preview: UIView!
-    @IBOutlet weak var modeChanger : UISegmentedControl!
     @IBOutlet weak var colorPickerImageView : ColorPickerImageView!
-    @IBOutlet weak var playToggleButton : UIButton!
-    
+//    @IBOutlet weak var playToggleButton : UIButton!
     @IBOutlet weak var plot : AKRollingOutputPlot!
+    
+    @IBOutlet weak var toolbar : UIToolbar!
+    @IBOutlet weak var albumButton : UIBarButtonItem!
+    @IBOutlet weak var pickerButton : UIBarButtonItem!
+    
+    
+    @IBOutlet weak var playButton : UIButton!
     
     var imagePlayer: ImagePlayer?
     
@@ -47,6 +52,7 @@ class ColorViewController: UIViewController {
         }
     }
 
+    let attributes = [NSFontAttributeName : UIFont.fontAwesome(ofSize: 20)] as [String : Any]
     // MARK: View Controller Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,6 +60,18 @@ class ColorViewController: UIViewController {
         // add plot
 //        self.plot.addSubview(AKRollingOutputPlot(frame: self.plot.bounds))
         
+//        if UIDevice.current.orientation == .landscapeRight || UIDevice.current.orientation == .landscapeLeft {
+//            toolbar.isHidden = true
+//        }
+        
+        albumButton.setTitleTextAttributes(attributes, for: .normal)
+        albumButton.title = String.fontAwesomeIcon(name: .photo)
+        
+        pickerButton.setTitleTextAttributes(attributes, for: .normal)
+        pickerButton.title = String.fontAwesomeIcon(name: .dotCircleO)
+        
+        playButton.titleLabel?.font = UIFont.fontAwesome(ofSize: 50)
+        playButton.setTitle(String.fontAwesomeIcon(name: .playCircleO), for: .normal)
         
         self.tabBarController?.tabBar.items?[1].image = UIImage.fontAwesomeIcon(name: .camera, textColor: UIColor.blue, size: CGSize(width: 30, height: 30))
         self.tabBarController?.tabBar.items?[2].image = UIImage.fontAwesomeIcon(name: .cog, textColor: UIColor.blue, size: CGSize(width: 30, height: 30))
@@ -62,7 +80,7 @@ class ColorViewController: UIViewController {
         let blur = UIBlurEffect(style: .prominent)
         let blurView = UIVisualEffectView(effect: blur)
         // 가로일때 대비
-        blurView.frame = CGRect(x: 0, y: self.modeChanger.frame.maxY,
+        blurView.frame = CGRect(x: 0, y: self.colorPickerImageView.frame.minY,
                                 width: self.view.frame.width, height: self.view.frame.height)
 //        blurView.frame = self.colorPickerImageView.frame
         self.view.insertSubview(blurView, at: 0)
@@ -81,8 +99,8 @@ class ColorViewController: UIViewController {
         
     }
     
+    
     override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
-        
         
         for sublayer in self.colorPickerImageView.layer.sublayers ?? [] {
             sublayer.removeFromSuperlayer()
@@ -94,9 +112,15 @@ class ColorViewController: UIViewController {
         imagePlayer?.pickedScanColor = self.receivedScanColorByImagePlyer
         
         if let view = self.view.subviews.first as? UIVisualEffectView {
-            view.frame = CGRect(x: 0, y: self.modeChanger.frame.maxY,
+            view.frame = CGRect(x: 0, y: self.colorPickerImageView.frame.minY,
                    width: self.view.frame.width, height: self.view.frame.height)
         }
+        
+//        if fromInterfaceOrientation.isLandscape {
+//            toolbar.isHidden = false
+//        }else {
+//            toolbar.isHidden = true
+//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -107,65 +131,60 @@ class ColorViewController: UIViewController {
         self.imagePlayer?.stop()
     }
     
-    // MARK: IBAction
-    @IBAction func modeChanged(_ sender: UISegmentedControl) {
+    @IBAction func albumButtonPressed(_ sender: UIBarButtonItem){
         
         imagePlayer?.stop()
         
-        switch sender.selectedSegmentIndex {
-            
-        case 0: // Picture
-            // default image
-            self.image = UIImage(named: "demo_colorful_city")
-            colorPickerImageView.mode = .getColorByPixel
-            
-            let imagePickerController = UIImagePickerController()
-            
-            imagePickerController.delegate = self
-            imagePickerController.sourceType = .savedPhotosAlbum
-            self.present(imagePickerController, animated: true, completion: nil)
-            
-        case 1:
-            self.image = UIImage(named: Constants.colorPickerImage)
-            self.colorPickerImageView.mode = .makeHSBColor
-        default :
-            
-            self.performSegue(withIdentifier: "CameraView", sender: nil)
+        // default image
+        self.image = UIImage(named: "demo_colorful_city")
+        colorPickerImageView.mode = .getColorByPixel
 
-            // 카메라뷰 열고 ColorView는 Picker모드로
-            modeChanger.selectedSegmentIndex = 1
-            self.image = UIImage(named: Constants.colorPickerImage)
-            self.colorPickerImageView.mode = .makeHSBColor
-        }
+        let imagePickerController = UIImagePickerController()
+
+        imagePickerController.delegate = self
+        imagePickerController.sourceType = .savedPhotosAlbum
+        self.present(imagePickerController, animated: true, completion: nil)
     }
-    @IBAction func play(_ sender: UIButton) {
+    
+    @IBAction func pickerButtonPressed(_ sender: UIBarButtonItem){
+        
+        imagePlayer?.stop()
+        
+        self.image = UIImage(named: Constants.colorPickerImage)
+        self.colorPickerImageView.mode = .makeHSBColor
+        
+    }
+    @IBAction func playButtonPressed(_ sender: UIButton){
         
         guard let player = self.imagePlayer else {
             print("ImagePlayer 없음")
             return
         }
-        
+
         switch player.status {
         case .playing:
             player.pause()
-            playToggleButton.setImage(UIImage(named: Constants.playIcon), for: .normal)
+            playButton.setTitle(String.fontAwesomeIcon(name: .playCircleO), for: .normal)
             pickerSoundOn()
-            
+
             self.scanBarIsMoving = false
             self.colorPickerImageView.layer.sublayers?[0].removeAllAnimations()
-            
+
         case .pause:
             player.resume()
-            playToggleButton.setImage(UIImage(named: Constants.pauseIcon), for: .normal)
+            playButton.setTitle(String.fontAwesomeIcon(name: .pauseCircleO), for: .normal)
             pickerSoundOff()
-            
+
         case .stop :
             player.play()
-            playToggleButton.setImage(UIImage(named: Constants.pauseIcon), for: .normal)
+            playButton.setTitle(String.fontAwesomeIcon(name: .pauseCircleO), for: .normal)
             pickerSoundOff()
         }
     }
     
+    @IBAction func stopButtonPressed(_ sender : UIBarButtonItem) {
+        imagePlayer?.stop()
+    }
 }
 
 extension ColorViewController : UINavigationControllerDelegate, UIImagePickerControllerDelegate {
