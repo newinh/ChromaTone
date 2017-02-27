@@ -36,6 +36,7 @@ public class ToneController {
         // 뭐 기타 등등등 추가해보자
         case oscillatorBank = "OscillatorBank"
         case piano = "Piano"
+        case guitarAcoustic = "Acoustic Guitar"
         case pianoFM = "PianoFM"
         
     }
@@ -89,6 +90,7 @@ public class ToneController {
     var melody : [AKSampler] = []
     
     var pianoFM = AKSampler()
+    var guitarAcuostic = AKSampler()
     
     var aChromaOff : Bool = false
     
@@ -181,6 +183,18 @@ public class ToneController {
             
             pianoFM.play(noteNumber: MIDINumber, velocity: MIDIVolume)
             
+        case .guitarAcoustic:
+            let MIDINumber = MIDINoteNumber( soundInfo.frequency.frequencyToMIDINote() )
+            var MIDIVolume : MIDIVelocity
+            
+            if let volume = volume {
+                MIDIVolume = MIDIVelocity((volume * 255 )  / 100 )
+            }else {
+                MIDIVolume = MIDIVelocity ((soundInfo.volume * 255 )  / 100 )
+            }
+            print("MIDINoteNumber : \(MIDINumber)")
+            
+            guitarAcuostic.play(noteNumber: MIDINumber, velocity: MIDIVolume)
         }
         
     }

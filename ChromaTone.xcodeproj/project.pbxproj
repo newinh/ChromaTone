@@ -14,6 +14,7 @@
 		78684B371E49BDD800E626AF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78684B351E49BDD800E626AF /* LaunchScreen.storyboard */; };
 		78BA40D81E4EF20A00B76BB0 /* ColorPickerImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BA40D71E4EF20A00B76BB0 /* ColorPickerImageView.swift */; };
 		78BA40DA1E4EF2AD00B76BB0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BA40D91E4EF2AD00B76BB0 /* Constants.swift */; };
+		78D7AE5E1E642A6E00575169 /* Guitar-C4.wav in Resources */ = {isa = PBXBuildFile; fileRef = 78D7AE5D1E642A6E00575169 /* Guitar-C4.wav */; };
 		78E4F7591E5CC0140055AB5A /* Hi-Hat-1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 78E4F7581E5CC0140055AB5A /* Hi-Hat-1.wav */; };
 		78E4F75C1E5CC97D0055AB5A /* Bass-Drum-1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 78E4F75A1E5CC97D0055AB5A /* Bass-Drum-1.wav */; };
 		78E4F75D1E5CC97D0055AB5A /* Hip-Hop-Snare-2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 78E4F75B1E5CC97D0055AB5A /* Hip-Hop-Snare-2.wav */; };
@@ -68,6 +69,7 @@
 		78684B381E49BDD800E626AF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		78BA40D71E4EF20A00B76BB0 /* ColorPickerImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPickerImageView.swift; sourceTree = "<group>"; };
 		78BA40D91E4EF2AD00B76BB0 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		78D7AE5D1E642A6E00575169 /* Guitar-C4.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Guitar-C4.wav"; sourceTree = "<group>"; };
 		78E4F7581E5CC0140055AB5A /* Hi-Hat-1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Hi-Hat-1.wav"; sourceTree = "<group>"; };
 		78E4F75A1E5CC97D0055AB5A /* Bass-Drum-1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Bass-Drum-1.wav"; sourceTree = "<group>"; };
 		78E4F75B1E5CC97D0055AB5A /* Hip-Hop-Snare-2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Hip-Hop-Snare-2.wav"; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 				78E4F75B1E5CC97D0055AB5A /* Hip-Hop-Snare-2.wav */,
 				78E4F7581E5CC0140055AB5A /* Hi-Hat-1.wav */,
 				78E4F7C71E5D84C50055AB5A /* FM-Piano.wav */,
+				78D7AE5D1E642A6E00575169 /* Guitar-C4.wav */,
 			);
 			name = Sounds;
 			sourceTree = "<group>";
@@ -360,6 +363,7 @@
 				78E4F7AD1E5CDFEF0055AB5A /* piano-61.wav in Resources */,
 				78E4F7C41E5CE8A20055AB5A /* piano-81.wav in Resources */,
 				78E4F7AE1E5CDFEF0055AB5A /* piano-62.wav in Resources */,
+				78D7AE5E1E642A6E00575169 /* Guitar-C4.wav in Resources */,
 				78E4F7BD1E5CDFEF0055AB5A /* piano-77.wav in Resources */,
 				78E4F7C81E5D84C50055AB5A /* FM-Piano.wav in Resources */,
 				78684B341E49BDD800E626AF /* Assets.xcassets in Resources */,

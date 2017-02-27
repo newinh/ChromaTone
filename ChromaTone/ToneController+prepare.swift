@@ -17,6 +17,7 @@ extension ToneController {
         prepareDrum()
         prepareOscillator()
         prepareMelody()
+        prepareGuitarAcoustic()
         
         defer{
             AudioKit.output = mainMixer
@@ -90,6 +91,11 @@ extension ToneController {
         
         mainMixer.connect(pianoFM)
         
+    }
+    
+    func prepareGuitarAcoustic() {
+        try! guitarAcuostic.loadWav("Guitar-C4")
+        mainMixer.connect(guitarAcuostic)
     }
     
     

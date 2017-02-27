@@ -37,6 +37,7 @@ struct Constants {
     static let instrument : [String] = [
         ToneController.Instrument.oscillatorBank.rawValue,
         ToneController.Instrument.piano.rawValue,
+        ToneController.Instrument.guitarAcoustic.rawValue
 //        ToneController.Instrument.pianoFM.rawValue
     ]
     
