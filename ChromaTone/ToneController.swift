@@ -23,10 +23,12 @@ public class ToneController {
             let detailKey = Constants.keys["Detail"]!
             let instrumentRawValue : String = UserDefaults.standard.string(forKey: instrumentKey)!
             let detailTypeRawValue : String = UserDefaults.standard.string(forKey: detailKey)!
+            let drum : Bool = UserDefaults.standard.bool(forKey: Constants.keys["Drum"]!)
             
             let type = ToneController.Instrument(rawValue: instrumentRawValue)!
             let detailType = AKTableType.init(rawValue: detailTypeRawValue)!
             StaticInstance.instance = ToneController(type: type, detailType: detailType)
+            StaticInstance.instance?.drumToggle = drum
         }
         
         return StaticInstance.instance!
@@ -93,6 +95,7 @@ public class ToneController {
     var guitarAcuostic = AKSampler()
     
     var aChromaOff : Bool = false
+    var drumToggle : Bool = false
     
     public var type : Instrument {
         willSet {
@@ -220,15 +223,24 @@ public class ToneController {
     }
     
     public func playKick(_ velocity : MIDIVelocity = 255) {
-        kick.play(noteNumber: 60, velocity: velocity)
+        if drumToggle {
+            kick.play(noteNumber: 60, velocity: velocity)
+        }
+        
     }
     
     public func playSnare(_ velocity : MIDIVelocity = 255) {
-        snare.play(noteNumber: 60, velocity: velocity)
+        if drumToggle{
+            snare.play(noteNumber: 60, velocity: velocity)
+        }
+        
     }
     
     public func playHiHat(_ velocity : MIDIVelocity = 255) {
-        hiHat.play(noteNumber: 60, velocity: velocity)
+        if drumToggle {
+            hiHat.play(noteNumber: 60, velocity: velocity)
+        }
+        
     }
     
 }

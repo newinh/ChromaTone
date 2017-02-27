@@ -25,12 +25,13 @@ struct Constants {
         
         "Instrument" : "Tone Instrument Type Key",
         "Detail" : "Tone Instrument DetailType Key",
+        "Drum" : "Tone Drum key",
         "BPM" : "ImagePlayer Option BPM Key",
         "Time" : "ImagePlayer Option TimerPerBeat Key",
         "Note Count" : "ImagePlayer Option NoteCount Key",
         "Play Mode" : "ImagePlayer Option PlayMode Key",
         "Number Of Sample" : "ImagePlayer Option Scan Sample Number Key" ,
-        "Staccato" : "ImagePlayer Option Staccato Key",
+        "Staccato" : "ImagePlayer Option Staccato Key"
         ]
 
     
@@ -70,7 +71,8 @@ struct Constants {
         "Note Count" : [10, 80],
         "Play Mode" : playMode,
         "Number Of Sample" : [5, 15],
-        "Staccato" : [true, false]
+        "Staccato" : [true, false],
+        "Drum" : [true, false]
         ]
     
     static let options : [ String : [String : Any] ] = [

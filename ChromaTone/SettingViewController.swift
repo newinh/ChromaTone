@@ -19,10 +19,10 @@ class SettingViewController : UITableViewController{
     
     @IBOutlet weak var dynamicCell : UITableViewCell!
     @IBOutlet weak var playModeControl : UISegmentedControl!
-    
     @IBOutlet weak var bpmCell : UITableViewCell!
     @IBOutlet weak var timeCell : UITableViewCell!
     @IBOutlet weak var noteCountCell : UITableViewCell!
+    @IBOutlet weak var drumCell : UITableViewCell!
     
     var selectedIndexPath : IndexPath!
     var selectedRow : Int?
@@ -44,6 +44,7 @@ class SettingViewController : UITableViewController{
         
         let instrument = UserDefaults.standard.string(forKey: Constants.keys["Instrument"]!)!
         let detail = UserDefaults.standard.string(forKey: Constants.keys["Detail"]!)!
+        let drum = UserDefaults.standard.bool(forKey: Constants.keys["Drum"]!)
         
         let staccato = UserDefaults.standard.bool(forKey: Constants.keys["Staccato"]!)
         let playMode = UserDefaults.standard.string(forKey: Constants.keys["Play Mode"]!)!
@@ -93,6 +94,13 @@ class SettingViewController : UITableViewController{
             dynamicCell.accessoryType = .none
         }
         
+        if drum {
+            drumCell.accessoryType = .checkmark
+        }else {
+            drumCell.accessoryType = .none
+        }
+        
+        
         bpmCell.detailTextLabel?.text = String(format: "%.0f", bpm)
         timeCell.detailTextLabel?.text = "\(time)"
         noteCountCell.detailTextLabel?.text = "\(noteCount)"
@@ -106,12 +114,16 @@ class SettingViewController : UITableViewController{
         let detailRawValue = Constants.detail[detailIndex]
         UserDefaults.standard.set(detailRawValue, forKey: Constants.keys["Detail"]!)
         
+        let drum = drumCell.accessoryType == .checkmark ? true : false
+        UserDefaults.standard.set(drum, forKey: Constants.keys["Drum"]!)
+        
         
         let type = ToneController.Instrument(rawValue: instrumentRawValue)!
         let detail = AKTableType(rawValue: detailRawValue)!
         
         ToneController.sharedInstance().type = type
         ToneController.sharedInstance().detailType = detail
+        ToneController.sharedInstance().drumToggle = drum
         
         ///////////////////
         
@@ -129,6 +141,8 @@ class SettingViewController : UITableViewController{
         UserDefaults.standard.set(noteCount, forKey: Constants.keys["Note Count"]!)
         
         
+        
+        
         /////
         let colorView = self.tabBarController?.viewControllers?[0] as! ColorViewController
         colorView.imagePlayer = colorView.prepareImagePlayer()
@@ -138,9 +152,17 @@ class SettingViewController : UITableViewController{
         
         selectedIndexPath = indexPath
         
-        if indexPath.section == 0 {
+        if indexPath.section == 0 && indexPath.row == 2{
+            if drumCell.accessoryType == .checkmark {
+                drumCell.accessoryType = .none
+            }else {
+                drumCell.accessoryType = .checkmark
+            }
             return
-        }else if indexPath.row == 0{
+        }else if  indexPath.section == 0{
+            return
+        }
+        else if indexPath.row == 0{
             if dynamicCell.accessoryType == .checkmark {
                 dynamicCell.accessoryType = .none
             }else {

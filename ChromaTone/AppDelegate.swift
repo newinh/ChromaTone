@@ -30,6 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                       forKey: Constants.keys["Instrument"]!)
             UserDefaults.standard.set(AKTableType.sine.rawValue,
                                       forKey: Constants.keys["Detail"]!)
+            UserDefaults.standard.set(true, forKey: Constants.keys["Drum"]!)
             
             UserDefaults.standard.set(Double(60.0), forKey: Constants.keys["BPM"]!)
             UserDefaults.standard.set(Int(4), forKey: Constants.keys["Time"]!)
