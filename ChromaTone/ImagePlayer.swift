@@ -22,7 +22,6 @@ public class ImagePlayer {
     
     var timer : Timer?
     
-
     /// TODO : Customizable
     public struct Option {
         var bpm : TimeInterval = 100
@@ -97,7 +96,7 @@ public class ImagePlayer {
         
         
         //timer setup
-        let interval = TimeInterval( 1 / ( Double(self.option.bpm/60) * 4 ))
+        let interval = TimeInterval( 1 / ( Double(self.option.bpm/60) * option.timePerBeat ))
         print("interval : \(interval)" )
         self.timer = Timer(timeInterval: interval, target: self, selector: #selector(self.performImage), userInfo: nil, repeats: true)
     }
@@ -122,7 +121,7 @@ public class ImagePlayer {
     }
     
     public func resume() {
-        let interval = TimeInterval( 1 / ( Double(self.option.bpm/60) * 4 ))
+        let interval = TimeInterval( 1 / ( Double(self.option.bpm/60) * option.timePerBeat ))
         self.timer = Timer(timeInterval: interval, target: self, selector: #selector(self.performImage), userInfo: nil, repeats: true)
         play()
     }

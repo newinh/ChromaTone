@@ -56,7 +56,7 @@ extension ColorViewController {
             
             let bpm = Double(option.bpm)
 //            let timePerBeat = Double ( option.timePerBeat)
-            let timePerBeat = 4
+            let timePerBeat = Double(option.timePerBeat)
             let noteCount = Double (option.noteCount)
             
             let layer = CALayer()

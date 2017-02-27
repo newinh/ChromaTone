@@ -88,7 +88,6 @@ class ColorViewController: UIViewController {
         colorPickerImageView.image = UIImage(named: Constants.colorPickerImage)
         
         pickerSoundOn()
-        
     }
     
     
@@ -110,9 +109,10 @@ class ColorViewController: UIViewController {
         
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         self.imagePlayer = prepareImagePlayer()
     }
+    
     override func viewWillDisappear(_ animated: Bool) {
         self.imagePlayer?.stop()
     }

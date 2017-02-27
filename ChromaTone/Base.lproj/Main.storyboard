@@ -307,7 +307,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KTv-KE-s4U" customClass="ColorPickerImageView" customModule="ChromaTone" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="20" width="375" height="503"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="459"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3IF-9D-W73">
                                 <rect key="frame" x="26" y="533" width="50" height="50"/>
@@ -356,10 +356,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="KTv-KE-s4U" firstAttribute="top" secondItem="us5-MV-cjF" secondAttribute="bottom" id="0LR-Bj-dV1"/>
                             <constraint firstItem="jxX-Xh-5aZ" firstAttribute="leading" secondItem="3IF-9D-W73" secondAttribute="trailing" constant="20" id="1o2-hv-j17"/>
                             <constraint firstItem="KTv-KE-s4U" firstAttribute="centerX" secondItem="D8s-Fy-OgR" secondAttribute="centerX" id="285-St-6l9"/>
                             <constraint firstItem="3IF-9D-W73" firstAttribute="leading" secondItem="D8s-Fy-OgR" secondAttribute="leadingMargin" constant="10" id="2g9-8l-s5f"/>
+                            <constraint firstItem="KTv-KE-s4U" firstAttribute="top" secondItem="B6h-sN-VBc" secondAttribute="bottom" id="3ie-ub-0PY"/>
                             <constraint firstItem="4RV-u5-oTy" firstAttribute="top" secondItem="KTv-KE-s4U" secondAttribute="bottom" constant="95" id="BwN-UC-7J9"/>
                             <constraint firstItem="B6h-sN-VBc" firstAttribute="width" secondItem="D8s-Fy-OgR" secondAttribute="width" id="FBJ-W3-CTr"/>
                             <constraint firstItem="4RV-u5-oTy" firstAttribute="top" secondItem="KTv-KE-s4U" secondAttribute="bottom" constant="10" id="Fcz-Ww-euC"/>
