@@ -21,7 +21,7 @@ class ColorViewController: UIViewController {
     @IBOutlet weak var toolbar : UIToolbar!
     @IBOutlet weak var albumButton : UIBarButtonItem!
     @IBOutlet weak var pickerButton : UIBarButtonItem!
-    
+    @IBOutlet weak var cameraButton : UIBarButtonItem!
     
     @IBOutlet weak var playButton : UIButton!
     
@@ -52,23 +52,20 @@ class ColorViewController: UIViewController {
         }
     }
 
-    let attributes = [NSFontAttributeName : UIFont.fontAwesome(ofSize: 20)] as [String : Any]
+    let attributes = [NSFontAttributeName : UIFont.fontAwesome(ofSize: 25)] as [String : Any]
     // MARK: View Controller Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // add plot
-//        self.plot.addSubview(AKRollingOutputPlot(frame: self.plot.bounds))
-        
-//        if UIDevice.current.orientation == .landscapeRight || UIDevice.current.orientation == .landscapeLeft {
-//            toolbar.isHidden = true
-//        }
         
         albumButton.setTitleTextAttributes(attributes, for: .normal)
         albumButton.title = String.fontAwesomeIcon(name: .photo)
         
         pickerButton.setTitleTextAttributes(attributes, for: .normal)
         pickerButton.title = String.fontAwesomeIcon(name: .dotCircleO)
+        
+//        cameraButton.setTitleTextAttributes(attributes, for: .normal)
+//        cameraButton.title = " "
+        cameraButton.isEnabled = false
         
         playButton.titleLabel?.font = UIFont.fontAwesome(ofSize: 50)
         playButton.setTitle(String.fontAwesomeIcon(name: .playCircleO), for: .normal)
@@ -82,18 +79,13 @@ class ColorViewController: UIViewController {
         // 가로일때 대비
         blurView.frame = CGRect(x: 0, y: self.colorPickerImageView.frame.minY,
                                 width: self.view.frame.width, height: self.view.frame.height)
-//        blurView.frame = self.colorPickerImageView.frame
         self.view.insertSubview(blurView, at: 0)
         
-        super.viewDidLayoutSubviews()
         
         // Image / ImageView 초기화
         colorPickerImageView.isUserInteractionEnabled = true
         colorPickerImageView.isMultipleTouchEnabled = true
         colorPickerImageView.image = UIImage(named: Constants.colorPickerImage)
-        
-        // ImagePlayer 초기화
-        self.imagePlayer = prepareImagePlayer()
         
         pickerSoundOn()
         
@@ -116,16 +108,10 @@ class ColorViewController: UIViewController {
                    width: self.view.frame.width, height: self.view.frame.height)
         }
         
-//        if fromInterfaceOrientation.isLandscape {
-//            toolbar.isHidden = false
-//        }else {
-//            toolbar.isHidden = true
-//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.imagePlayer = prepareImagePlayer()
-        
     }
     override func viewWillDisappear(_ animated: Bool) {
         self.imagePlayer?.stop()

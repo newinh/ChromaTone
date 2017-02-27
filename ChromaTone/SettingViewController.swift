@@ -30,11 +30,13 @@ class SettingViewController : UITableViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tableView.headerView(forSection: 0)?.textLabel?.font.withSize(60)
-        self.tableView.headerView(forSection: 1)?.textLabel?.font.withSize(60)
+//        self.tableView.headerView(forSection: 0)?.textLabel?.font.withSize(60)
+//        self.tableView.headerView(forSection: 1)?.textLabel?.font.withSize(60)
+//        
+//        self.tableView.headerView(forSection: 0)?.textLabel?.textColor = UIColor.black
+//        self.tableView.headerView(forSection: 1)?.textLabel?.textColor = UIColor.black
         
-        self.tableView.headerView(forSection: 0)?.textLabel?.textColor = UIColor.black
-        self.tableView.headerView(forSection: 1)?.textLabel?.textColor = UIColor.black
+//        self.tableView.sectionIndexBackgroundColor = 
         
     }
     
