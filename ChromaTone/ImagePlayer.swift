@@ -420,7 +420,7 @@ public class ImagePlayer {
             if count % 2 == 0 {
                 ToneController.sharedInstance().playMelody(color: color, staccato: option.staccato)
             }
-        }else {
+        }else { 
             
             ToneController.sharedInstance().playMelody(color: color, volume: 20, staccato: option.staccato)
         }

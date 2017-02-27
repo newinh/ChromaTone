@@ -150,6 +150,7 @@ public class ToneController {
             }
             let index : Int = Int(MIDINumber) - Constants.minimumPianoMIDINoteNumber
 
+            print("MIDINoteNumber : \(MIDINumber)")
             
             if let staccato = staccato, staccato == true {
                 

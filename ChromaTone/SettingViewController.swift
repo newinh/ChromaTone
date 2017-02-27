@@ -206,7 +206,6 @@ class SettingViewController : UITableViewController{
         
         picker.frame = CGRect(x: 0, y: 0, width: alertController.view.frame.width, height: 150)
         
-        
         self.present(alertController, animated: true, completion: nil)
     }
     
