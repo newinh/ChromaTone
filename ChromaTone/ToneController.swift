@@ -74,6 +74,8 @@ public class ToneController {
         }
     }
     
+    var preparedPorts : Set<AVAudioSessionPortDescription> = []
+    
     var oscillatorSine : AKOscillatorBank!
     var oscillatorTriangle : AKOscillatorBank!
     var oscillatorSquare : AKOscillatorBank!
@@ -85,9 +87,9 @@ public class ToneController {
     var melodyMixer = AKMixer()
     var fmMixer = AKMixer()
     
-    let kick = AKSynthKick()
-    let snare = AKSynthSnare()
-    let hiHat = AKSampler()
+    var kick = AKSynthKick()
+    var snare = AKSynthSnare()
+    var hiHat = AKSampler()
     
     var melody : [AKSampler] = []
     

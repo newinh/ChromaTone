@@ -88,5 +88,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        AudioKit.stop()
 //        print("Didbe")
     }
+    
 }
 

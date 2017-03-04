@@ -88,6 +88,46 @@ class ColorViewController: UIViewController {
         colorPickerImageView.image = UIImage(named: Constants.colorPickerImage)
         
         pickerSoundOn()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(audioRouteChangeListenerCallback(_ :)), name: Notification.Name.AVAudioSessionRouteChange, object: nil)
+    }
+    
+    func audioRouteChangeListenerCallback(_ notification : Notification){
+        let audioRouteChangeReason = notification.userInfo?[AVAudioSessionRouteChangeReasonKey] as! AVAudioSessionRouteChangeReason.RawValue
+        print("reason : \(audioRouteChangeReason)")
+        
+//        let previousRoute = notification.userInfo?[AVAudioSessionRouteChangePreviousRouteKey] as! AVAudioSessionRouteDescription
+//        print(previousRoute)
+        imagePlayer?.stop()
+        
+        print(AVAudioSession.sharedInstance().currentRoute.outputs)
+        
+        switch audioRouteChangeReason {
+        case AVAudioSessionRouteChangeReason.newDeviceAvailable.rawValue:
+            ToneController.sharedInstance().prepare()
+            print("newDeviceAvailable")
+        case AVAudioSessionRouteChangeReason.oldDeviceUnavailable.rawValue:
+            print("oldDeviceUnavailable")
+            
+        case AVAudioSessionRouteChangeReason.routeConfigurationChange.rawValue:
+            print("routeConfigurationChange")
+            
+        default:
+            print("audoiRouteChage etc")
+            
+        }
+         /*
+         unknown = 0
+         newDeviceAvailable = 1
+         oldDeviceUnavailable = 2
+         categoryChange = 3
+         override = 4
+         wakeFromSleep = 5
+         noSuitableRouteForCategory = 6
+         routeConfigurationChange = 7
+        */
+        
+        
     }
     
     

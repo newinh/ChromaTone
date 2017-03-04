@@ -13,6 +13,22 @@ extension ToneController {
     
     func prepare() {
         
+//        for (_ , port) in preparedPorts.enumerated() {
+//            
+//            for(_ , output) in AVAudioSession.sharedInstance().currentRoute.outputs.enumerated() {
+//                
+//                if port == output {
+//                    return
+//                }
+//            }
+//        }
+//        
+//        for(_ , output) in AVAudioSession.sharedInstance().currentRoute.outputs.enumerated() {
+//            
+//            preparedPorts.insert(output)
+//        }
+        
+        AudioKit.stop()
         mainMixer = AKMixer()
         prepareDrum()
         prepareOscillator()
@@ -75,7 +91,7 @@ extension ToneController {
         
         for i in Constants.minimumPianoMIDINoteNumber...Constants.maximumPianoMIDINoteNumber {
             melody.append(AKSampler())
-            try! melody[i-Constants.minimumPianoMIDINoteNumber].loadWav("piano-\(i)")
+            try! melody[ i - Constants.minimumPianoMIDINoteNumber ].loadWav("piano-\(i)")
         }
         
         
@@ -87,8 +103,6 @@ extension ToneController {
         
         
         try! pianoFM.loadWav("FM-Piano")
-        
-        
         mainMixer.connect(pianoFM)
         
     }
