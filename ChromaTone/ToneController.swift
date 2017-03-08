@@ -113,23 +113,25 @@ public class ToneController {
     // 특정한 음 재생
     public func playMelody(color: UIColor , volume: Int? = nil, staccato : Bool? = nil) {
         
-        let soundInfo = color.color2sound()
-        
         print("PLAY MELODY")
+        
+        let soundInfo = color.color2sound()
+        let MIDINumber = MIDINoteNumber( soundInfo.frequency.frequencyToMIDINote() )
+        var MIDIVolume : MIDIVelocity
+        
+        print("MIDINoteNumber : \(MIDINumber)")
+        
+        if let volume = volume {
+            MIDIVolume = MIDIVelocity((volume * 255 )  / 100 )
+        }else {
+            MIDIVolume = MIDIVelocity ((soundInfo.volume * 255 )  / 100 )
+        }
+        
+        
         switch self.type {
             
         case .oscillatorBank:
             
-            
-            let MIDINumber = MIDINoteNumber( soundInfo.frequency.frequencyToMIDINote() )
-            var MIDIVolume : MIDIVelocity
-            
-            if let volume = volume {
-                MIDIVolume = MIDIVelocity((volume * 255 )  / 100 )
-            }else {
-                MIDIVolume = MIDIVelocity ((soundInfo.volume * 255 )  / 100 )
-            }
-            print("MIDINoteNumber : \(MIDINumber)")
             
             if memory == MIDINumber {
                 mainOscillator.play(noteNumber: MIDINumber, velocity: MIDIVolume )
@@ -142,64 +144,24 @@ public class ToneController {
             }
             
         case .piano:
-            let MIDINumber = MIDINoteNumber( soundInfo.frequency.frequency2midiNumber() )
-            
-            var MIDIVolume : MIDIVelocity
-            if let volume = volume {
-                MIDIVolume = MIDIVelocity((volume * 255 )  / 100 )
-            }else {
-                MIDIVolume = MIDIVelocity ((soundInfo.volume * 255 )  / 100 )
-            }
             let index : Int = Int(MIDINumber) - Constants.minimumPianoMIDINoteNumber
 
-            print("MIDINoteNumber : \(MIDINumber)")
-            
             if let staccato = staccato, staccato == true {
                 
                 melody[index].play(velocity : MIDIVolume)
-                
-                // 화성 test
-//                if index > 3 {
-//                    melody[index-4].play(velocity : MIDIVolume)
-//                }
                 
             }else if memory == MIDINumber {
                 break
             }else {
                 melody[index].play(velocity : MIDIVolume)
-                // 화성 test
-//                if index > 3 {
-//                    melody[index-4].play(velocity : MIDIVolume)
-//                }
                 memory = MIDINumber
             }
 
             
         case .pianoFM:
-            
-            let MIDINumber = MIDINoteNumber( soundInfo.frequency.frequencyToMIDINote() )
-            var MIDIVolume : MIDIVelocity
-            
-            if let volume = volume {
-                MIDIVolume = MIDIVelocity((volume * 255 )  / 100 )
-            }else {
-                MIDIVolume = MIDIVelocity ((soundInfo.volume * 255 )  / 100 )
-            }
-            print("MIDINoteNumber : \(MIDINumber)")
-            
             pianoFM.play(noteNumber: MIDINumber, velocity: MIDIVolume)
             
         case .guitarAcoustic:
-            let MIDINumber = MIDINoteNumber( soundInfo.frequency.frequencyToMIDINote() )
-            var MIDIVolume : MIDIVelocity
-            
-            if let volume = volume {
-                MIDIVolume = MIDIVelocity((volume * 255 )  / 100 )
-            }else {
-                MIDIVolume = MIDIVelocity ((soundInfo.volume * 255 )  / 100 )
-            }
-            print("MIDINoteNumber : \(MIDINumber)")
-            
             guitarAcuostic.play(noteNumber: MIDINumber, velocity: MIDIVolume)
         }
         
@@ -219,7 +181,6 @@ public class ToneController {
             
         default:
             memory = 0
-            print("stop default")
         }
         
         
