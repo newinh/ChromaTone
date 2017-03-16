@@ -316,8 +316,8 @@
 				TargetAttributes = {
 					78684B281E49BDD800E626AF = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = F3Q5Y6R7ZH;
-						ProvisioningStyle = Automatic;
+						DevelopmentTeam = VJSH62RW9Z;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -573,11 +573,15 @@
 			baseConfigurationReference = CF578028574678AA4A8E109C /* Pods-ChromaTone.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = F3Q5Y6R7ZH;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				DEVELOPMENT_TEAM = VJSH62RW9Z;
 				INFOPLIST_FILE = ChromaTone/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.boostcamp.ChromaTone;
+				PRODUCT_BUNDLE_IDENTIFIER = com.newinh.ChromaTone;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "c59222a7-0ae3-4984-8345-08320cfb605b";
+				PROVISIONING_PROFILE_SPECIFIER = ChromaToneProfile;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -587,11 +591,15 @@
 			baseConfigurationReference = 1A4C64C190FEC4F6590A0FEB /* Pods-ChromaTone.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = F3Q5Y6R7ZH;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				DEVELOPMENT_TEAM = VJSH62RW9Z;
 				INFOPLIST_FILE = ChromaTone/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.boostcamp.ChromaTone;
+				PRODUCT_BUNDLE_IDENTIFIER = com.newinh.ChromaTone;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "c59222a7-0ae3-4984-8345-08320cfb605b";
+				PROVISIONING_PROFILE_SPECIFIER = ChromaToneProfile;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;

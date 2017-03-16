@@ -13,6 +13,8 @@ extension ToneController {
     
     func prepare() {
         
+        print("ToneController prepare")
+        
 //        for (_ , port) in preparedPorts.enumerated() {
 //            
 //            for(_ , output) in AVAudioSession.sharedInstance().currentRoute.outputs.enumerated() {
@@ -33,7 +35,7 @@ extension ToneController {
         prepareDrum()
         prepareOscillator()
         prepareMelody()
-        prepareGuitarAcoustic()
+//        prepareGuitarAcoustic()
         
         defer{
             AudioKit.output = mainMixer
@@ -102,15 +104,15 @@ extension ToneController {
         mainMixer.connect(melodyMixer)
         
         
-        try! pianoFM.loadWav("FM-Piano")
-        mainMixer.connect(pianoFM)
+//        try! pianoFM.loadWav("FM-Piano")
+//        mainMixer.connect(pianoFM)
         
     }
     
-    func prepareGuitarAcoustic() {
-        try! guitarAcuostic.loadWav("Guitar-C4")
-        mainMixer.connect(guitarAcuostic)
-    }
+//    func prepareGuitarAcoustic() {
+//        try! guitarAcuostic.loadWav("Guitar-C4")
+//        mainMixer.connect(guitarAcuostic)
+//    }
     
     
     

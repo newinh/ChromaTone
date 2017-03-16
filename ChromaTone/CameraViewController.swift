@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import AVFoundation
-import CoreImage
 import AudioKit
 
 class CameraViewController : UIViewController {

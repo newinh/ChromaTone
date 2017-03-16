@@ -38,8 +38,8 @@ public class ToneController {
         // 뭐 기타 등등등 추가해보자
         case oscillatorBank = "OscillatorBank"
         case piano = "Piano"
-        case guitarAcoustic = "Acoustic Guitar"
-        case pianoFM = "PianoFM"
+//        case guitarAcoustic = "Acoustic Guitar"
+//        case pianoFM = "PianoFM"
         
     }
     
@@ -93,8 +93,8 @@ public class ToneController {
     
     var melody : [AKSampler] = []
     
-    var pianoFM = AKSampler()
-    var guitarAcuostic = AKSampler()
+//    var pianoFM = AKSampler()
+//    var guitarAcuostic = AKSampler()
     
     var aChromaOff : Bool = false
     var drumToggle : Bool = false
@@ -158,11 +158,11 @@ public class ToneController {
             }
 
             
-        case .pianoFM:
-            pianoFM.play(noteNumber: MIDINumber, velocity: MIDIVolume)
-            
-        case .guitarAcoustic:
-            guitarAcuostic.play(noteNumber: MIDINumber, velocity: MIDIVolume)
+//        case .pianoFM:
+//            pianoFM.play(noteNumber: MIDINumber, velocity: MIDIVolume)
+//            
+//        case .guitarAcoustic:
+//            guitarAcuostic.play(noteNumber: MIDINumber, velocity: MIDIVolume)
         }
         
     }

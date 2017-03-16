@@ -104,7 +104,7 @@ class ColorViewController: UIViewController {
         
         switch audioRouteChangeReason {
         case AVAudioSessionRouteChangeReason.newDeviceAvailable.rawValue:
-            ToneController.sharedInstance().prepare()
+//            ToneController.sharedInstance().prepare()
             print("newDeviceAvailable")
         case AVAudioSessionRouteChangeReason.oldDeviceUnavailable.rawValue:
             print("oldDeviceUnavailable")
