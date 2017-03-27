@@ -14,11 +14,9 @@
 		78684B371E49BDD800E626AF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 78684B351E49BDD800E626AF /* LaunchScreen.storyboard */; };
 		78BA40D81E4EF20A00B76BB0 /* ColorPickerImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BA40D71E4EF20A00B76BB0 /* ColorPickerImageView.swift */; };
 		78BA40DA1E4EF2AD00B76BB0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BA40D91E4EF2AD00B76BB0 /* Constants.swift */; };
-		78D7AE5E1E642A6E00575169 /* Guitar-C4.wav in Resources */ = {isa = PBXBuildFile; fileRef = 78D7AE5D1E642A6E00575169 /* Guitar-C4.wav */; };
 		78E4F7591E5CC0140055AB5A /* Hi-Hat-1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 78E4F7581E5CC0140055AB5A /* Hi-Hat-1.wav */; };
 		78E4F75C1E5CC97D0055AB5A /* Bass-Drum-1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 78E4F75A1E5CC97D0055AB5A /* Bass-Drum-1.wav */; };
 		78E4F75D1E5CC97D0055AB5A /* Hip-Hop-Snare-2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 78E4F75B1E5CC97D0055AB5A /* Hip-Hop-Snare-2.wav */; };
-		78E4F7A81E5CDFEF0055AB5A /* _readme_and_license.txt in Resources */ = {isa = PBXBuildFile; fileRef = 78E4F78F1E5CDFEF0055AB5A /* _readme_and_license.txt */; };
 		78E4F7A91E5CDFEF0055AB5A /* piano-57.wav in Resources */ = {isa = PBXBuildFile; fileRef = 78E4F7901E5CDFEF0055AB5A /* piano-57.wav */; };
 		78E4F7AA1E5CDFEF0055AB5A /* piano-58.wav in Resources */ = {isa = PBXBuildFile; fileRef = 78E4F7911E5CDFEF0055AB5A /* piano-58.wav */; };
 		78E4F7AB1E5CDFEF0055AB5A /* piano-59.wav in Resources */ = {isa = PBXBuildFile; fileRef = 78E4F7921E5CDFEF0055AB5A /* piano-59.wav */; };
@@ -45,10 +43,10 @@
 		78E4F7C01E5CDFEF0055AB5A /* piano-80.wav in Resources */ = {isa = PBXBuildFile; fileRef = 78E4F7A71E5CDFEF0055AB5A /* piano-80.wav */; };
 		78E4F7C31E5CE8A20055AB5A /* piano-56.wav in Resources */ = {isa = PBXBuildFile; fileRef = 78E4F7C11E5CE8A20055AB5A /* piano-56.wav */; };
 		78E4F7C41E5CE8A20055AB5A /* piano-81.wav in Resources */ = {isa = PBXBuildFile; fileRef = 78E4F7C21E5CE8A20055AB5A /* piano-81.wav */; };
-		78E4F7C81E5D84C50055AB5A /* FM-Piano.wav in Resources */ = {isa = PBXBuildFile; fileRef = 78E4F7C71E5D84C50055AB5A /* FM-Piano.wav */; };
 		78E4F7CA1E5E2BE70055AB5A /* ColorViewController+ImagePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E4F7C91E5E2BE70055AB5A /* ColorViewController+ImagePlayer.swift */; };
 		78E63E711E58B91100A9B96F /* ToneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E63E701E58B91100A9B96F /* ToneController.swift */; };
 		78E63E731E59A86200A9B96F /* ImagePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78E63E721E59A86200A9B96F /* ImagePlayer.swift */; };
+		78ECE6B81E88F95D006588A9 /* ColorViewController+UIImagePickerControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78ECE6B71E88F95D006588A9 /* ColorViewController+UIImagePickerControllerDelegate.swift */; };
 		78EFC0521E60259200750801 /* ToneController+prepare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78EFC0511E60259200750801 /* ToneController+prepare.swift */; };
 		78EFC0541E60265F00750801 /* UIColor+frequency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78EFC0531E60265F00750801 /* UIColor+frequency.swift */; };
 		78EFC0561E602F7200750801 /* ColorViewController+PickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78EFC0551E602F7200750801 /* ColorViewController+PickerView.swift */; };
@@ -69,7 +67,6 @@
 		78684B381E49BDD800E626AF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		78BA40D71E4EF20A00B76BB0 /* ColorPickerImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPickerImageView.swift; sourceTree = "<group>"; };
 		78BA40D91E4EF2AD00B76BB0 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		78D7AE5D1E642A6E00575169 /* Guitar-C4.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Guitar-C4.wav"; sourceTree = "<group>"; };
 		78E4F7581E5CC0140055AB5A /* Hi-Hat-1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Hi-Hat-1.wav"; sourceTree = "<group>"; };
 		78E4F75A1E5CC97D0055AB5A /* Bass-Drum-1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Bass-Drum-1.wav"; sourceTree = "<group>"; };
 		78E4F75B1E5CC97D0055AB5A /* Hip-Hop-Snare-2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Hip-Hop-Snare-2.wav"; sourceTree = "<group>"; };
@@ -100,10 +97,10 @@
 		78E4F7A71E5CDFEF0055AB5A /* piano-80.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "piano-80.wav"; sourceTree = "<group>"; };
 		78E4F7C11E5CE8A20055AB5A /* piano-56.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "piano-56.wav"; sourceTree = "<group>"; };
 		78E4F7C21E5CE8A20055AB5A /* piano-81.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "piano-81.wav"; sourceTree = "<group>"; };
-		78E4F7C71E5D84C50055AB5A /* FM-Piano.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "FM-Piano.wav"; sourceTree = "<group>"; };
 		78E4F7C91E5E2BE70055AB5A /* ColorViewController+ImagePlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ColorViewController+ImagePlayer.swift"; sourceTree = "<group>"; };
 		78E63E701E58B91100A9B96F /* ToneController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToneController.swift; sourceTree = "<group>"; };
 		78E63E721E59A86200A9B96F /* ImagePlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePlayer.swift; sourceTree = "<group>"; };
+		78ECE6B71E88F95D006588A9 /* ColorViewController+UIImagePickerControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ColorViewController+UIImagePickerControllerDelegate.swift"; sourceTree = "<group>"; };
 		78EFC0511E60259200750801 /* ToneController+prepare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ToneController+prepare.swift"; sourceTree = "<group>"; };
 		78EFC0531E60265F00750801 /* UIColor+frequency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+frequency.swift"; sourceTree = "<group>"; };
 		78EFC0551E602F7200750801 /* ColorViewController+PickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ColorViewController+PickerView.swift"; sourceTree = "<group>"; };
@@ -174,8 +171,6 @@
 				78E4F75A1E5CC97D0055AB5A /* Bass-Drum-1.wav */,
 				78E4F75B1E5CC97D0055AB5A /* Hip-Hop-Snare-2.wav */,
 				78E4F7581E5CC0140055AB5A /* Hi-Hat-1.wav */,
-				78E4F7C71E5D84C50055AB5A /* FM-Piano.wav */,
-				78D7AE5D1E642A6E00575169 /* Guitar-C4.wav */,
 			);
 			name = Sounds;
 			sourceTree = "<group>";
@@ -231,6 +226,7 @@
 				78684B2E1E49BDD800E626AF /* ColorViewController.swift */,
 				78E4F7C91E5E2BE70055AB5A /* ColorViewController+ImagePlayer.swift */,
 				78EFC0551E602F7200750801 /* ColorViewController+PickerView.swift */,
+				78ECE6B71E88F95D006588A9 /* ColorViewController+UIImagePickerControllerDelegate.swift */,
 				78E63E6D1E586BB100A9B96F /* PickerView */,
 				78E63E6C1E586BA400A9B96F /* CameraView */,
 			);
@@ -294,6 +290,7 @@
 				78684B271E49BDD800E626AF /* Resources */,
 				60DE346F5485764BC3C95B1C /* [CP] Embed Pods Frameworks */,
 				827081797DD44546BF7353C1 /* [CP] Copy Pods Resources */,
+				78ECE6B61E81568D006588A9 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -353,7 +350,6 @@
 				78E4F7C01E5CDFEF0055AB5A /* piano-80.wav in Resources */,
 				78E4F7B71E5CDFEF0055AB5A /* piano-71.wav in Resources */,
 				78E4F7BB1E5CDFEF0055AB5A /* piano-75.wav in Resources */,
-				78E4F7A81E5CDFEF0055AB5A /* _readme_and_license.txt in Resources */,
 				78E4F75D1E5CC97D0055AB5A /* Hip-Hop-Snare-2.wav in Resources */,
 				78E4F7B21E5CDFEF0055AB5A /* piano-66.wav in Resources */,
 				78E4F7AF1E5CDFEF0055AB5A /* piano-63.wav in Resources */,
@@ -363,9 +359,7 @@
 				78E4F7AD1E5CDFEF0055AB5A /* piano-61.wav in Resources */,
 				78E4F7C41E5CE8A20055AB5A /* piano-81.wav in Resources */,
 				78E4F7AE1E5CDFEF0055AB5A /* piano-62.wav in Resources */,
-				78D7AE5E1E642A6E00575169 /* Guitar-C4.wav in Resources */,
 				78E4F7BD1E5CDFEF0055AB5A /* piano-77.wav in Resources */,
-				78E4F7C81E5D84C50055AB5A /* FM-Piano.wav in Resources */,
 				78684B341E49BDD800E626AF /* Assets.xcassets in Resources */,
 				78E4F7BC1E5CDFEF0055AB5A /* piano-76.wav in Resources */,
 				78E4F7C31E5CE8A20055AB5A /* piano-56.wav in Resources */,
@@ -399,6 +393,19 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ChromaTone/Pods-ChromaTone-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		78ECE6B61E81568D006588A9 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "$BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/AudioKit.framework/fix-framework.sh";
 		};
 		827081797DD44546BF7353C1 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -446,6 +453,7 @@
 				78EFC0521E60259200750801 /* ToneController+prepare.swift in Sources */,
 				78684B2F1E49BDD800E626AF /* ColorViewController.swift in Sources */,
 				78EFC0541E60265F00750801 /* UIColor+frequency.swift in Sources */,
+				78ECE6B81E88F95D006588A9 /* ColorViewController+UIImagePickerControllerDelegate.swift in Sources */,
 				78FF99881E530CE100D93738 /* CameraViewController.swift in Sources */,
 				78684B2D1E49BDD800E626AF /* AppDelegate.swift in Sources */,
 				78E4F7CA1E5E2BE70055AB5A /* ColorViewController+ImagePlayer.swift in Sources */,
@@ -496,6 +504,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: SEUNG HOON SHIN (87DQ6AA9U7)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -546,7 +555,8 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: SEUNG HOON SHIN (VJSH62RW9Z)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -573,16 +583,17 @@
 			baseConfigurationReference = CF578028574678AA4A8E109C /* Pods-ChromaTone.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = VJSH62RW9Z;
 				INFOPLIST_FILE = ChromaTone/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.newinh.ChromaTone;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "c59222a7-0ae3-4984-8345-08320cfb605b";
-				PROVISIONING_PROFILE_SPECIFIER = ChromaToneProfile;
+				PROVISIONING_PROFILE = "b811c6d4-369f-405c-b05e-4e35e355343c";
+				PROVISIONING_PROFILE_SPECIFIER = ChromaToneDev;
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -598,9 +609,10 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.newinh.ChromaTone;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "c59222a7-0ae3-4984-8345-08320cfb605b";
-				PROVISIONING_PROFILE_SPECIFIER = ChromaToneProfile;
+				PROVISIONING_PROFILE = "154ddbbd-1cca-4db8-945c-14c3c43ebfc3";
+				PROVISIONING_PROFILE_SPECIFIER = "ChromaTone Distribution";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

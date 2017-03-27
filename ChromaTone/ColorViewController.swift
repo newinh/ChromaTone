@@ -8,6 +8,7 @@
 
 import UIKit
 import AudioKit
+import Photos
 
 class ColorViewController: UIViewController {
     
@@ -162,14 +163,34 @@ class ColorViewController: UIViewController {
         imagePlayer?.stop()
         
         // default image
-        self.image = UIImage(named: "demo_colorful_city")
-        colorPickerImageView.mode = .getColorByPixel
-
-        let imagePickerController = UIImagePickerController()
-
-        imagePickerController.delegate = self
-        imagePickerController.sourceType = .savedPhotosAlbum
-        self.present(imagePickerController, animated: true, completion: nil)
+//        self.image = UIImage(named: "demo_colorful_city")
+        
+        let photoPermission = PHPhotoLibrary.authorizationStatus()
+        
+        switch photoPermission {
+            
+        case .authorized:
+            colorPickerImageView.mode = .getColorByPixel
+            
+            let imagePickerController = UIImagePickerController()
+            
+            imagePickerController.delegate = self
+            imagePickerController.sourceType = .savedPhotosAlbum
+            self.present(imagePickerController, animated: true, completion: nil)
+            
+        default:
+            
+            let message = NSLocalizedString("사진 앨범에 접근할수 업습니다. 설정 > ChromaTone 에서 사진을 승인해주세요.", comment: "photoLibrary 접근 권한을 얻지 못했을 때")
+            let alertController = UIAlertController(title: "ChromaTone", message: message, preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: .cancel, handler: {action in
+                self.dismiss(animated: true, completion: nil)
+            }))
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Settings", comment: "go Settings"), style: .`default`, handler: { _ in
+                UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!, options: [:], completionHandler: nil)
+            }))
+            self.present(alertController, animated: true, completion: nil)
+        }
+        
     }
     
     @IBAction func pickerButtonPressed(_ sender: UIBarButtonItem){
@@ -213,19 +234,6 @@ class ColorViewController: UIViewController {
     }
 }
 
-extension ColorViewController : UINavigationControllerDelegate, UIImagePickerControllerDelegate {
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        
-        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage{
-            self.image = image
-        }
-        picker.dismiss(animated: true, completion: nil)
-    }
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        picker.dismiss(animated: true, completion: nil)
-    }
-}
+
 
 
