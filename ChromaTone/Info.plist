@@ -24,6 +24,10 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>get color in camera view</string>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Don&apos;t use.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>get color in image</string>
 	<key>UILaunchStoryboardName</key>

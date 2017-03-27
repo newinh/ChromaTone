@@ -34,6 +34,8 @@ class ColorViewController: UIViewController {
     
     var scanBarIsMoving : Bool = false
     
+    
+    
     var image : UIImage?{
         get {
             return self.colorPickerImageView.image
@@ -169,18 +171,9 @@ class ColorViewController: UIViewController {
         
         switch photoPermission {
             
-        case .authorized:
-            colorPickerImageView.mode = .getColorByPixel
+        case .denied:
             
-            let imagePickerController = UIImagePickerController()
-            
-            imagePickerController.delegate = self
-            imagePickerController.sourceType = .savedPhotosAlbum
-            self.present(imagePickerController, animated: true, completion: nil)
-            
-        default:
-            
-            let message = NSLocalizedString("사진 앨범에 접근할수 업습니다. 설정 > ChromaTone 에서 사진을 승인해주세요.", comment: "photoLibrary 접근 권한을 얻지 못했을 때")
+            let message = NSLocalizedString("사진 앨범에 접근할수 업습니다. 설정 > ChromaTone 에서 사진 접근을 승인해주세요.", comment: "photoLibrary 접근 권한을 얻지 못했을 때")
             let alertController = UIAlertController(title: "ChromaTone", message: message, preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: .cancel, handler: {action in
                 self.dismiss(animated: true, completion: nil)
@@ -189,6 +182,16 @@ class ColorViewController: UIViewController {
                 UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!, options: [:], completionHandler: nil)
             }))
             self.present(alertController, animated: true, completion: nil)
+            
+        default:
+            colorPickerImageView.mode = .getColorByPixel
+            
+            let imagePickerController = UIImagePickerController()
+            
+            imagePickerController.delegate = self
+            imagePickerController.sourceType = .savedPhotosAlbum
+            self.present(imagePickerController, animated: true, completion: nil)
+            
         }
         
     }
